@@ -1,0 +1,38 @@
+/* ─────────────────────────────────────────────────────────────
+   M-Pamoja design tokens — extracted verbatim from the approved MVP.
+   Do not invent values here; this file is the single source of truth
+   and mirrors the :root block in mpamoja.com.
+   ───────────────────────────────────────────────────────────── */
+:root {
+  --brand:   #4F46E5;
+  --violet:  #7C3AED;
+  --emerald: #10B981;
+  --sky:     #0EA5E9;
+  --amber:   #F59E0B;
+  --rose:    #F43F5E;
+  --danger:  #E4000F;
+
+  --ink:     #0D0F14;
+  --text:    #0D0F14;
+  --muted:   #8C90A6;
+  --surface: #FFFFFF;
+  --bg-soft: #F5F6FA;
+  --bg-tint: #EEF0FF;
+  --border:  #E2E4EE;
+
+  --grad:        linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+  --grad-money:  linear-gradient(135deg, #10B981, #059669);
+  --grad-tint:   linear-gradient(135deg, #F5F3FF, #EEF0FF);
+  --grad-page:   linear-gradient(160deg, #F0F1FF 0%, #F5F6FA 40%, #EFF8F4 100%);
+
+  --font: 'Sora', system-ui, -apple-system, sans-serif;
+  --mono: 'DM Mono', ui-monospace, monospace;
+
+  --radius:    20px;
+  --radius-sm: 12px;
+  --radius-xs: 8px;
+  --shadow:    0 4px 16px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-lg: 0 12px 32px rgba(79,70,229,0.16), 0 4px 8px rgba(0,0,0,0.06);
+
+  --maxw: 480px; /* mobile-first shell width */
+}
