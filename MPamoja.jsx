@@ -1,4 +1,6 @@
 import React from "react";
+// mpamoja.jsx - add this import
+import { kittyApi, authApi, publicApi, withdrawalApi, tokenStore } from './src/api/client';
 import { useState, useEffect, useRef, useCallback } from "react";
 import { HubConnectionBuilder, LogLevel } from '@microsoft/signalr';
 
