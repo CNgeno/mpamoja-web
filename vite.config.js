@@ -20,4 +20,12 @@ export default defineConfig({
       },
     },
   },
+   // ⭐ ADD THIS FOR PRODUCTION BUILD
+  define: {
+    'process.env.VITE_API_URL': JSON.stringify(
+      process.env.NODE_ENV === 'production' 
+        ? 'https://emotionalistic-audient-darrick.ngrok-free.dev/mpamoja'
+        : ''
+    )
+  }
 })

@@ -1,7 +1,10 @@
 // Central API client. Every network call to the .NET backend goes through here.
 // Dev: base is '' and Vite proxies /api to the backend. Prod: VITE_API_BASE_URL.
 
-const BASE = import.meta.env.VITE_API_BASE_URL || '';
+const BASE = import.meta.env.VITE_API_URL || 
+             (window.location.hostname !== 'localhost' 
+               ? 'https://emotionalistic-audient-darrick.ngrok-free.dev/mpamoja' 
+               : '');
 
 const TOKEN_KEY = 'mpamoja.jwt';
 

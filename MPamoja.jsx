@@ -3958,7 +3958,7 @@ function KittyDetailModal({ kitty: initialKitty, user, transactions, state, onCl
         }
         
         // ⭐ FIX: Use the correct endpoint from your backend
-        const response = await fetch(`/api/transactions/kitty/${kitty.id}`, {
+        const response = await fetch(`${BASE}/api/transactions/kitty/${kitty.id}`, {
           headers: { 
             'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json'
@@ -10073,7 +10073,7 @@ const fetchKittiesFromApi = async () => {
         try {
           console.log(`📡 Polling attempt ${attempts}/${maxAttempts} for intent: ${intentId}`);
           
-          const response = await fetch(`/api/public/kitties/status/${intentId}`, {
+          const response = await fetch(`${BASE}/api/public/kitties/status/${intentId}`, {
             headers: { 'Authorization': `Bearer ${token}` }
           });
           
@@ -10481,7 +10481,7 @@ const fetchKittiesFromApi = async () => {
         
   //       if (!kitty || !kitty.shareToken) {
   //         console.log('🔄 Fetching kitty from API...');
-  //         const response = await fetch(`/api/kitties/${kittyId}`, {
+  //         const response = await fetch(`${BASE}/api/kitties/${kittyId}`, {
   //           headers: { 'Authorization': `Bearer ${token}` }
   //         });
           
@@ -10509,7 +10509,7 @@ const fetchKittiesFromApi = async () => {
   //       }
 
   //       console.log('📤 Sending contribution request...');
-  //       const response = await fetch(`/api/public/kitties/${shareToken}/contribute`, {
+  //       const response = await fetch(`${BASE}/api/public/kitties/${shareToken}/contribute`, {
   //         method: 'POST',
   //         headers: {
   //           'Content-Type': 'application/json',
@@ -10643,7 +10643,7 @@ const fetchKittiesFromApi = async () => {
       // Get shareToken
       if (!kitty || !kitty.shareToken) {
         console.log('🔄 Fetching kitty from API...');
-        const response = await fetch(`/api/kitties/${kittyId}`, {
+        const response = await fetch(`${BASE}/api/kitties/${kittyId}`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         
@@ -10672,7 +10672,7 @@ const fetchKittiesFromApi = async () => {
 
       // Make the contribution
       console.log('📤 Sending contribution request...');
-      const response = await fetch(`/api/public/kitties/${shareToken}/contribute`, {
+      const response = await fetch(`${BASE}/api/public/kitties/${shareToken}/contribute`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -10820,7 +10820,7 @@ const fetchKittiesFromApi = async () => {
       const kittyObj = state.kitties.find(k => k.id === kittyId);
       const gross = partial || (kittyObj?.raised || 0);
 
-      const response = await fetch(`/api/kitties/${kittyId}/withdraw`, {
+      const response = await fetch(`${BASE}/api/kitties/${kittyId}/withdraw`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
