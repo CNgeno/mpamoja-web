@@ -4,7 +4,10 @@ import { kittyApi, authApi, publicApi, withdrawalApi, tokenStore } from './src/a
 import { useState, useEffect, useRef, useCallback } from "react";
 import { HubConnectionBuilder, LogLevel, HttpTransportType } from '@microsoft/signalr';
 
-const BASE = 'https://emotionalistic-audient-darrick.ngrok-free.dev/mpamoja';// ─── CSS-in-JS styles injected once ───
+const BASE = import.meta.env.VITE_API_URL || 
+             (window.location.hostname !== 'localhost' 
+               ? 'https://emotionalistic-audient-darrick.ngrok-free.dev/mpamoja' 
+               : '');
 const STYLES = `
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -8575,7 +8578,7 @@ function ContributePage({ state, user, onToast, onContribute }) {
           return;
         }
 
-        const response = await fetch('/api/kitties', {
+        const response = await fetch(`${BASE}/api/kitties`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
 
@@ -9122,7 +9125,7 @@ function WhatsappPage({ state, user, onToast }) {
           return;
         }
 
-        const response = await fetch('/api/kitties', {
+        const response = await fetch(`${BASE}/api/kitties`, {
           headers: { 'Authorization': `Bearer ${token}` }
         });
 
@@ -10015,7 +10018,7 @@ const fetchKittiesFromApi = async () => {
     }
 
     console.log('📡 Making API request to /api/kitties');
-    const response = await fetch('/api/kitties', {
+    const response = await fetch(`${BASE}/api/kitties`, {
       headers: { 'Authorization': `Bearer ${token}` }
     });
 
@@ -10409,7 +10412,7 @@ const connection = new HubConnectionBuilder()
 
       console.log('📤 Creating kitty:', kittyData);
 
-      const response = await fetch('/api/kitties', {
+      const response = await fetch(`${BASE}/api/kitties`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
