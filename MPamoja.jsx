@@ -4,8 +4,7 @@ import { kittyApi, authApi, publicApi, withdrawalApi, tokenStore } from './src/a
 import { useState, useEffect, useRef, useCallback } from "react";
 import { HubConnectionBuilder, LogLevel, HttpTransportType } from '@microsoft/signalr';
 
-const BASE = '';
-// ─── CSS-in-JS styles injected once ───
+const BASE = 'https://emotionalistic-audient-darrick.ngrok-free.dev/mpamoja';// ─── CSS-in-JS styles injected once ───
 const STYLES = `
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=DM+Mono:ital,wght@0,400;0,500;1,400&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
