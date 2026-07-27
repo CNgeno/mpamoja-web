@@ -843,137 +843,137 @@ const maskPhone = (p) => {
   return s.slice(0,4) + "*".repeat(Math.max(0, s.length-5)) + s.slice(-1);
 };
 
-// // ─── Default data ───
-// const DEFAULT_STATE = {
-//   kitties: [
-//     // ── Contributions Kitties ──
-//     { id: 1, name: "Mama Sarah's Hospital Bill", raised: 1874000, goal: 2500000, contributors: 8, created: "2026-01-15", createdBy: "demo@mpamoja.co.ke", payChannel: "Paybill", paybill: "4990390", accountNo: "1001", mobile: "", feeCategory: "contributions" },
-//     { id: 2, name: "Kamau Family House Fire Relief", raised: 935000, goal: 1500000, contributors: 10, created: "2026-02-10", createdBy: "demo@mpamoja.co.ke", payChannel: "Mobile", paybill: "", accountNo: "", mobile: "0722334455", feeCategory: "contributions" },
-//     { id: 3, name: "Brian's University Fees 2026", raised: 542000, goal: 800000, contributors: 7, created: "2026-03-05", createdBy: "demo@mpamoja.co.ke", payChannel: "Paybill", paybill: "4990390", accountNo: "1003", mobile: "", feeCategory: "contributions" },
-//     // ── Chama Kitties ──
-//     { id: 4, name: "Chama Monthly – April", raised: 1346000, goal: 2000000, contributors: 9, created: "2026-01-01", createdBy: "demo@mpamoja.co.ke", payChannel: "Paybill", paybill: "4990390", accountNo: "1002", mobile: "", feeCategory: "chama" },
-//     { id: 5, name: "Umoja Sacco – Q1 Savings", raised: 780000, goal: 1200000, contributors: 6, created: "2026-02-01", createdBy: "demo@mpamoja.co.ke", payChannel: "Paybill", paybill: "4990390", accountNo: "1004", mobile: "", feeCategory: "chama" },
-//     { id: 6, name: "Eastlands Investment Pool", raised: 2115000, goal: 3000000, contributors: 10, created: "2025-12-01", createdBy: "demo@mpamoja.co.ke", payChannel: "Paybill", paybill: "4990390", accountNo: "1005", mobile: "", feeCategory: "chama" },
-//     // ── Events Kitties ──
-//     { id: 7, name: "Annual Harambee Dinner 2026", raised: 1630000, goal: 2000000, contributors: 8, created: "2026-03-01", createdBy: "demo@mpamoja.co.ke", payChannel: "Paybill", paybill: "4990390", accountNo: "1006", mobile: "", feeCategory: "events" },
-//     { id: 8, name: "Wanjiku's Wedding Fund", raised: 1435000, goal: 1500000, contributors: 9, created: "2026-02-20", createdBy: "demo@mpamoja.co.ke", payChannel: "Mobile", paybill: "", accountNo: "", mobile: "0712345678", feeCategory: "events" },
-//     { id: 9, name: "Youth Empowerment Summit", raised: 478000, goal: 1000000, contributors: 7, created: "2026-04-01", createdBy: "demo@mpamoja.co.ke", payChannel: "Mobile", paybill: "", accountNo: "", mobile: "0733445566", feeCategory: "events" },
-//   ],
-//   chamas: [
-//     { id: 1, name: "Nairobi Women Entrepreneurs", members: 24, pool: 145000, cycle: "Monthly", nextMeeting: "Apr 30", createdBy: "demo@mpamoja.co.ke", contributionAmount: 5000, penaltyType: "percentage", penaltyValue: 5, penaltyPerDay: true,
-//       memberList: [
-//         { id: 1, name: "Jane Wambua",   phone: "0712345671", joined: "Jan 2024" },
-//         { id: 2, name: "Mary Achieng",  phone: "0722987654", joined: "Jan 2024" },
-//         { id: 3, name: "Grace Muthoni", phone: "0733112233", joined: "Feb 2024" },
-//         { id: 4, name: "Esther Kamau",  phone: "0711223344", joined: "Feb 2024" },
-//       ]
-//     },
-//     { id: 2, name: "Eastlands Investment Club", members: 15, pool: 89500, cycle: "Weekly", nextMeeting: "Apr 26", createdBy: "demo@mpamoja.co.ke", contributionAmount: 2000, penaltyType: "fixed", penaltyValue: 200, penaltyPerDay: false,
-//       memberList: [
-//         { id: 1, name: "Peter Odhiambo", phone: "0722112233", joined: "Mar 2024" },
-//         { id: 2, name: "James Kariuki",  phone: "0733445566", joined: "Mar 2024" },
-//         { id: 3, name: "David Mutua",    phone: "0712998877", joined: "Apr 2024" },
-//       ]
-//     }
-//   ],
-//   events: [
-//     { id: 1, name: "Annual Harambee Dinner 2026", date: "15", month: "May", location: "Serena Hotel, Nairobi", attendees: 120, target: 200, createdBy: "demo@mpamoja.co.ke", status: "active", description: "Annual fundraising dinner for community development projects." },
-//     { id: 2, name: "Youth Empowerment Workshop",  date: "03", month: "Jun", location: "KICC, Nairobi",         attendees: 54,  target: 100, createdBy: "demo@mpamoja.co.ke", status: "active", description: "Skills and entrepreneurship training for the youth." }
-//   ],
-//   transactions: [
-//     // ── Mama Sarah's Hospital Bill (id:1, 8 contributors) ──
-//     { ref: "TRX001", name: "Jane Wambua",     phone: "0712345671", kitty: "Mama Sarah's Hospital Bill",      gross: 250000, fee: 0, net: 250000, type: "Contribution", status: "sent", time: "10 Jan",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX002", name: "Peter Odhiambo",  phone: "0722987654", kitty: "Mama Sarah's Hospital Bill",      gross: 300000, fee: 0, net: 300000, type: "Contribution", status: "sent", time: "11 Jan",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX003", name: "Grace Muthoni",   phone: "0733112233", kitty: "Mama Sarah's Hospital Bill",      gross: 200000, fee: 0, net: 200000, type: "Contribution", status: "sent", time: "12 Jan",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX004", name: "Esther Kamau",    phone: "0711223344", kitty: "Mama Sarah's Hospital Bill",      gross: 150000, fee: 0, net: 150000, type: "Contribution", status: "sent", time: "13 Jan",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX005", name: "James Kariuki",   phone: "0733445566", kitty: "Mama Sarah's Hospital Bill",      gross: 224000, fee: 0, net: 224000, type: "Contribution", status: "sent", time: "14 Jan",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX006", name: "David Mutua",     phone: "0712998877", kitty: "Mama Sarah's Hospital Bill",      gross: 280000, fee: 0, net: 280000, type: "Contribution", status: "sent", time: "15 Jan",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX007", name: "Ann Njeri",       phone: "0700112233", kitty: "Mama Sarah's Hospital Bill",      gross: 180000, fee: 0, net: 180000, type: "Contribution", status: "sent", time: "16 Jan",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX008", name: "Samuel Otieno",   phone: "0722334455", kitty: "Mama Sarah's Hospital Bill",      gross: 290000, fee: 0, net: 290000, type: "Contribution", status: "sent", time: "17 Jan",  ownerEmail: "demo@mpamoja.co.ke" },
-//     // ── Kamau Family House Fire Relief (id:2, 10 contributors) ──
-//     { ref: "TRX009", name: "Lucy Akinyi",     phone: "0733556677", kitty: "Kamau Family House Fire Relief",  gross: 100000, fee: 0, net: 100000, type: "Contribution", status: "sent", time: "12 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX010", name: "Moses Waweru",    phone: "0722667788", kitty: "Kamau Family House Fire Relief",  gross: 85000,  fee: 0, net: 8500,  type: "Contribution", status: "sent", time: "12 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX011", name: "Faith Chebet",    phone: "0711778899", kitty: "Kamau Family House Fire Relief",  gross: 120000, fee: 0, net: 120000, type: "Contribution", status: "sent", time: "13 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX012", name: "Kevin Mwangi",    phone: "0700889900", kitty: "Kamau Family House Fire Relief",  gross: 75000,  fee: 0, net: 7500,  type: "Contribution", status: "sent", time: "13 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX013", name: "Patricia Otieno", phone: "0733990011", kitty: "Kamau Family House Fire Relief",  gross: 90000,  fee: 0, net: 9000,  type: "Contribution", status: "sent", time: "14 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX014", name: "Brian Korir",     phone: "0722001122", kitty: "Kamau Family House Fire Relief",  gross: 110000, fee: 0, net: 110000, type: "Contribution", status: "sent", time: "14 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX015", name: "Carolyne Nyambura", phone: "0711223300", kitty: "Kamau Family House Fire Relief", gross: 80000, fee: 0, net: 80000, type: "Contribution", status: "sent", time: "15 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX016", name: "Eric Oloo",       phone: "0700334411", kitty: "Kamau Family House Fire Relief",  gross: 95000,  fee: 0, net: 9500,  type: "Contribution", status: "sent", time: "15 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX017", name: "Miriam Wanjiku",  phone: "0733445522", kitty: "Kamau Family House Fire Relief",  gross: 100000, fee: 0, net: 100000, type: "Contribution", status: "sent", time: "16 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX018", name: "Tony Mwenda",     phone: "0722556633", kitty: "Kamau Family House Fire Relief",  gross: 80000,  fee: 0, net: 8000,  type: "Contribution", status: "sent", time: "16 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-//     // ── Brian's University Fees 2026 (id:3, 7 contributors) ──
-//     { ref: "TRX019", name: "Rose Wanjiku",    phone: "0711667788", kitty: "Brian's University Fees 2026",    gross: 80000,  fee: 0, net: 80000,  type: "Contribution", status: "sent", time: "06 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX020", name: "Joseph Kamau",    phone: "0700778899", kitty: "Brian's University Fees 2026",    gross: 75000,  fee: 0, net: 75000,  type: "Contribution", status: "sent", time: "07 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX021", name: "Lilian Adhiambo", phone: "0733889900", kitty: "Brian's University Fees 2026",    gross: 100000, fee: 0, net: 100000, type: "Contribution", status: "sent", time: "07 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX022", name: "Daniel Kipchoge", phone: "0722990011", kitty: "Brian's University Fees 2026",    gross: 72000,  fee: 0, net: 72000,  type: "Contribution", status: "sent", time: "08 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX023", name: "Susan Mwangi",    phone: "0711001122", kitty: "Brian's University Fees 2026",    gross: 85000,  fee: 0, net: 85000,  type: "Contribution", status: "sent", time: "08 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX024", name: "Alex Ochieng",    phone: "0700112244", kitty: "Brian's University Fees 2026",    gross: 65000,  fee: 0, net: 65000,  type: "Contribution", status: "sent", time: "09 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX025", name: "Hellen Cherop",   phone: "0733223355", kitty: "Brian's University Fees 2026",    gross: 65000,  fee: 0, net: 65000,  type: "Contribution", status: "sent", time: "09 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
-//     // ── Chama Monthly – April (id:4, 9 contributors) ──
-//     { ref: "TRX026", name: "Jane Wambua",     phone: "0712345671", kitty: "Chama Monthly – April",           gross: 150000, fee: 0, net: 150000, type: "Contribution", status: "sent", time: "01 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX027", name: "Mary Achieng",    phone: "0722987654", kitty: "Chama Monthly – April",           gross: 150000, fee: 0, net: 150000, type: "Contribution", status: "sent", time: "01 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX028", name: "Grace Muthoni",   phone: "0733112233", kitty: "Chama Monthly – April",           gross: 150000, fee: 0, net: 150000, type: "Contribution", status: "sent", time: "02 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX029", name: "Esther Kamau",    phone: "0711223344", kitty: "Chama Monthly – April",           gross: 150000, fee: 0, net: 150000, type: "Contribution", status: "sent", time: "02 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX030", name: "Peter Odhiambo",  phone: "0722112233", kitty: "Chama Monthly – April",           gross: 150000, fee: 0, net: 150000, type: "Contribution", status: "sent", time: "03 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX031", name: "James Kariuki",   phone: "0733445566", kitty: "Chama Monthly – April",           gross: 146000, fee: 0, net: 146000, type: "Contribution", status: "sent", time: "03 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX032", name: "David Mutua",     phone: "0712998877", kitty: "Chama Monthly – April",           gross: 150000, fee: 0, net: 150000, type: "Contribution", status: "sent", time: "04 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX033", name: "Ann Njeri",       phone: "0700112233", kitty: "Chama Monthly – April",           gross: 150000, fee: 0, net: 150000, type: "Contribution", status: "sent", time: "04 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX034", name: "Samuel Otieno",   phone: "0722334455", kitty: "Chama Monthly – April",           gross: 150000, fee: 0, net: 150000, type: "Contribution", status: "sent", time: "05 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
-//     // ── Umoja Sacco – Q1 Savings (id:5, 6 contributors) ──
-//     { ref: "TRX035", name: "Lucy Akinyi",     phone: "0733556677", kitty: "Umoja Sacco – Q1 Savings",        gross: 130000, fee: 0, net: 130000, type: "Contribution", status: "sent", time: "05 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX036", name: "Moses Waweru",    phone: "0722667788", kitty: "Umoja Sacco – Q1 Savings",        gross: 130000, fee: 0, net: 130000, type: "Contribution", status: "sent", time: "05 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX037", name: "Faith Chebet",    phone: "0711778899", kitty: "Umoja Sacco – Q1 Savings",        gross: 130000, fee: 0, net: 130000, type: "Contribution", status: "sent", time: "06 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX038", name: "Kevin Mwangi",    phone: "0700889900", kitty: "Umoja Sacco – Q1 Savings",        gross: 130000, fee: 0, net: 130000, type: "Contribution", status: "sent", time: "06 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX039", name: "Patricia Otieno", phone: "0733990011", kitty: "Umoja Sacco – Q1 Savings",        gross: 130000, fee: 0, net: 130000, type: "Contribution", status: "sent", time: "07 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX040", name: "Brian Korir",     phone: "0722001122", kitty: "Umoja Sacco – Q1 Savings",        gross: 130000, fee: 0, net: 130000, type: "Contribution", status: "sent", time: "07 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-//     // ── Eastlands Investment Pool (id:6, 10 contributors) ──
-//     { ref: "TRX041", name: "Carolyne Nyambura", phone: "0711223300", kitty: "Eastlands Investment Pool",     gross: 220000, fee: 0, net: 220000, type: "Contribution", status: "sent", time: "03 Dec",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX042", name: "Eric Oloo",       phone: "0700334411", kitty: "Eastlands Investment Pool",       gross: 200000, fee: 0, net: 200000, type: "Contribution", status: "sent", time: "03 Dec",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX043", name: "Miriam Wanjiku",  phone: "0733445522", kitty: "Eastlands Investment Pool",       gross: 220000, fee: 0, net: 220000, type: "Contribution", status: "sent", time: "04 Dec",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX044", name: "Tony Mwenda",     phone: "0722556633", kitty: "Eastlands Investment Pool",       gross: 210000, fee: 0, net: 210000, type: "Contribution", status: "sent", time: "04 Dec",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX045", name: "Rose Wanjiku",    phone: "0711667788", kitty: "Eastlands Investment Pool",       gross: 200000, fee: 0, net: 200000, type: "Contribution", status: "sent", time: "05 Dec",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX046", name: "Joseph Kamau",    phone: "0700778899", kitty: "Eastlands Investment Pool",       gross: 220000, fee: 0, net: 220000, type: "Contribution", status: "sent", time: "05 Dec",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX047", name: "Lilian Adhiambo", phone: "0733889900", kitty: "Eastlands Investment Pool",       gross: 210000, fee: 0, net: 210000, type: "Contribution", status: "sent", time: "06 Dec",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX048", name: "Daniel Kipchoge", phone: "0722990011", kitty: "Eastlands Investment Pool",       gross: 215000, fee: 0, net: 215000, type: "Contribution", status: "sent", time: "06 Dec",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX049", name: "Susan Mwangi",    phone: "0711001122", kitty: "Eastlands Investment Pool",       gross: 215000, fee: 0, net: 215000, type: "Contribution", status: "sent", time: "07 Dec",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX050", name: "Alex Ochieng",    phone: "0700112244", kitty: "Eastlands Investment Pool",       gross: 205000, fee: 0, net: 205000, type: "Contribution", status: "sent", time: "07 Dec",  ownerEmail: "demo@mpamoja.co.ke" },
-//     // ── Annual Harambee Dinner 2026 (id:7, 8 contributors) ──
-//     { ref: "TRX051", name: "Hellen Cherop",   phone: "0733223355", kitty: "Annual Harambee Dinner 2026",     gross: 200000, fee: 0, net: 200000, type: "Contribution", status: "sent", time: "05 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX052", name: "Jane Wambua",     phone: "0712345671", kitty: "Annual Harambee Dinner 2026",     gross: 250000, fee: 0, net: 250000, type: "Contribution", status: "sent", time: "06 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX053", name: "Peter Odhiambo",  phone: "0722112233", kitty: "Annual Harambee Dinner 2026",     gross: 180000, fee: 0, net: 180000, type: "Contribution", status: "sent", time: "06 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX054", name: "Grace Muthoni",   phone: "0733112233", kitty: "Annual Harambee Dinner 2026",     gross: 220000, fee: 0, net: 220000, type: "Contribution", status: "sent", time: "07 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX055", name: "Moses Waweru",    phone: "0722667788", kitty: "Annual Harambee Dinner 2026",     gross: 150000, fee: 0, net: 150000, type: "Contribution", status: "sent", time: "07 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX056", name: "Faith Chebet",    phone: "0711778899", kitty: "Annual Harambee Dinner 2026",     gross: 200000, fee: 0, net: 200000, type: "Contribution", status: "sent", time: "08 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX057", name: "Kevin Mwangi",    phone: "0700889900", kitty: "Annual Harambee Dinner 2026",     gross: 230000, fee: 0, net: 230000, type: "Contribution", status: "sent", time: "08 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX058", name: "Patricia Otieno", phone: "0733990011", kitty: "Annual Harambee Dinner 2026",     gross: 200000, fee: 0, net: 200000, type: "Contribution", status: "sent", time: "09 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
-//     // ── Wanjiku's Wedding Fund (id:8, 9 contributors) ──
-//     { ref: "TRX059", name: "Brian Korir",     phone: "0722001122", kitty: "Wanjiku's Wedding Fund",          gross: 159000, fee: 0, net: 159000, type: "Contribution", status: "sent", time: "22 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX060", name: "Carolyne Nyambura", phone: "0711223300", kitty: "Wanjiku's Wedding Fund",        gross: 160000, fee: 0, net: 160000, type: "Contribution", status: "sent", time: "22 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX061", name: "Eric Oloo",       phone: "0700334411", kitty: "Wanjiku's Wedding Fund",          gross: 158000, fee: 0, net: 158000, type: "Contribution", status: "sent", time: "23 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX062", name: "Miriam Wanjiku",  phone: "0733445522", kitty: "Wanjiku's Wedding Fund",          gross: 160000, fee: 0, net: 160000, type: "Contribution", status: "sent", time: "23 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX063", name: "Tony Mwenda",     phone: "0722556633", kitty: "Wanjiku's Wedding Fund",          gross: 160000, fee: 0, net: 160000, type: "Contribution", status: "sent", time: "24 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX064", name: "Rose Wanjiku",    phone: "0711667788", kitty: "Wanjiku's Wedding Fund",          gross: 160000, fee: 0, net: 160000, type: "Contribution", status: "sent", time: "24 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX065", name: "Joseph Kamau",    phone: "0700778899", kitty: "Wanjiku's Wedding Fund",          gross: 158000, fee: 0, net: 158000, type: "Contribution", status: "sent", time: "25 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX066", name: "Lilian Adhiambo", phone: "0733889900", kitty: "Wanjiku's Wedding Fund",          gross: 160000, fee: 0, net: 160000, type: "Contribution", status: "sent", time: "25 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX067", name: "Daniel Kipchoge", phone: "0722990011", kitty: "Wanjiku's Wedding Fund",          gross: 160000, fee: 0, net: 160000, type: "Contribution", status: "sent", time: "26 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-//     // ── Youth Empowerment Summit (id:9, 7 contributors) ──
-//     { ref: "TRX068", name: "Susan Mwangi",    phone: "0711001122", kitty: "Youth Empowerment Summit",        gross: 70000,  fee: 0, net: 70000,  type: "Contribution", status: "sent", time: "02 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX069", name: "Alex Ochieng",    phone: "0700112244", kitty: "Youth Empowerment Summit",        gross: 68000,  fee: 0, net: 68000,  type: "Contribution", status: "sent", time: "02 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX070", name: "Hellen Cherop",   phone: "0733223355", kitty: "Youth Empowerment Summit",        gross: 70000,  fee: 0, net: 70000,  type: "Contribution", status: "sent", time: "03 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX071", name: "Ann Njeri",       phone: "0700112233", kitty: "Youth Empowerment Summit",        gross: 65000,  fee: 0, net: 65000,  type: "Contribution", status: "sent", time: "03 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX072", name: "Samuel Otieno",   phone: "0722334455", kitty: "Youth Empowerment Summit",        gross: 70000,  fee: 0, net: 70000,  type: "Contribution", status: "sent", time: "04 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX073", name: "Lucy Akinyi",     phone: "0733556677", kitty: "Youth Empowerment Summit",        gross: 68000,  fee: 0, net: 68000,  type: "Contribution", status: "sent", time: "04 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
-//     { ref: "TRX074", name: "Moses Waweru",    phone: "0722667788", kitty: "Youth Empowerment Summit",        gross: 67000,  fee: 0, net: 67000,  type: "Contribution", status: "sent", time: "05 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
-//     // ── Withdrawal ──
-//     { ref: "WD001",  name: "Demo User",       phone: "",           kitty: "Harambee 2025",                   gross: 50000, fee: 1100, net: 48900, type: "Withdrawal", status: "sent", time: "12 Apr", ownerEmail: "demo@mpamoja.co.ke" },
-//   ],
-//   withdrawals: [
-//     { date: "12 Apr 2025", kitty: "Harambee 2025", gross: 50000, fee: 1100, net: 48900, pct: "2.2", status: "sent", ownerEmail: "demo@mpamoja.co.ke" }
-//   ],
-//   users: [
-//     { email: "demo@mpamoja.co.ke", phone: "0712345678", pass: "demo1234", name: "Demo User", initials: "DU", role: "Campaign Creator" }
-//   ]
-// };
+// ─── Default data ───
+const DEFAULT_STATE = {
+  kitties: [
+    // ── Contributions Kitties ──
+    { id: 1, name: "Mama Sarah's Hospital Bill", raised: 1874000, goal: 2500000, contributors: 8, created: "2026-01-15", createdBy: "demo@mpamoja.co.ke", payChannel: "Paybill", paybill: "4990390", accountNo: "1001", mobile: "", feeCategory: "contributions" },
+    { id: 2, name: "Kamau Family House Fire Relief", raised: 935000, goal: 1500000, contributors: 10, created: "2026-02-10", createdBy: "demo@mpamoja.co.ke", payChannel: "Mobile", paybill: "", accountNo: "", mobile: "0722334455", feeCategory: "contributions" },
+    { id: 3, name: "Brian's University Fees 2026", raised: 542000, goal: 800000, contributors: 7, created: "2026-03-05", createdBy: "demo@mpamoja.co.ke", payChannel: "Paybill", paybill: "4990390", accountNo: "1003", mobile: "", feeCategory: "contributions" },
+    // ── Chama Kitties ──
+    { id: 4, name: "Chama Monthly – April", raised: 1346000, goal: 2000000, contributors: 9, created: "2026-01-01", createdBy: "demo@mpamoja.co.ke", payChannel: "Paybill", paybill: "4990390", accountNo: "1002", mobile: "", feeCategory: "chama" },
+    { id: 5, name: "Umoja Sacco – Q1 Savings", raised: 780000, goal: 1200000, contributors: 6, created: "2026-02-01", createdBy: "demo@mpamoja.co.ke", payChannel: "Paybill", paybill: "4990390", accountNo: "1004", mobile: "", feeCategory: "chama" },
+    { id: 6, name: "Eastlands Investment Pool", raised: 2115000, goal: 3000000, contributors: 10, created: "2025-12-01", createdBy: "demo@mpamoja.co.ke", payChannel: "Paybill", paybill: "4990390", accountNo: "1005", mobile: "", feeCategory: "chama" },
+    // ── Events Kitties ──
+    { id: 7, name: "Annual Harambee Dinner 2026", raised: 1630000, goal: 2000000, contributors: 8, created: "2026-03-01", createdBy: "demo@mpamoja.co.ke", payChannel: "Paybill", paybill: "4990390", accountNo: "1006", mobile: "", feeCategory: "events" },
+    { id: 8, name: "Wanjiku's Wedding Fund", raised: 1435000, goal: 1500000, contributors: 9, created: "2026-02-20", createdBy: "demo@mpamoja.co.ke", payChannel: "Mobile", paybill: "", accountNo: "", mobile: "0712345678", feeCategory: "events" },
+    { id: 9, name: "Youth Empowerment Summit", raised: 478000, goal: 1000000, contributors: 7, created: "2026-04-01", createdBy: "demo@mpamoja.co.ke", payChannel: "Mobile", paybill: "", accountNo: "", mobile: "0733445566", feeCategory: "events" },
+  ],
+  chamas: [
+    { id: 1, name: "Nairobi Women Entrepreneurs", members: 24, pool: 145000, cycle: "Monthly", nextMeeting: "Apr 30", createdBy: "demo@mpamoja.co.ke", contributionAmount: 5000, penaltyType: "percentage", penaltyValue: 5, penaltyPerDay: true,
+      memberList: [
+        { id: 1, name: "Jane Wambua",   phone: "0712345671", joined: "Jan 2024" },
+        { id: 2, name: "Mary Achieng",  phone: "0722987654", joined: "Jan 2024" },
+        { id: 3, name: "Grace Muthoni", phone: "0733112233", joined: "Feb 2024" },
+        { id: 4, name: "Esther Kamau",  phone: "0711223344", joined: "Feb 2024" },
+      ]
+    },
+    { id: 2, name: "Eastlands Investment Club", members: 15, pool: 89500, cycle: "Weekly", nextMeeting: "Apr 26", createdBy: "demo@mpamoja.co.ke", contributionAmount: 2000, penaltyType: "fixed", penaltyValue: 200, penaltyPerDay: false,
+      memberList: [
+        { id: 1, name: "Peter Odhiambo", phone: "0722112233", joined: "Mar 2024" },
+        { id: 2, name: "James Kariuki",  phone: "0733445566", joined: "Mar 2024" },
+        { id: 3, name: "David Mutua",    phone: "0712998877", joined: "Apr 2024" },
+      ]
+    }
+  ],
+  events: [
+    { id: 1, name: "Annual Harambee Dinner 2026", date: "15", month: "May", location: "Serena Hotel, Nairobi", attendees: 120, target: 200, createdBy: "demo@mpamoja.co.ke", status: "active", description: "Annual fundraising dinner for community development projects." },
+    { id: 2, name: "Youth Empowerment Workshop",  date: "03", month: "Jun", location: "KICC, Nairobi",         attendees: 54,  target: 100, createdBy: "demo@mpamoja.co.ke", status: "active", description: "Skills and entrepreneurship training for the youth." }
+  ],
+  transactions: [
+    // ── Mama Sarah's Hospital Bill (id:1, 8 contributors) ──
+    { ref: "TRX001", name: "Jane Wambua",     phone: "0712345671", kitty: "Mama Sarah's Hospital Bill",      gross: 250000, fee: 0, net: 250000, type: "Contribution", status: "sent", time: "10 Jan",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX002", name: "Peter Odhiambo",  phone: "0722987654", kitty: "Mama Sarah's Hospital Bill",      gross: 300000, fee: 0, net: 300000, type: "Contribution", status: "sent", time: "11 Jan",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX003", name: "Grace Muthoni",   phone: "0733112233", kitty: "Mama Sarah's Hospital Bill",      gross: 200000, fee: 0, net: 200000, type: "Contribution", status: "sent", time: "12 Jan",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX004", name: "Esther Kamau",    phone: "0711223344", kitty: "Mama Sarah's Hospital Bill",      gross: 150000, fee: 0, net: 150000, type: "Contribution", status: "sent", time: "13 Jan",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX005", name: "James Kariuki",   phone: "0733445566", kitty: "Mama Sarah's Hospital Bill",      gross: 224000, fee: 0, net: 224000, type: "Contribution", status: "sent", time: "14 Jan",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX006", name: "David Mutua",     phone: "0712998877", kitty: "Mama Sarah's Hospital Bill",      gross: 280000, fee: 0, net: 280000, type: "Contribution", status: "sent", time: "15 Jan",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX007", name: "Ann Njeri",       phone: "0700112233", kitty: "Mama Sarah's Hospital Bill",      gross: 180000, fee: 0, net: 180000, type: "Contribution", status: "sent", time: "16 Jan",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX008", name: "Samuel Otieno",   phone: "0722334455", kitty: "Mama Sarah's Hospital Bill",      gross: 290000, fee: 0, net: 290000, type: "Contribution", status: "sent", time: "17 Jan",  ownerEmail: "demo@mpamoja.co.ke" },
+    // ── Kamau Family House Fire Relief (id:2, 10 contributors) ──
+    { ref: "TRX009", name: "Lucy Akinyi",     phone: "0733556677", kitty: "Kamau Family House Fire Relief",  gross: 100000, fee: 0, net: 100000, type: "Contribution", status: "sent", time: "12 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX010", name: "Moses Waweru",    phone: "0722667788", kitty: "Kamau Family House Fire Relief",  gross: 85000,  fee: 0, net: 8500,  type: "Contribution", status: "sent", time: "12 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX011", name: "Faith Chebet",    phone: "0711778899", kitty: "Kamau Family House Fire Relief",  gross: 120000, fee: 0, net: 120000, type: "Contribution", status: "sent", time: "13 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX012", name: "Kevin Mwangi",    phone: "0700889900", kitty: "Kamau Family House Fire Relief",  gross: 75000,  fee: 0, net: 7500,  type: "Contribution", status: "sent", time: "13 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX013", name: "Patricia Otieno", phone: "0733990011", kitty: "Kamau Family House Fire Relief",  gross: 90000,  fee: 0, net: 9000,  type: "Contribution", status: "sent", time: "14 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX014", name: "Brian Korir",     phone: "0722001122", kitty: "Kamau Family House Fire Relief",  gross: 110000, fee: 0, net: 110000, type: "Contribution", status: "sent", time: "14 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX015", name: "Carolyne Nyambura", phone: "0711223300", kitty: "Kamau Family House Fire Relief", gross: 80000, fee: 0, net: 80000, type: "Contribution", status: "sent", time: "15 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX016", name: "Eric Oloo",       phone: "0700334411", kitty: "Kamau Family House Fire Relief",  gross: 95000,  fee: 0, net: 9500,  type: "Contribution", status: "sent", time: "15 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX017", name: "Miriam Wanjiku",  phone: "0733445522", kitty: "Kamau Family House Fire Relief",  gross: 100000, fee: 0, net: 100000, type: "Contribution", status: "sent", time: "16 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX018", name: "Tony Mwenda",     phone: "0722556633", kitty: "Kamau Family House Fire Relief",  gross: 80000,  fee: 0, net: 8000,  type: "Contribution", status: "sent", time: "16 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
+    // ── Brian's University Fees 2026 (id:3, 7 contributors) ──
+    { ref: "TRX019", name: "Rose Wanjiku",    phone: "0711667788", kitty: "Brian's University Fees 2026",    gross: 80000,  fee: 0, net: 80000,  type: "Contribution", status: "sent", time: "06 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX020", name: "Joseph Kamau",    phone: "0700778899", kitty: "Brian's University Fees 2026",    gross: 75000,  fee: 0, net: 75000,  type: "Contribution", status: "sent", time: "07 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX021", name: "Lilian Adhiambo", phone: "0733889900", kitty: "Brian's University Fees 2026",    gross: 100000, fee: 0, net: 100000, type: "Contribution", status: "sent", time: "07 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX022", name: "Daniel Kipchoge", phone: "0722990011", kitty: "Brian's University Fees 2026",    gross: 72000,  fee: 0, net: 72000,  type: "Contribution", status: "sent", time: "08 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX023", name: "Susan Mwangi",    phone: "0711001122", kitty: "Brian's University Fees 2026",    gross: 85000,  fee: 0, net: 85000,  type: "Contribution", status: "sent", time: "08 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX024", name: "Alex Ochieng",    phone: "0700112244", kitty: "Brian's University Fees 2026",    gross: 65000,  fee: 0, net: 65000,  type: "Contribution", status: "sent", time: "09 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX025", name: "Hellen Cherop",   phone: "0733223355", kitty: "Brian's University Fees 2026",    gross: 65000,  fee: 0, net: 65000,  type: "Contribution", status: "sent", time: "09 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
+    // ── Chama Monthly – April (id:4, 9 contributors) ──
+    { ref: "TRX026", name: "Jane Wambua",     phone: "0712345671", kitty: "Chama Monthly – April",           gross: 150000, fee: 0, net: 150000, type: "Contribution", status: "sent", time: "01 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX027", name: "Mary Achieng",    phone: "0722987654", kitty: "Chama Monthly – April",           gross: 150000, fee: 0, net: 150000, type: "Contribution", status: "sent", time: "01 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX028", name: "Grace Muthoni",   phone: "0733112233", kitty: "Chama Monthly – April",           gross: 150000, fee: 0, net: 150000, type: "Contribution", status: "sent", time: "02 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX029", name: "Esther Kamau",    phone: "0711223344", kitty: "Chama Monthly – April",           gross: 150000, fee: 0, net: 150000, type: "Contribution", status: "sent", time: "02 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX030", name: "Peter Odhiambo",  phone: "0722112233", kitty: "Chama Monthly – April",           gross: 150000, fee: 0, net: 150000, type: "Contribution", status: "sent", time: "03 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX031", name: "James Kariuki",   phone: "0733445566", kitty: "Chama Monthly – April",           gross: 146000, fee: 0, net: 146000, type: "Contribution", status: "sent", time: "03 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX032", name: "David Mutua",     phone: "0712998877", kitty: "Chama Monthly – April",           gross: 150000, fee: 0, net: 150000, type: "Contribution", status: "sent", time: "04 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX033", name: "Ann Njeri",       phone: "0700112233", kitty: "Chama Monthly – April",           gross: 150000, fee: 0, net: 150000, type: "Contribution", status: "sent", time: "04 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX034", name: "Samuel Otieno",   phone: "0722334455", kitty: "Chama Monthly – April",           gross: 150000, fee: 0, net: 150000, type: "Contribution", status: "sent", time: "05 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
+    // ── Umoja Sacco – Q1 Savings (id:5, 6 contributors) ──
+    { ref: "TRX035", name: "Lucy Akinyi",     phone: "0733556677", kitty: "Umoja Sacco – Q1 Savings",        gross: 130000, fee: 0, net: 130000, type: "Contribution", status: "sent", time: "05 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX036", name: "Moses Waweru",    phone: "0722667788", kitty: "Umoja Sacco – Q1 Savings",        gross: 130000, fee: 0, net: 130000, type: "Contribution", status: "sent", time: "05 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX037", name: "Faith Chebet",    phone: "0711778899", kitty: "Umoja Sacco – Q1 Savings",        gross: 130000, fee: 0, net: 130000, type: "Contribution", status: "sent", time: "06 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX038", name: "Kevin Mwangi",    phone: "0700889900", kitty: "Umoja Sacco – Q1 Savings",        gross: 130000, fee: 0, net: 130000, type: "Contribution", status: "sent", time: "06 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX039", name: "Patricia Otieno", phone: "0733990011", kitty: "Umoja Sacco – Q1 Savings",        gross: 130000, fee: 0, net: 130000, type: "Contribution", status: "sent", time: "07 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX040", name: "Brian Korir",     phone: "0722001122", kitty: "Umoja Sacco – Q1 Savings",        gross: 130000, fee: 0, net: 130000, type: "Contribution", status: "sent", time: "07 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
+    // ── Eastlands Investment Pool (id:6, 10 contributors) ──
+    { ref: "TRX041", name: "Carolyne Nyambura", phone: "0711223300", kitty: "Eastlands Investment Pool",     gross: 220000, fee: 0, net: 220000, type: "Contribution", status: "sent", time: "03 Dec",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX042", name: "Eric Oloo",       phone: "0700334411", kitty: "Eastlands Investment Pool",       gross: 200000, fee: 0, net: 200000, type: "Contribution", status: "sent", time: "03 Dec",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX043", name: "Miriam Wanjiku",  phone: "0733445522", kitty: "Eastlands Investment Pool",       gross: 220000, fee: 0, net: 220000, type: "Contribution", status: "sent", time: "04 Dec",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX044", name: "Tony Mwenda",     phone: "0722556633", kitty: "Eastlands Investment Pool",       gross: 210000, fee: 0, net: 210000, type: "Contribution", status: "sent", time: "04 Dec",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX045", name: "Rose Wanjiku",    phone: "0711667788", kitty: "Eastlands Investment Pool",       gross: 200000, fee: 0, net: 200000, type: "Contribution", status: "sent", time: "05 Dec",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX046", name: "Joseph Kamau",    phone: "0700778899", kitty: "Eastlands Investment Pool",       gross: 220000, fee: 0, net: 220000, type: "Contribution", status: "sent", time: "05 Dec",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX047", name: "Lilian Adhiambo", phone: "0733889900", kitty: "Eastlands Investment Pool",       gross: 210000, fee: 0, net: 210000, type: "Contribution", status: "sent", time: "06 Dec",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX048", name: "Daniel Kipchoge", phone: "0722990011", kitty: "Eastlands Investment Pool",       gross: 215000, fee: 0, net: 215000, type: "Contribution", status: "sent", time: "06 Dec",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX049", name: "Susan Mwangi",    phone: "0711001122", kitty: "Eastlands Investment Pool",       gross: 215000, fee: 0, net: 215000, type: "Contribution", status: "sent", time: "07 Dec",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX050", name: "Alex Ochieng",    phone: "0700112244", kitty: "Eastlands Investment Pool",       gross: 205000, fee: 0, net: 205000, type: "Contribution", status: "sent", time: "07 Dec",  ownerEmail: "demo@mpamoja.co.ke" },
+    // ── Annual Harambee Dinner 2026 (id:7, 8 contributors) ──
+    { ref: "TRX051", name: "Hellen Cherop",   phone: "0733223355", kitty: "Annual Harambee Dinner 2026",     gross: 200000, fee: 0, net: 200000, type: "Contribution", status: "sent", time: "05 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX052", name: "Jane Wambua",     phone: "0712345671", kitty: "Annual Harambee Dinner 2026",     gross: 250000, fee: 0, net: 250000, type: "Contribution", status: "sent", time: "06 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX053", name: "Peter Odhiambo",  phone: "0722112233", kitty: "Annual Harambee Dinner 2026",     gross: 180000, fee: 0, net: 180000, type: "Contribution", status: "sent", time: "06 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX054", name: "Grace Muthoni",   phone: "0733112233", kitty: "Annual Harambee Dinner 2026",     gross: 220000, fee: 0, net: 220000, type: "Contribution", status: "sent", time: "07 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX055", name: "Moses Waweru",    phone: "0722667788", kitty: "Annual Harambee Dinner 2026",     gross: 150000, fee: 0, net: 150000, type: "Contribution", status: "sent", time: "07 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX056", name: "Faith Chebet",    phone: "0711778899", kitty: "Annual Harambee Dinner 2026",     gross: 200000, fee: 0, net: 200000, type: "Contribution", status: "sent", time: "08 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX057", name: "Kevin Mwangi",    phone: "0700889900", kitty: "Annual Harambee Dinner 2026",     gross: 230000, fee: 0, net: 230000, type: "Contribution", status: "sent", time: "08 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX058", name: "Patricia Otieno", phone: "0733990011", kitty: "Annual Harambee Dinner 2026",     gross: 200000, fee: 0, net: 200000, type: "Contribution", status: "sent", time: "09 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
+    // ── Wanjiku's Wedding Fund (id:8, 9 contributors) ──
+    { ref: "TRX059", name: "Brian Korir",     phone: "0722001122", kitty: "Wanjiku's Wedding Fund",          gross: 159000, fee: 0, net: 159000, type: "Contribution", status: "sent", time: "22 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX060", name: "Carolyne Nyambura", phone: "0711223300", kitty: "Wanjiku's Wedding Fund",        gross: 160000, fee: 0, net: 160000, type: "Contribution", status: "sent", time: "22 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX061", name: "Eric Oloo",       phone: "0700334411", kitty: "Wanjiku's Wedding Fund",          gross: 158000, fee: 0, net: 158000, type: "Contribution", status: "sent", time: "23 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX062", name: "Miriam Wanjiku",  phone: "0733445522", kitty: "Wanjiku's Wedding Fund",          gross: 160000, fee: 0, net: 160000, type: "Contribution", status: "sent", time: "23 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX063", name: "Tony Mwenda",     phone: "0722556633", kitty: "Wanjiku's Wedding Fund",          gross: 160000, fee: 0, net: 160000, type: "Contribution", status: "sent", time: "24 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX064", name: "Rose Wanjiku",    phone: "0711667788", kitty: "Wanjiku's Wedding Fund",          gross: 160000, fee: 0, net: 160000, type: "Contribution", status: "sent", time: "24 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX065", name: "Joseph Kamau",    phone: "0700778899", kitty: "Wanjiku's Wedding Fund",          gross: 158000, fee: 0, net: 158000, type: "Contribution", status: "sent", time: "25 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX066", name: "Lilian Adhiambo", phone: "0733889900", kitty: "Wanjiku's Wedding Fund",          gross: 160000, fee: 0, net: 160000, type: "Contribution", status: "sent", time: "25 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX067", name: "Daniel Kipchoge", phone: "0722990011", kitty: "Wanjiku's Wedding Fund",          gross: 160000, fee: 0, net: 160000, type: "Contribution", status: "sent", time: "26 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
+    // ── Youth Empowerment Summit (id:9, 7 contributors) ──
+    { ref: "TRX068", name: "Susan Mwangi",    phone: "0711001122", kitty: "Youth Empowerment Summit",        gross: 70000,  fee: 0, net: 70000,  type: "Contribution", status: "sent", time: "02 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX069", name: "Alex Ochieng",    phone: "0700112244", kitty: "Youth Empowerment Summit",        gross: 68000,  fee: 0, net: 68000,  type: "Contribution", status: "sent", time: "02 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX070", name: "Hellen Cherop",   phone: "0733223355", kitty: "Youth Empowerment Summit",        gross: 70000,  fee: 0, net: 70000,  type: "Contribution", status: "sent", time: "03 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX071", name: "Ann Njeri",       phone: "0700112233", kitty: "Youth Empowerment Summit",        gross: 65000,  fee: 0, net: 65000,  type: "Contribution", status: "sent", time: "03 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX072", name: "Samuel Otieno",   phone: "0722334455", kitty: "Youth Empowerment Summit",        gross: 70000,  fee: 0, net: 70000,  type: "Contribution", status: "sent", time: "04 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX073", name: "Lucy Akinyi",     phone: "0733556677", kitty: "Youth Empowerment Summit",        gross: 68000,  fee: 0, net: 68000,  type: "Contribution", status: "sent", time: "04 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
+    { ref: "TRX074", name: "Moses Waweru",    phone: "0722667788", kitty: "Youth Empowerment Summit",        gross: 67000,  fee: 0, net: 67000,  type: "Contribution", status: "sent", time: "05 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
+    // ── Withdrawal ──
+    { ref: "WD001",  name: "Demo User",       phone: "",           kitty: "Harambee 2025",                   gross: 50000, fee: 1100, net: 48900, type: "Withdrawal", status: "sent", time: "12 Apr", ownerEmail: "demo@mpamoja.co.ke" },
+  ],
+  withdrawals: [
+    { date: "12 Apr 2025", kitty: "Harambee 2025", gross: 50000, fee: 1100, net: 48900, pct: "2.2", status: "sent", ownerEmail: "demo@mpamoja.co.ke" }
+  ],
+  users: [
+    { email: "demo@mpamoja.co.ke", phone: "0712345678", pass: "demo1234", name: "Demo User", initials: "DU", role: "Campaign Creator" }
+  ]
+};
 
 // ─── Company Logo SVG ───
 function MPamojaLogo({ size = 36 }) {
