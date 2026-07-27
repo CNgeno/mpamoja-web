@@ -10240,15 +10240,13 @@ const fetchKittiesFromApi = async () => {
 
       console.log('🔌 Connecting to SignalR...');
       
-      const connection = new HubConnectionBuilder()
-        .withUrl('/hubs/kitty', {  // ← This should work if proxy is configured
-    accessTokenFactory: () => token,
-    skipNegotiation: true,  // ← Try adding this for WebSocket-only
-    transport: HttpTransportType.WebSockets  // ← Force WebSocket transport
+const connection = new HubConnectionBuilder()
+  .withUrl(`${BASE}/hubs/kitty`, {
+    accessTokenFactory: () => token
   })
-        .withAutomaticReconnect()
-        .configureLogging(LogLevel.Information)
-        .build();
+  .withAutomaticReconnect()
+  .configureLogging(LogLevel.Information)
+  .build();
 
       // ── Listen for kitty progress updates ──
       connection.on('kittyProgress', (data) => {
