@@ -10245,11 +10245,10 @@ const fetchKittiesFromApi = async () => {
 const connection = new HubConnectionBuilder()
     .withUrl(`${BASE}/hubs/kitty`, {
         transport: HttpTransportType.LongPolling,
-        accessTokenFactory: () => tokenStore.get() // 👈 Changed from getToken() to get()
+        accessTokenFactory: () => localStorage.getItem("mpamoja_token") || ""
     })
     .withAutomaticReconnect()
     .build();
-
       // ── Listen for kitty progress updates ──
       connection.on('kittyProgress', (data) => {
         console.log('📊 KittyProgress update received:', data);
