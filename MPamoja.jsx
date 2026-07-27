@@ -10244,7 +10244,8 @@ const fetchKittiesFromApi = async () => {
       
 const connection = new HubConnectionBuilder()
   .withUrl(`${BASE}/hubs/kitty`, {
-    accessTokenFactory: () => token
+    accessTokenFactory: () => token,
+    transport: HttpTransportType.LongPolling  // ← ADD THIS
   })
   .withAutomaticReconnect()
   .configureLogging(LogLevel.Information)
