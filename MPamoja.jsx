@@ -10244,9 +10244,8 @@ const fetchKittiesFromApi = async () => {
       
 const connection = new HubConnectionBuilder()
     .withUrl(`${BASE}/hubs/kitty`, {
-        // Force LongPolling to bypass ngrok WebSocket header stripping CORS blocks
         transport: HttpTransportType.LongPolling,
-        accessTokenFactory: () => tokenStore.getToken()
+        accessTokenFactory: () => tokenStore.get() // 👈 Changed from getToken() to get()
     })
     .withAutomaticReconnect()
     .build();

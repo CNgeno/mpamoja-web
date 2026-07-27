@@ -9,9 +9,9 @@ const BASE = import.meta.env.VITE_API_URL ||
 const TOKEN_KEY = 'mpamoja.jwt';
 
 export const tokenStore = {
-  get: () => localStorage.getItem(TOKEN_KEY),
-  set: (t) => localStorage.setItem(TOKEN_KEY, t),
-  clear: () => localStorage.removeItem(TOKEN_KEY),
+    getToken: () => localStorage.getItem(TOKEN_KEY), // 👈 Changed from get to getToken
+    set: (t) => localStorage.setItem(TOKEN_KEY, t),
+    clear: () => localStorage.removeItem(TOKEN_KEY),
 };
 
 /** Error carrying the server's friendly message + HTTP status. */
