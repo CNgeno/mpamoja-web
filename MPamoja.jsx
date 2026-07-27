@@ -10243,18 +10243,13 @@ const fetchKittiesFromApi = async () => {
       console.log('🔌 Connecting to SignalR...');
       
 const connection = new HubConnectionBuilder()
-  .withUrl(`${BASE}/hubs/kitty`, {
-    accessTokenFactory: () => {
-      const token = localStorage.getItem('mpamoja_token');
-      console.log('🔑 SignalR token from factory:', token ? 'Present' : 'Missing');
-      return token;
-    },
-    transport: HttpTransportType.WebSockets | HttpTransportType.LongPolling,
-    // ✅ Remove headers - they won't work for WebSockets
-  })
-  .withAutomaticReconnect()
-  .configureLogging(LogLevel.Information)
-  .build();
+    .withUrl(`${BASE}/hubs/kitty`, {
+        // Force LongPolling to bypass ngrok WebSocket header stripping CORS blocks
+        transport: HttpTransportType.LongPolling,
+        accessTokenFactory: () => tokenStore.getToken()
+    })
+    .withAutomaticReconnect()
+    .build();
 
       // ── Listen for kitty progress updates ──
       connection.on('kittyProgress', (data) => {
