@@ -9618,7 +9618,7 @@ function WhatsappPage({ state, user, onToast }) {
 }
 
 // ─── Transactions Page ───
-function TransactionsPage({ state, user, onToast }) {
+function TransactionsPage({ state, user, onToast, apiTransactions }) {
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
   const allTx = apiTransactions && apiTransactions.length > 0 
