@@ -95,7 +95,7 @@ window.fetch = function(url, options = {}) {
         }
         
         // Option 2: Force page reload to login
-        window.location.href = '/';
+        //window.location.href = '/';
         return response;
       }
       return response;
