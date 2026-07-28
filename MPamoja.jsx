@@ -10110,7 +10110,6 @@ const fetchKittiesFromApi = async () => {
   }
 };
 
-// Add this function after fetchKittiesFromApi
 const fetchTransactionsFromApi = async () => {
   try {
     console.log('🔍 fetchTransactionsFromApi called');
@@ -10119,6 +10118,7 @@ const fetchTransactionsFromApi = async () => {
     
     if (!token) {
       console.warn('No token found');
+      setApiTransactions([]);  // ← Set empty array, not mock data
       return;
     }
 
@@ -10126,7 +10126,8 @@ const fetchTransactionsFromApi = async () => {
     const response = await fetch(`${BASE}/api/transactions/recent`, {
       headers: { 
         'Authorization': `Bearer ${token}`,
-        'ngrok-skip-browser-warning': 'any'
+        'ngrok-skip-browser-warning': 'any',
+        'Content-Type': 'application/json'
       }
     });
 
@@ -10135,20 +10136,33 @@ const fetchTransactionsFromApi = async () => {
     if (response.ok) {
       const data = await response.json();
       console.log('✅ Transactions from API:', data);
-      setApiTransactions(data);
+      console.log('📊 Number of transactions:', data?.length || 0);
+      
+      // If data is empty, log it but don't fallback to mock
+      if (data && data.length === 0) {
+        console.log('ℹ️ No transactions found in API');
+      }
+      
+      setApiTransactions(data || []);
     } else if (response.status === 401) {
       console.warn('⚠️ Unauthorized - token may be expired');
-      // Use mock data as fallback
-      setApiTransactions(state.transactions);
+      // Try to refresh token or redirect to login
+      // Don't set mock data
+      setApiTransactions([]);
+      
+      // Optionally redirect to login
+      // localStorage.removeItem('mpamoja_token');
+      // localStorage.removeItem('mpamoja_user');
+      // window.location.href = '/';
     } else {
       console.error('❌ API responded with error:', response.status);
-      // Use mock data as fallback
-      setApiTransactions(state.transactions);
+      const errorText = await response.text();
+      console.error('Error details:', errorText);
+      setApiTransactions([]);  // ← Empty array, not mock data
     }
   } catch (error) {
     console.error('❌ Error fetching transactions:', error);
-    // Use mock data as fallback
-    setApiTransactions(state.transactions);
+    setApiTransactions([]);  // ← Empty array, not mock data
   }
 };
 
