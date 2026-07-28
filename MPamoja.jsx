@@ -95,7 +95,7 @@ window.fetch = function(url, options = {}) {
         }
         
         // Option 2: Force page reload to login
-        //window.location.href = '/';
+        window.location.href = '/';
         return response;
       }
       return response;
@@ -4058,7 +4058,7 @@ function KittyDetailModal({ kitty: initialKitty, user, transactions, state, onCl
       console.warn('⚠️ Token is missing or expired');
       localStorage.removeItem('mpamoja_token');
       localStorage.removeItem('mpamoja_user');
-      //window.location.href = '/';
+      window.location.href = '/';
       return;
     }
         
@@ -4071,14 +4071,14 @@ const response = await fetch(`${BASE}/api/transactions/by-kitty?kittyId=${kitty.
   }
 });
 
-        if (response.status === 401) {
-      console.warn('⚠️ Unauthorized - token expired');
-      // ⭐ Clear tokens and redirect
-      localStorage.removeItem('mpamoja_token');
-      localStorage.removeItem('mpamoja_user');
-      //window.location.href = '/';
-      return;
-    }
+    //     if (response.status === 401) {
+    //   console.warn('⚠️ Unauthorized - token expired');
+    //   // ⭐ Clear tokens and redirect
+    //   localStorage.removeItem('mpamoja_token');
+    //   localStorage.removeItem('mpamoja_user');
+    //   window.location.href = '/';
+    //   return;
+    // }
         
         if (response.ok) {
           const data = await response.json();
