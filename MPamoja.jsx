@@ -5,12 +5,44 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { HubConnectionBuilder, LogLevel, HttpTransportType } from '@microsoft/signalr';
 
 const isTokenExpired = (token) => {
-  if (!token) return true;
+  if (!token) {
+    console.warn('❌ isTokenExpired: No token provided');
+    return true;
+  }
+  
   try {
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    const exp = payload.exp * 1000; // Convert to milliseconds
-    return Date.now() > exp;
-  } catch {
+    // Split the token
+    const parts = token.split('.');
+    if (parts.length !== 3) {
+      console.warn('❌ isTokenExpired: Invalid token format - wrong number of parts');
+      return true;
+    }
+    
+    // Decode the payload
+    const payload = JSON.parse(atob(parts[1]));
+    console.log('🔍 isTokenExpired - payload:', payload);
+    
+    const exp = payload.exp;
+    if (!exp) {
+      console.warn('❌ isTokenExpired: No exp claim in token');
+      return true;
+    }
+    
+    const expMs = exp * 1000;
+    const nowMs = Date.now();
+    const timeLeft = expMs - nowMs;
+    const hoursLeft = timeLeft / (1000 * 60 * 60);
+    
+    console.log(`🔍 isTokenExpired - exp: ${new Date(expMs).toISOString()}`);
+    console.log(`🔍 isTokenExpired - now: ${new Date(nowMs).toISOString()}`);
+    console.log(`🔍 isTokenExpired - hours left: ${hoursLeft.toFixed(2)}`);
+    
+    const expired = nowMs > expMs;
+    console.log(`🔍 isTokenExpired - expired: ${expired}`);
+    
+    return expired;
+  } catch (error) {
+    console.error('❌ isTokenExpired - error decoding token:', error);
     return true;
   }
 };
