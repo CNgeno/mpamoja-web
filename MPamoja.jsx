@@ -3322,10 +3322,10 @@ function OverviewPage({ state, user, onNav, onToast, onRefresh, onWithdraw, onCo
     setApiTransactions(mappedTransactions);
     
     // ⭐ Also update the global state
-    setState(prev => ({
-      ...prev,
-      transactions: mappedTransactions
-    }));
+    // setState(prev => ({
+    //   ...prev,
+    //   transactions: mappedTransactions
+    // }));
   }
       } catch (e) {
         console.warn('Could not fetch transactions:', e);
