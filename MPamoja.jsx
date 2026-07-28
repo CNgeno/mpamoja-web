@@ -4,6 +4,17 @@ import { kittyApi, authApi, publicApi, withdrawalApi, tokenStore } from './src/a
 import { useState, useEffect, useRef, useCallback } from "react";
 import { HubConnectionBuilder, LogLevel, HttpTransportType } from '@microsoft/signalr';
 
+const isTokenExpired = (token) => {
+  if (!token) return true;
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    const exp = payload.exp * 1000; // Convert to milliseconds
+    return Date.now() > exp;
+  } catch {
+    return true;
+  }
+};
+// ─── GLOBAL FETCH INTERCEPTOR ───
 // ─── GLOBAL FETCH INTERCEPTOR ───
 const originalFetch = window.fetch;
 window.fetch = function(url, options = {}) {
@@ -31,10 +42,28 @@ window.fetch = function(url, options = {}) {
   
   return originalFetch.call(this, finalUrl, newOptions)
     .then(async response => {
-      // Handle 401 Unauthorized
+      // ⭐ Handle 401 Unauthorized - redirect to login
       if (response.status === 401) {
         console.warn('⚠️ Unauthorized request - token may be expired');
-        // Don't auto-redirect, let the component handle it
+        
+        // ⭐ Clear invalid tokens
+        localStorage.removeItem('mpamoja_token');
+        localStorage.removeItem('mpamoja_user');
+        
+        // ⭐ Show a toast message if toast function is available
+        if (window.__mpamoja_toast) {
+          window.__mpamoja_toast('Session Expired', 'Please log in again');
+        }
+        
+        // ⭐ Redirect to login page
+        // Option 1: Using React state (if we have access to it)
+        if (window.__mpamoja_logout) {
+          window.__mpamoja_logout();
+          return response;
+        }
+        
+        // Option 2: Force page reload to login
+        window.location.href = '/';
         return response;
       }
       return response;
@@ -3993,10 +4022,13 @@ function KittyDetailModal({ kitty: initialKitty, user, transactions, state, onCl
       try {
         setLoading(true);
         const token = localStorage.getItem('mpamoja_token');
-        if (!token) {
-          console.warn('⚠️ No token found');
-          return;
-        }
+        if (!token || isTokenExpired(token)) {
+      console.warn('⚠️ Token is missing or expired');
+      localStorage.removeItem('mpamoja_token');
+      localStorage.removeItem('mpamoja_user');
+      window.location.href = '/';
+      return;
+    }
         
         // ⭐ FIX: Use the correct endpoint from your backend
         const response = await fetch(`${BASE}/api/transactions/kitty/${kitty.id}`, {
@@ -4005,6 +4037,15 @@ function KittyDetailModal({ kitty: initialKitty, user, transactions, state, onCl
             'Content-Type': 'application/json'
           }
         });
+
+        if (response.status === 401) {
+      console.warn('⚠️ Unauthorized - token expired');
+      // ⭐ Clear tokens and redirect
+      localStorage.removeItem('mpamoja_token');
+      localStorage.removeItem('mpamoja_user');
+      window.location.href = '/';
+      return;
+    }
         
         if (response.ok) {
           const data = await response.json();
@@ -10058,6 +10099,59 @@ export default function MPamojaApp() {
     return null;
   });
 
+  // ⭐ Register global functions for the interceptor
+  useEffect(() => {
+    window.__mpamoja_toast = (title, body) => {
+      setToast({ title, body });
+    };
+    
+    window.__mpamoja_logout = () => {
+      handleLogout();
+    };
+    
+    return () => {
+      delete window.__mpamoja_toast;
+      delete window.__mpamoja_logout;
+    };
+  }, []);
+
+  // In MPamojaApp component
+useEffect(() => {
+  console.log('🔄 Checking for existing session...');
+  const savedUser = localStorage.getItem('mpamoja_user');
+  const token = localStorage.getItem('mpamoja_token');
+  
+  if (savedUser && token) {
+    // ⭐ Check if token is expired
+    if (isTokenExpired(token)) {
+      console.warn('⚠️ Stored token is expired');
+      localStorage.removeItem('mpamoja_user');
+      localStorage.removeItem('mpamoja_token');
+      setUser(null);
+      return;
+    }
+    
+    try {
+      const user = JSON.parse(savedUser);
+      if (user.token) {
+        if (!user.phoneNumber && user.phone) {
+          user.phoneNumber = user.phone;
+        }
+        setUser(user);
+        setPage("overview");
+        console.log('✅ Session restored from localStorage');
+      } else {
+        localStorage.removeItem('mpamoja_user');
+        localStorage.removeItem('mpamoja_token');
+      }
+    } catch (e) {
+      console.error('❌ Failed to restore session:', e);
+      localStorage.removeItem('mpamoja_user');
+      localStorage.removeItem('mpamoja_token');
+    }
+  }
+}, []);
+
   // ─── FETCH FUNCTION ───
 const fetchKittiesFromApi = async () => {
   try {
@@ -10508,12 +10602,17 @@ const fetchTransactionsFromApi = async () => {
     setPage("overview");
   };
 
-  const handleLogout = () => {
+   const handleLogout = useCallback(() => {
     setUser(null);
     localStorage.removeItem('mpamoja_user');
     localStorage.removeItem('mpamoja_token');
+    localStorage.removeItem('mpamoja_refresh_token');
     setPage("overview");
-  };
+    // Reset any other state
+    setApiTransactions([]);
+    // Close any open modals
+    setShowNotifs(false);
+  }, []);
 
   const handleNewKitty = async (form) => {
     try {
