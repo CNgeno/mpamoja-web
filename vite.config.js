@@ -5,10 +5,9 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   build: {
-    sourcemap: true,  // ← Add this
+    sourcemap: true, // 👈 This tells Vite to generate the .map files for debugging
   },
   server: {
-    sourcemap: true,
     port: 5173,
     proxy: {
       '/api': { 
