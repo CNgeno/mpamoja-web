@@ -9063,7 +9063,9 @@ function ContributePage({ state, user, onToast, onContribute }) {
 
 // ─── Withdraw Page ───
 function WithdrawPage({ state, user, onToast, onWithdraw }) {
-  const kitties = state.kitties.filter(k => k.createdBy === user.email);
+  const kitties = (apiKitties && apiKitties.length > 0) 
+    ? apiKitties.filter(k => k.createdBy === user.email || k.creatorId === user.id || k.creator_id === user.id)
+    : state.kitties.filter(k => k.createdBy === user.email);
   const withdrawals = state.withdrawals.filter(w => w.ownerEmail === user.email);
   const [withdrawKitty, setWithdrawKitty] = useState(null);
   return (
@@ -11057,7 +11059,7 @@ const fetchKittiesFromApi = async () => {
       case "chama": return <ChamaPage state={state} user={user} onToast={showToast} onNewChama={handleNewChama} onEditChama={handleEditChama} onChamaContribute={handleChamaContribute} onChamaWithdraw={handleChamaWithdraw} onAddMember={handleChamaAddMember} onRemoveMember={handleChamaRemoveMember} onEditKitty={handleEditKitty} onWithdraw={handleWithdraw} onContribute={handleContribute} autoOpen={ao} onBack={() => setPage("overview")} />;
       case "events": return <EventsPage state={state} user={user} onToast={showToast} onNewEvent={handleNewEvent} onEditEvent={handleEditEvent} onToggleEventStatus={handleToggleEventStatus} onEditKitty={handleEditKitty} onWithdraw={handleWithdraw} onContribute={handleContribute} autoOpen={ao} onBack={() => setPage("overview")} />;
       case "contribute": return <ContributePage state={state} user={user} onToast={showToast} onContribute={handleContribute} />;
-      case "withdraw": return <WithdrawPage state={state} user={user} onToast={showToast} onWithdraw={handleWithdraw} />;
+      case "withdraw": return <WithdrawPage state={state} user={user} onToast={showToast} onWithdraw={handleWithdraw} apiKitties={state.kitties} />;
       case "whatsapp": return <WhatsappPage state={state} user={user} onToast={showToast} />;
       case "transactions": return <TransactionsPage state={state} user={user} onToast={showToast} />;
       case "settings": return <SettingsPage user={user} onToast={showToast} onLogout={handleLogout} onBack={() => setPage("overview")} />;
