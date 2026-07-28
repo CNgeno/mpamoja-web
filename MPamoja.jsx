@@ -75,29 +75,29 @@ window.fetch = function(url, options = {}) {
   return originalFetch.call(this, finalUrl, newOptions)
     .then(async response => {
       // ⭐ Handle 401 Unauthorized - redirect to login
-      if (response.status === 401) {
-        console.warn('⚠️ Unauthorized request - token may be expired');
+      // if (response.status === 401) {
+      //   console.warn('⚠️ Unauthorized request - token may be expired');
         
-        // ⭐ Clear invalid tokens
-        localStorage.removeItem('mpamoja_token');
-        localStorage.removeItem('mpamoja_user');
+      //   // ⭐ Clear invalid tokens
+      //   localStorage.removeItem('mpamoja_token');
+      //   localStorage.removeItem('mpamoja_user');
         
-        // ⭐ Show a toast message if toast function is available
-        if (window.__mpamoja_toast) {
-          window.__mpamoja_toast('Session Expired', 'Please log in again');
-        }
+      //   // ⭐ Show a toast message if toast function is available
+      //   if (window.__mpamoja_toast) {
+      //     window.__mpamoja_toast('Session Expired', 'Please log in again');
+      //   }
         
-        // ⭐ Redirect to login page
-        // Option 1: Using React state (if we have access to it)
-        if (window.__mpamoja_logout) {
-          window.__mpamoja_logout();
-          return response;
-        }
+      //   // ⭐ Redirect to login page
+      //   // Option 1: Using React state (if we have access to it)
+      //   if (window.__mpamoja_logout) {
+      //     window.__mpamoja_logout();
+      //     return response;
+      //   }
         
-        // Option 2: Force page reload to login
-        window.location.href = '/';
-        return response;
-      }
+      //   // Option 2: Force page reload to login
+      //   window.location.href = '/';
+      //   return response;
+      // }
       return response;
     });
 };
