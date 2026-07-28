@@ -4031,12 +4031,13 @@ function KittyDetailModal({ kitty: initialKitty, user, transactions, state, onCl
     }
         
         // ⭐ FIX: Use the correct endpoint from your backend
-        const response = await fetch(`${BASE}/api/transactions/kitty/${kitty.id}`, {
-          headers: { 
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        });
+const response = await fetch(`${BASE}/api/transactions/by-kitty?kittyId=${kitty.id}`, {
+  headers: { 
+    'Authorization': `Bearer ${token}`,
+    'Content-Type': 'application/json',
+    'ngrok-skip-browser-warning': 'any'
+  }
+});
 
         if (response.status === 401) {
       console.warn('⚠️ Unauthorized - token expired');
