@@ -9663,11 +9663,7 @@ function TransactionsPage({ state, user, onToast, apiTransactions }) {
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
   const allTx = apiTransactions || []; 
-  const txs = allTx.filter(t => 
-    t.ownerEmail === user.email || 
-    t.userId === user.id ||
-    t.creatorId === user.id
-  );
+  const txs = apiTransactions || [];
   const filtered = txs.filter(t => 
     (filter === "all" || t.type === filter) && 
     (!search || 
