@@ -4054,13 +4054,13 @@ function KittyDetailModal({ kitty: initialKitty, user, transactions, state, onCl
       try {
         setLoading(true);
         const token = localStorage.getItem('mpamoja_token');
-        if (!token || isTokenExpired(token)) {
-      console.warn('⚠️ Token is missing or expired');
-      localStorage.removeItem('mpamoja_token');
-      localStorage.removeItem('mpamoja_user');
-      window.location.href = '/';
-      return;
-    }
+    //     if (!token || isTokenExpired(token)) {
+    //   console.warn('⚠️ Token is missing or expired');
+    //   localStorage.removeItem('mpamoja_token');
+    //   localStorage.removeItem('mpamoja_user');
+    //   window.location.href = '/';
+    //   return;
+    // }
         
         // ⭐ FIX: Use the correct endpoint from your backend
 const response = await fetch(`${BASE}/api/transactions/by-kitty?kittyId=${kitty.id}`, {
