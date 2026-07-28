@@ -10080,7 +10080,10 @@ const fetchKittiesFromApi = async () => {
           console.log(`📡 Polling attempt ${attempts}/${maxAttempts} for intent: ${intentId}`);
           
           const response = await fetch(`${BASE}/api/public/kitties/status/${intentId}`, {
-            headers: { 'Authorization': `Bearer ${token}` }
+            headers: { 
+              'Authorization': `Bearer ${token}`,
+              'ngrok-skip-browser-warning': 'any'
+            }
           });
           
           if (!response.ok) {
@@ -10417,7 +10420,8 @@ const fetchKittiesFromApi = async () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${token}`,
+          'ngrok-skip-browser-warning': 'any'
         },
         body: JSON.stringify(kittyData)
       });
@@ -10679,7 +10683,8 @@ const fetchKittiesFromApi = async () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${token}`,
+          'ngrok-skip-browser-warning': 'any'
         },
         body: JSON.stringify({
           name: displayName,
@@ -10827,7 +10832,8 @@ const fetchKittiesFromApi = async () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
+          'Authorization': `Bearer ${token}`,
+          'ngrok-skip-browser-warning': 'any'
         },
         body: JSON.stringify({
           amount: gross * 100,
