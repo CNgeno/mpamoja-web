@@ -4,6 +4,29 @@ import { kittyApi, authApi, publicApi, withdrawalApi, tokenStore } from './src/a
 import { useState, useEffect, useRef, useCallback } from "react";
 import { HubConnectionBuilder, LogLevel, HttpTransportType } from '@microsoft/signalr';
 
+// ─── GLOBAL FETCH INTERCEPTOR ───
+// Add this once and it fixes ALL API calls
+const originalFetch = window.fetch;
+window.fetch = function(url, options = {}) {
+  const headers = new Headers(options.headers || {});
+  
+  // Always add ngrok skip header
+  headers.set('ngrok-skip-browser-warning', 'any');
+  
+  // Add token if available
+  const token = localStorage.getItem('mpamoja_token');
+  if (token && !headers.has('Authorization')) {
+    headers.set('Authorization', `Bearer ${token}`);
+  }
+  
+  const newOptions = {
+    ...options,
+    headers: headers
+  };
+  
+  return originalFetch.call(this, url, newOptions);
+};
+
 const BASE = import.meta.env.VITE_API_URL || 
              (window.location.hostname !== 'localhost' 
                ? 'https://emotionalistic-audient-darrick.ngrok-free.dev/mpamoja' 
