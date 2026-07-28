@@ -4758,7 +4758,7 @@ function KittyDetailModal({ kitty: initialKitty, user, transactions, state, onCl
         >
           <div style={{ fontSize: '0.65rem', marginBottom: '0.2rem' }}>👥</div>
           <div className="kd-stat-val" style={{ fontSize: '1rem' }}>
-            {kitty.contributors || 0}
+            {kitty.contributorCount || 0}
           </div>
           <div className="kd-stat-lbl" style={{ fontSize: '0.55rem' }}>Supporters</div>
           <div style={{ fontSize: '0.5rem', color: 'var(--brand)', marginTop: '0.2rem', opacity: 0.6 }}>View all →</div>
