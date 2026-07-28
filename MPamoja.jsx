@@ -3370,7 +3370,7 @@ function OverviewPage({ state, user, onNav, onToast, onRefresh, onWithdraw, onCo
   }, []);
 
   // ── NEW: Use API data instead of state ──
-  const kitties = apiKitties.length > 0 ? apiKitties : state.kitties.filter(k => k.createdBy === user.email);
+  const kitties = apiKitties.length > 0 ? apiKitties : [];
   const chamaGroups = apiChamas.length > 0 ? apiChamas : state.chamas.filter(c => c.createdBy === user.email);
 
   // ── Category breakdown from API data ──
