@@ -10232,142 +10232,142 @@ const fetchKittiesFromApi = async () => {
     return;
   }
 
-  const connectToSignalR = async () => {
-    try {
-      const token = localStorage.getItem('mpamoja_token');
-      if (!token) {
-        console.warn('No token available for SignalR connection');
-        return;
-      }
+  // const connectToSignalR = async () => {
+  //   try {
+  //     const token = localStorage.getItem('mpamoja_token');
+  //     if (!token) {
+  //       console.warn('No token available for SignalR connection');
+  //       return;
+  //     }
 
-      console.log('🔌 Connecting to SignalR...');
+  //     console.log('🔌 Connecting to SignalR...');
       
-const connection = new HubConnectionBuilder()
-    .withUrl(`${BASE}/hubs/kitty`, {
-        transport: HttpTransportType.LongPolling,
-        accessTokenFactory: () => localStorage.getItem("mpamoja_token") || ""
-    })
-    .withAutomaticReconnect()
-    .build();
-      // ── Listen for kitty progress updates ──
-      connection.on('kittyProgress', (data) => {
-        console.log('📊 KittyProgress update received:', data);
-        
-        setState(prev => {
-          // Update the specific kitty
-          const updatedKitties = prev.kitties.map(k => 
-            k.id === data.kittyId
-              ? {
-                  ...k,
-                  raised: data.raised,
-                  contributors: data.contributorCount
-                }
-              : k
-          );
-          
-          return {
-            ...prev,
-            kitties: updatedKitties
-          };
-        });
+  //     const connection = new HubConnectionBuilder()
+  //         .withUrl(`${BASE}/hubs/kitty`, {
+  //             transport: HttpTransportType.LongPolling,
+  //             accessTokenFactory: () => localStorage.getItem("mpamoja_token") || ""
+  //         })
+  //         .withAutomaticReconnect()
+  //         .build();
+  //           // ── Listen for kitty progress updates ──
+  //           connection.on('kittyProgress', (data) => {
+  //             console.log('📊 KittyProgress update received:', data);
+              
+  //             setState(prev => {
+  //               // Update the specific kitty
+  //               const updatedKitties = prev.kitties.map(k => 
+  //                 k.id === data.kittyId
+  //                   ? {
+  //                       ...k,
+  //                       raised: data.raised,
+  //                       contributors: data.contributorCount
+  //                     }
+  //                   : k
+  //               );
+                
+  //               return {
+  //                 ...prev,
+  //                 kitties: updatedKitties
+  //               };
+  //             });
 
-        // Show a toast notification
-        showToast('💰 New Contribution!', 'Someone just contributed to a kitty!');
-      });
+  //             // Show a toast notification
+  //             showToast('💰 New Contribution!', 'Someone just contributed to a kitty!');
+  //           });
 
-      // ── Listen for new contribution events ──
-      connection.on('newContribution', (data) => {
-        console.log('🆕 NewContribution received:', data);
-        
-        // Add to transactions
-        setState(prev => {
-          const kittyName = prev.kitties.find(k => k.id === data.kittyId)?.name || '';
-          
-          return {
-            ...prev,
-            transactions: [
-              {
-                ref: `SIGNALR-${Date.now().toString().slice(-6)}`,
-                name: data.contributorName || "Anonymous",
-                phone: "",
-                kitty: kittyName,
-                gross: data.amount,
-                fee: 0,
-                net: data.amount,
-                type: "Contribution",
-                status: "Confirmed",
-                time: "Just now",
-                ownerEmail: user.email,
-              },
-              ...prev.transactions
-            ]
-          };
-        });
+  //           // ── Listen for new contribution events ──
+  //           connection.on('newContribution', (data) => {
+  //             console.log('🆕 NewContribution received:', data);
+              
+  //             // Add to transactions
+  //             setState(prev => {
+  //               const kittyName = prev.kitties.find(k => k.id === data.kittyId)?.name || '';
+                
+  //               return {
+  //                 ...prev,
+  //                 transactions: [
+  //                   {
+  //                     ref: `SIGNALR-${Date.now().toString().slice(-6)}`,
+  //                     name: data.contributorName || "Anonymous",
+  //                     phone: "",
+  //                     kitty: kittyName,
+  //                     gross: data.amount,
+  //                     fee: 0,
+  //                     net: data.amount,
+  //                     type: "Contribution",
+  //                     status: "Confirmed",
+  //                     time: "Just now",
+  //                     ownerEmail: user.email,
+  //                   },
+  //                   ...prev.transactions
+  //                 ]
+  //               };
+  //             });
 
-        showToast('🎉 Contribution Received!', `${data.contributorName || 'Someone'} contributed KES ${fmt(data.amount)}`);
-      });
+  //             showToast('🎉 Contribution Received!', `${data.contributorName || 'Someone'} contributed KES ${fmt(data.amount)}`);
+  //           });
 
-      // ── Listen for connection events ──
-      connection.on('Connected', (data) => {
-        console.log('✅ SignalR connected:', data);
-        setSignalRConnected(true);
-      });
+  //           // ── Listen for connection events ──
+  //           connection.on('Connected', (data) => {
+  //             console.log('✅ SignalR connected:', data);
+  //             setSignalRConnected(true);
+  //           });
 
-      connection.on('JoinedKittyGroup', (data) => {
-        console.log('✅ Joined kitty group:', data);
-      });
+  //           connection.on('JoinedKittyGroup', (data) => {
+  //             console.log('✅ Joined kitty group:', data);
+  //           });
 
-      connection.on('LeftKittyGroup', (data) => {
-        console.log('👋 Left kitty group:', data);
-      });
+  //           connection.on('LeftKittyGroup', (data) => {
+  //             console.log('👋 Left kitty group:', data);
+  //           });
 
-      // ── Start the connection ──
-      await connection.start();
-      console.log('✅ SignalR connection established!');
-      setHubConnection(connection);
-      setSignalRConnected(true);
+  //           // ── Start the connection ──
+  //           await connection.start();
+  //           console.log('✅ SignalR connection established!');
+  //           setHubConnection(connection);
+  //           setSignalRConnected(true);
 
-      // ── Join all kitty groups for the user ──
-      const userKitties = state.kitties.filter(k => 
-        k.createdBy === user.email || 
-        k.creatorId === user.id || 
-        k.creator_id === user.id
-      );
-      
-      for (const kitty of userKitties) {
-        try {
-          await connection.invoke('WatchKitty', String(kitty.id));
-          console.log(`✅ Watching kitty: ${kitty.name} (${kitty.id})`);
-        } catch (err) {
-          console.warn(`Failed to watch kitty ${kitty.id}:`, err);
-        }
-      }
+  //           // ── Join all kitty groups for the user ──
+  //           const userKitties = state.kitties.filter(k => 
+  //             k.createdBy === user.email || 
+  //             k.creatorId === user.id || 
+  //             k.creator_id === user.id
+  //           );
+            
+  //           for (const kitty of userKitties) {
+  //             try {
+  //               await connection.invoke('WatchKitty', String(kitty.id));
+  //               console.log(`✅ Watching kitty: ${kitty.name} (${kitty.id})`);
+  //             } catch (err) {
+  //               console.warn(`Failed to watch kitty ${kitty.id}:`, err);
+  //             }
+  //           }
 
-    } catch (error) {
-      console.error('❌ SignalR connection failed:', error);
-      setSignalRConnected(false);
-      
-      // Retry after 5 seconds
-      setTimeout(() => {
-        if (user) {
-          console.log('🔄 Retrying SignalR connection...');
-          connectToSignalR();
-        }
-      }, 5000);
-    }
-  };
+  //         } catch (error) {
+  //           console.error('❌ SignalR connection failed:', error);
+  //           setSignalRConnected(false);
+            
+  //           // Retry after 5 seconds
+  //           setTimeout(() => {
+  //             if (user) {
+  //               console.log('🔄 Retrying SignalR connection...');
+  //               connectToSignalR();
+  //             }
+  //           }, 5000);
+  //         }
+  //       };
 
-  connectToSignalR();
+  //       connectToSignalR();
 
-  // Cleanup on unmount or user logout
-  return () => {
-    if (hubConnection) {
-      hubConnection.stop();
-      setHubConnection(null);
-      setSignalRConnected(false);
-    }
-  };
-}, [user, state.kitties]); // Re-run when kitties change to join new groups
+  //       // Cleanup on unmount or user logout
+  //       return () => {
+  //         if (hubConnection) {
+  //           hubConnection.stop();
+  //           setHubConnection(null);
+  //           setSignalRConnected(false);
+  //         }
+  //       };
+       }, [user, state.kitties]); // Re-run when kitties change to join new groups
 
   // ─── ALL HANDLER FUNCTIONS ───
 
