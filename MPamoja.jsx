@@ -9629,7 +9629,11 @@ function TransactionsPage({ state, user, onToast, apiTransactions }) {
   );
   const filtered = txs.filter(t => 
     (filter === "all" || t.type === filter) && 
-    (!search || t.name?.toLowerCase().includes(search) || t.ref?.toLowerCase().includes(search))
+    (!search || 
+      t.name?.toLowerCase().includes(search) || 
+      t.refId?.toLowerCase().includes(search) ||
+      t.kitty?.toLowerCase().includes(search)
+    )
   );
   const totalC = txs.filter(t => t.type === "Contribution").reduce((s,t) => s+t.gross, 0);
   const totalW = txs.filter(t => t.type === "Withdrawal").reduce((s,t) => s+t.gross, 0);
