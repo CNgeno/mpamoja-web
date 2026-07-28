@@ -9663,12 +9663,14 @@ function TransactionsPage({ state, user, onToast, apiTransactions }) {
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
   const allTx = apiTransactions || []; 
-  const txs = apiTransactions || [];
+  const txs = apiTransactions && apiTransactions.length > 0 
+    ? apiTransactions 
+    : state.transactions.filter(t => t.ownerEmail === user.email);
   const filtered = txs.filter(t => 
     (filter === "all" || t.type === filter) && 
     (!search || 
       t.name?.toLowerCase().includes(search) || 
-      t.refId?.toLowerCase().includes(search) ||
+      t.ref?.toLowerCase().includes(search) ||  // ← FIX: changed from refId to ref
       t.kitty?.toLowerCase().includes(search)
     )
   );
