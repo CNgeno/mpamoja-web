@@ -4073,7 +4073,7 @@ function KittyDetailModal({ kitty: initialKitty, user, transactions, state, onCl
     // Calculate totals
     let totalRaised = supporters.reduce((sum, t) => sum + (t.gross || 0), 0);
     let displaySupporters = supporters;
-    let displayCount = supporters.length;
+    let displayCount = kitty.contributorCount || kitty.contributors || 0; 
     
     // Fallback: Use kitty data if no transactions found
     if (displaySupporters.length === 0 && kitty.contributors > 0) {
