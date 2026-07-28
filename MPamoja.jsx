@@ -2402,7 +2402,7 @@ function AuthScreen({ onLogin }) {
   const [loading, setLoading] = useState(false);
   const [pendingPhone, setPendingPhone] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [login, setLogin] = useState({ email: "demo@mpamoja.co.ke", pass: "demo1234" });
+  const [login, setLogin] = useState({ email: "ngenoamos502@gmail.com", pass: "Amos@123" });
   const [signup, setSignup] = useState({ fn: "", ln: "", em: "", ph: "", pw: "", role: "Campaign Creator" });
 
   // ✅ Define BASE here (or use from props/context)
