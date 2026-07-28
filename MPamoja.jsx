@@ -10019,7 +10019,8 @@ const fetchKittiesFromApi = async () => {
 
     console.log('📡 Making API request to /api/kitties');
     const response = await fetch(`${BASE}/api/kitties`, {
-      headers: { 'Authorization': `Bearer ${token}` }
+      headers: { 'Authorization': `Bearer ${token}` },
+      'ngrok-skip-browser-warning': 'any' 
     });
 
     console.log('📡 Response status:', response.status);
