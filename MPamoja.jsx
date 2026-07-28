@@ -10114,6 +10114,7 @@ const fetchKittiesFromApi = async () => {
   }
 };
 
+// ─── FETCH TRANSACTIONS ───
 const fetchTransactionsFromApi = async () => {
   try {
     console.log('🔍 fetchTransactionsFromApi called');
@@ -10122,7 +10123,7 @@ const fetchTransactionsFromApi = async () => {
     
     if (!token) {
       console.warn('No token found');
-      setApiTransactions([]);  // ← Set empty array, not mock data
+      setApiTransactions([]);
       return;
     }
 
@@ -10140,33 +10141,39 @@ const fetchTransactionsFromApi = async () => {
     if (response.ok) {
       const data = await response.json();
       console.log('✅ Transactions from API:', data);
-      console.log('📊 Number of transactions:', data?.length || 0);
       
-      // If data is empty, log it but don't fallback to mock
-      if (data && data.length === 0) {
-        console.log('ℹ️ No transactions found in API');
-      }
+      // ⭐ FIX: Extract the array from the "value" property
+      const transactions = data.value || [];
+      console.log('📊 Number of transactions:', transactions.length);
       
-      setApiTransactions(data || []);
+      // ⭐ Map the transactions to match your frontend format
+      const mappedTransactions = transactions.map(t => ({
+        ref: t.refId || t.ref,
+        name: t.name || "Anonymous",
+        phone: t.phone || "",
+        kitty: t.kitty || "",
+        kittyId: t.kittyId,
+        gross: t.gross,
+        fee: t.fee || 0,
+        net: t.net || t.gross,
+        type: t.type || "Contribution",
+        status: t.status || "Confirmed",
+        time: t.time || "Just now",
+        ownerEmail: user?.email,
+        receipt: t.receipt
+      }));
+      
+      setApiTransactions(mappedTransactions);
     } else if (response.status === 401) {
       console.warn('⚠️ Unauthorized - token may be expired');
-      // Try to refresh token or redirect to login
-      // Don't set mock data
       setApiTransactions([]);
-      
-      // Optionally redirect to login
-      // localStorage.removeItem('mpamoja_token');
-      // localStorage.removeItem('mpamoja_user');
-      // window.location.href = '/';
     } else {
       console.error('❌ API responded with error:', response.status);
-      const errorText = await response.text();
-      console.error('Error details:', errorText);
-      setApiTransactions([]);  // ← Empty array, not mock data
+      setApiTransactions([]);
     }
   } catch (error) {
     console.error('❌ Error fetching transactions:', error);
-    setApiTransactions([]);  // ← Empty array, not mock data
+    setApiTransactions([]);
   }
 };
 
