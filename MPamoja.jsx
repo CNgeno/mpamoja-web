@@ -9621,8 +9621,18 @@ function WhatsappPage({ state, user, onToast }) {
 function TransactionsPage({ state, user, onToast }) {
   const [filter, setFilter] = useState("all");
   const [search, setSearch] = useState("");
-  const txs = state.transactions.filter(t => t.ownerEmail === user.email);
-  const filtered = txs.filter(t => (filter === "all" || t.type === filter) && (!search || t.name.toLowerCase().includes(search) || t.ref.toLowerCase().includes(search)));
+  const allTx = apiTransactions && apiTransactions.length > 0 
+    ? apiTransactions 
+    : state.transactions;
+  const txs = allTx.filter(t => 
+    t.ownerEmail === user.email || 
+    t.userId === user.id ||
+    t.creatorId === user.id
+  );
+  const filtered = txs.filter(t => 
+    (filter === "all" || t.type === filter) && 
+    (!search || t.name?.toLowerCase().includes(search) || t.ref?.toLowerCase().includes(search))
+  );
   const totalC = txs.filter(t => t.type === "Contribution").reduce((s,t) => s+t.gross, 0);
   const totalW = txs.filter(t => t.type === "Withdrawal").reduce((s,t) => s+t.gross, 0);
   const fees = txs.reduce((s,t) => s+(t.fee||0), 0);
@@ -11059,7 +11069,13 @@ const fetchKittiesFromApi = async () => {
       case "contribute": return <ContributePage state={state} user={user} onToast={showToast} onContribute={handleContribute} />;
       case "withdraw": return <WithdrawPage state={state} user={user} onToast={showToast} onWithdraw={handleWithdraw} />;
       case "whatsapp": return <WhatsappPage state={state} user={user} onToast={showToast} />;
-      case "transactions": return <TransactionsPage state={state} user={user} onToast={showToast} />;
+      case "transactions": 
+  return <TransactionsPage 
+    state={state} 
+    user={user} 
+    onToast={showToast}
+    transactions={apiTransactions}  // ← Pass API data
+  />;
       case "settings": return <SettingsPage user={user} onToast={showToast} onLogout={handleLogout} onBack={() => setPage("overview")} />;
       default: return null;
     }
