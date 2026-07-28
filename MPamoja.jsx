@@ -4058,7 +4058,7 @@ function KittyDetailModal({ kitty: initialKitty, user, transactions, state, onCl
       console.warn('⚠️ Token is missing or expired');
       localStorage.removeItem('mpamoja_token');
       localStorage.removeItem('mpamoja_user');
-      window.location.href = '/';
+      //window.location.href = '/';
       return;
     }
         
