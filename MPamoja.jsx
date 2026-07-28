@@ -5,7 +5,6 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { HubConnectionBuilder, LogLevel, HttpTransportType } from '@microsoft/signalr';
 
 // ─── GLOBAL FETCH INTERCEPTOR ───
-// Add this once and it fixes ALL API calls
 const originalFetch = window.fetch;
 window.fetch = function(url, options = {}) {
   const headers = new Headers(options.headers || {});
@@ -19,12 +18,27 @@ window.fetch = function(url, options = {}) {
     headers.set('Authorization', `Bearer ${token}`);
   }
   
+  // Fix relative URLs - ensure they use BASE
+  let finalUrl = url;
+  if (typeof url === 'string' && url.startsWith('/api/') && !url.startsWith(`${BASE}`)) {
+    finalUrl = `${BASE}${url}`;
+  }
+  
   const newOptions = {
     ...options,
     headers: headers
   };
   
-  return originalFetch.call(this, url, newOptions);
+  return originalFetch.call(this, finalUrl, newOptions)
+    .then(async response => {
+      // Handle 401 Unauthorized
+      if (response.status === 401) {
+        console.warn('⚠️ Unauthorized request - token may be expired');
+        // Don't auto-redirect, let the component handle it
+        return response;
+      }
+      return response;
+    });
 };
 
 const BASE = import.meta.env.VITE_API_URL || 
@@ -3264,7 +3278,7 @@ function OverviewPage({ state, user, onNav, onToast, onRefresh, onWithdraw, onCo
 
       // Fetch chamas
       try {
-        const chamasResponse = await fetch('/api/chamas', {
+        const chamasResponse = await fetch(`${BASE}/api/chamas`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
