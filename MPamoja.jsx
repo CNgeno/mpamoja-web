@@ -10019,8 +10019,10 @@ const fetchKittiesFromApi = async () => {
 
     console.log('📡 Making API request to /api/kitties');
     const response = await fetch(`${BASE}/api/kitties`, {
-      headers: { 'Authorization': `Bearer ${token}` },
-      'ngrok-skip-browser-warning': 'any' 
+      headers: { 
+        'Authorization': `Bearer ${token}`,
+        'ngrok-skip-browser-warning': 'any'  // ← INSIDE headers!
+      }
     });
 
     console.log('📡 Response status:', response.status);
@@ -10034,7 +10036,6 @@ const fetchKittiesFromApi = async () => {
         kitties: data
       }));
 
-      // ⭐ After updating kitties, re-join groups for new kitties
       if (hubConnection && signalRConnected) {
         const userKitties = data.filter(k => 
           k.createdBy === user.email || 
