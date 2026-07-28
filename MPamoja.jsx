@@ -3925,7 +3925,7 @@ function OverviewPage({ state, user, onNav, onToast, onRefresh, onWithdraw, onCo
           <KittyDetailModal
             kitty={viewKitty}
             user={user}
-            transactions={state.transactions}
+            transactions={apiTransactions}
             onClose={() => setViewKitty(null)}
             onWithdraw={onWithdraw}
             onContribute={onContribute}
