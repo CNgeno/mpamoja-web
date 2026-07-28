@@ -4257,7 +4257,8 @@ function KittyDetailModal({ kitty: initialKitty, user, transactions, state, onCl
                 <div style={{ fontSize: '0.6rem', opacity: 0.7, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Remaining</div>
               </div>
               <div style={{ background: 'rgba(255,255,255,0.1)', borderRadius: 10, padding: '0.6rem', textAlign: 'center' }}>
-                <div style={{ fontSize: '1.1rem', fontWeight: 800 }}>{kitty.contributors || 0}</div>
+                <div style={{ fontSize: '1.1rem', fontWeight: 800 }}>{kitty.contributorCount || 0}
+</div>
                 <div style={{ fontSize: '0.6rem', opacity: 0.7, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Supporters</div>
               </div>
             </div>
@@ -4491,7 +4492,8 @@ function KittyDetailModal({ kitty: initialKitty, user, transactions, state, onCl
                 <div style={{ fontSize: '0.6rem', opacity: 0.7, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Remaining</div>
               </div>
               <div style={{ background: 'rgba(255,255,255,0.1)', borderRadius: 10, padding: '0.6rem', textAlign: 'center' }}>
-                <div style={{ fontSize: '1.1rem', fontWeight: 800 }}>{kitty.contributors || 0}</div>
+                <div style={{ fontSize: '1.1rem', fontWeight: 800 }}>{kitty.contributorCount || 0}
+</div>
                 <div style={{ fontSize: '0.6rem', opacity: 0.7, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Supporters</div>
               </div>
             </div>
@@ -5145,7 +5147,8 @@ function KittyFundingPage({ kitty, onBack }) {
               <div style={{ fontSize: '0.6rem', opacity: 0.7, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Remaining</div>
             </div>
             <div style={{ background: 'rgba(255,255,255,0.1)', borderRadius: 10, padding: '0.6rem', textAlign: 'center' }}>
-              <div style={{ fontSize: '1.1rem', fontWeight: 800 }}>{kitty.contributors || 0}</div>
+              <div style={{ fontSize: '1.1rem', fontWeight: 800 }}>{kitty.contributorCount || 0}
+</div>
               <div style={{ fontSize: '0.6rem', opacity: 0.7, textTransform: 'uppercase', letterSpacing: '0.04em' }}>Supporters</div>
             </div>
           </div>
