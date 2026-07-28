@@ -10038,6 +10038,7 @@ export default function MPamojaApp() {
   const [hubConnection, setHubConnection] = useState(null);
   const [signalRConnected, setSignalRConnected] = useState(false);
   const [showNotifs, setShowNotifs] = useState(false);
+  const [apiTransactions, setApiTransactions] = useState([]);
   const [notifsRead, setNotifsRead] = useState(false);
   const [clearedNotifIds, setClearedNotifIds] = useState(new Set());
   
@@ -10108,6 +10109,48 @@ const fetchKittiesFromApi = async () => {
     }
   } catch (error) {
     console.error('❌ Error fetching kitties:', error);
+  }
+};
+
+// Add this function after fetchKittiesFromApi
+const fetchTransactionsFromApi = async () => {
+  try {
+    console.log('🔍 fetchTransactionsFromApi called');
+    const token = localStorage.getItem('mpamoja_token');
+    console.log('🔑 Token:', token ? 'Present' : 'Missing');
+    
+    if (!token) {
+      console.warn('No token found');
+      return;
+    }
+
+    console.log('📡 Making API request to /api/transactions/recent');
+    const response = await fetch(`${BASE}/api/transactions/recent`, {
+      headers: { 
+        'Authorization': `Bearer ${token}`,
+        'ngrok-skip-browser-warning': 'any'
+      }
+    });
+
+    console.log('📡 Response status:', response.status);
+
+    if (response.ok) {
+      const data = await response.json();
+      console.log('✅ Transactions from API:', data);
+      setApiTransactions(data);
+    } else if (response.status === 401) {
+      console.warn('⚠️ Unauthorized - token may be expired');
+      // Use mock data as fallback
+      setApiTransactions(state.transactions);
+    } else {
+      console.error('❌ API responded with error:', response.status);
+      // Use mock data as fallback
+      setApiTransactions(state.transactions);
+    }
+  } catch (error) {
+    console.error('❌ Error fetching transactions:', error);
+    // Use mock data as fallback
+    setApiTransactions(state.transactions);
   }
 };
 
@@ -10246,6 +10289,7 @@ const fetchKittiesFromApi = async () => {
     if (user) {
       console.log('📡 Fetching kitties for user:', user.email);
       fetchKittiesFromApi();
+      fetchTransactionsFromApi();
     }
   }, [user]);
 
