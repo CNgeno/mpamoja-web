@@ -4076,7 +4076,7 @@ const response = await fetch(`${BASE}/api/transactions/by-kitty?kittyId=${kitty.
       // ⭐ Clear tokens and redirect
       localStorage.removeItem('mpamoja_token');
       localStorage.removeItem('mpamoja_user');
-      window.location.href = '/';
+      //window.location.href = '/';
       return;
     }
         
