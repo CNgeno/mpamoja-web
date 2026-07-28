@@ -10146,23 +10146,30 @@ const fetchTransactionsFromApi = async () => {
       const transactions = data.value || [];
       console.log('📊 Number of transactions:', transactions.length);
       
+      // Get the current user from localStorage
+      const userData = JSON.parse(localStorage.getItem('mpamoja_user') || '{}');
+      const userEmail = userData?.email || '';
+      
       // ⭐ Map the transactions to match your frontend format
       const mappedTransactions = transactions.map(t => ({
-        ref: t.refId || t.ref,
+        ref: t.refId || t.ref || `TX-${Date.now().toString().slice(-6)}`,
         name: t.name || "Anonymous",
         phone: t.phone || "",
         kitty: t.kitty || "",
         kittyId: t.kittyId,
-        gross: t.gross,
+        gross: t.gross || 0,
         fee: t.fee || 0,
-        net: t.net || t.gross,
+        net: t.net || t.gross || 0,
         type: t.type || "Contribution",
         status: t.status || "Confirmed",
         time: t.time || "Just now",
-        ownerEmail: user?.email,
+        ownerEmail: userEmail,  // ⭐ Set from localStorage
+        userId: userData?.id,
+        creatorId: userData?.id,
         receipt: t.receipt
       }));
       
+      console.log('📊 Mapped transactions:', mappedTransactions);
       setApiTransactions(mappedTransactions);
     } else if (response.status === 401) {
       console.warn('⚠️ Unauthorized - token may be expired');
