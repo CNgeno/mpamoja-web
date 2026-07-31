@@ -26,7 +26,7 @@ export class ApiError extends Error {
 async function request(path, { method = 'GET', body, auth = true } = {}) {
   const headers = { 'Content-Type': 'application/json' };
   if (auth) {
-    const t = tokenStore.get();
+    const t = tokenStore.getToken();
     if (t) headers['Authorization'] = `Bearer ${t}`;
   }
 
@@ -107,6 +107,62 @@ export const withdrawalApi = {
   approve: (id, approve, note) =>
     request(`/api/withdrawals/${id}/approve`, { method: 'POST', body: { approve, note } }),
   forKitty: (kittyId) => request(`/api/withdrawals/kitty/${kittyId}`),
+};
+
+// ── Chamas (FR-CHM). Contribute/withdraw for a chama reuse publicApi/withdrawalApi
+// against the chama's linked kittyId/shareToken — a chama's pool is a Category=Chama kitty. ──
+export const chamaApi = {
+  create: (payload) => request('/api/chamas', { method: 'POST', body: payload }),
+  mine: () => request('/api/chamas'),
+  get: (id) => request(`/api/chamas/${id}`),
+  update: (id, payload) => request(`/api/chamas/${id}`, { method: 'PUT', body: payload }),
+  addMember: (id, name, phone) =>
+    request(`/api/chamas/${id}/members`, { method: 'POST', body: { name, phone } }),
+  removeMember: (id, memberId) =>
+    request(`/api/chamas/${id}/members/${memberId}`, { method: 'DELETE' }),
+  setOfficial: (id, memberId, isOfficial) =>
+    request(`/api/chamas/${id}/members/${memberId}/official`, { method: 'PUT', body: { isOfficial } }),
+};
+
+// ── Events (FR-EVT). Contribute/withdraw for an event reuse publicApi/withdrawalApi
+// against the event's linked kittyId/shareToken — an event's pool is a Category=Events kitty. ──
+export const eventApi = {
+  create: (payload) => request('/api/events', { method: 'POST', body: payload }),
+  mine: () => request('/api/events'),
+  get: (id) => request(`/api/events/${id}`),
+  update: (id, payload) => request(`/api/events/${id}`, { method: 'PUT', body: payload }),
+  setStatus: (id, active) => request(`/api/events/${id}/status`, { method: 'PUT', body: { active } }),
+};
+
+// ── Notifications (FR-NOT) ──
+export const notificationApi = {
+  mine: () => request('/api/notifications'),
+  markRead: (id) => request(`/api/notifications/${id}/read`, { method: 'POST' }),
+  markAllRead: () => request('/api/notifications/read-all', { method: 'POST' }),
+  remove: (id) => request(`/api/notifications/${id}`, { method: 'DELETE' }),
+  clearAll: () => request('/api/notifications', { method: 'DELETE' }),
+};
+
+// ── KYC (FR-AUTH-03 / FR-ADM-02) ──
+export const kycApi = {
+  me: () => request('/api/kyc/me'),
+  submit: (nationalIdNumber, documentUrl) =>
+    request('/api/kyc', { method: 'POST', body: { nationalIdNumber, documentUrl } }),
+  pending: () => request('/api/kyc/pending'),
+  approve: (userId) => request(`/api/kyc/${userId}/approve`, { method: 'POST' }),
+  reject: (userId, reason) => request(`/api/kyc/${userId}/reject`, { method: 'POST', body: { reason } }),
+};
+
+// ── Admin console (FR-ADM-01..06; PlatformAdmin role only) ──
+export const adminApi = {
+  kitties: (params = {}) => request(`/api/admin/kitties?${new URLSearchParams(params)}`),
+  freezeKitty: (id, reason) => request(`/api/admin/kitties/${id}/freeze`, { method: 'POST', body: { reason } }),
+  unfreezeKitty: (id) => request(`/api/admin/kitties/${id}/unfreeze`, { method: 'POST' }),
+  users: (params = {}) => request(`/api/admin/users?${new URLSearchParams(params)}`),
+  lockUser: (id) => request(`/api/admin/users/${id}/lock`, { method: 'POST' }),
+  unlockUser: (id) => request(`/api/admin/users/${id}/unlock`, { method: 'POST' }),
+  setUserRole: (id, role) => request(`/api/admin/users/${id}/role`, { method: 'PUT', body: { role } }),
+  auditLog: (params = {}) => request(`/api/admin/audit-log?${new URLSearchParams(params)}`),
 };
 
 // ── Dev-only simulators (Sprint 3 DevController; Development environment only) ──

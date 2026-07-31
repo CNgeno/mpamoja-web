@@ -785,6 +785,12 @@ body{font-family:var(--font);background:var(--surface2);color:var(--text);min-he
 .fw7{font-weight:700}.fw8{font-weight:800}.mono{font-family:var(--mono)}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @keyframes slideUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+@keyframes mpSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+@keyframes mpSpinReverse{from{transform:rotate(360deg)}to{transform:rotate(0deg)}}
+@keyframes mpPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(0.88);opacity:0.75}}
+.mp-loading-ring{animation:mpSpin 1.1s linear infinite}
+.mp-loading-ring2{animation:mpSpinReverse 1.6s linear infinite}
+.mp-loading-mark{animation:mpPulse 1.4s ease-in-out infinite}
 @media(max-width:380px){.hero-amount{font-size:1.65rem}.services-grid{gap:0.45rem}.svc-icon{width:32px;height:32px}.svc-lbl{font-size:0.56rem}}
 
 /* SHARE KITTY */
@@ -944,137 +950,18 @@ const maskPhone = (p) => {
 };
 
 // ─── Default data ───
+// NOTE: kept intentionally empty — kitties/chamas/events/notifications are populated for real
+// right after login (fetchKittiesFromApi/fetchChamasFromApi/fetchEventsFromApi/
+// fetchNotificationsFromApi), and transactions comes from fetchTransactionsFromApi. Nothing here
+// should ever render on screen; if it does, one of those fetches silently failed.
 const DEFAULT_STATE = {
-  kitties: [
-    // ── Contributions Kitties ──
-    { id: 1, name: "Mama Sarah's Hospital Bill", raised: 1874000, goal: 2500000, contributors: 8, created: "2026-01-15", createdBy: "demo@mpamoja.co.ke", payChannel: "Paybill", paybill: "4990390", accountNo: "1001", mobile: "", feeCategory: "contributions" },
-    { id: 2, name: "Kamau Family House Fire Relief", raised: 935000, goal: 1500000, contributors: 10, created: "2026-02-10", createdBy: "demo@mpamoja.co.ke", payChannel: "Mobile", paybill: "", accountNo: "", mobile: "0722334455", feeCategory: "contributions" },
-    { id: 3, name: "Brian's University Fees 2026", raised: 542000, goal: 800000, contributors: 7, created: "2026-03-05", createdBy: "demo@mpamoja.co.ke", payChannel: "Paybill", paybill: "4990390", accountNo: "1003", mobile: "", feeCategory: "contributions" },
-    // ── Chama Kitties ──
-    { id: 4, name: "Chama Monthly – April", raised: 1346000, goal: 2000000, contributors: 9, created: "2026-01-01", createdBy: "demo@mpamoja.co.ke", payChannel: "Paybill", paybill: "4990390", accountNo: "1002", mobile: "", feeCategory: "chama" },
-    { id: 5, name: "Umoja Sacco – Q1 Savings", raised: 780000, goal: 1200000, contributors: 6, created: "2026-02-01", createdBy: "demo@mpamoja.co.ke", payChannel: "Paybill", paybill: "4990390", accountNo: "1004", mobile: "", feeCategory: "chama" },
-    { id: 6, name: "Eastlands Investment Pool", raised: 2115000, goal: 3000000, contributors: 10, created: "2025-12-01", createdBy: "demo@mpamoja.co.ke", payChannel: "Paybill", paybill: "4990390", accountNo: "1005", mobile: "", feeCategory: "chama" },
-    // ── Events Kitties ──
-    { id: 7, name: "Annual Harambee Dinner 2026", raised: 1630000, goal: 2000000, contributors: 8, created: "2026-03-01", createdBy: "demo@mpamoja.co.ke", payChannel: "Paybill", paybill: "4990390", accountNo: "1006", mobile: "", feeCategory: "events" },
-    { id: 8, name: "Wanjiku's Wedding Fund", raised: 1435000, goal: 1500000, contributors: 9, created: "2026-02-20", createdBy: "demo@mpamoja.co.ke", payChannel: "Mobile", paybill: "", accountNo: "", mobile: "0712345678", feeCategory: "events" },
-    { id: 9, name: "Youth Empowerment Summit", raised: 478000, goal: 1000000, contributors: 7, created: "2026-04-01", createdBy: "demo@mpamoja.co.ke", payChannel: "Mobile", paybill: "", accountNo: "", mobile: "0733445566", feeCategory: "events" },
-  ],
-  chamas: [
-    { id: 1, name: "Nairobi Women Entrepreneurs", members: 24, pool: 145000, cycle: "Monthly", nextMeeting: "Apr 30", createdBy: "demo@mpamoja.co.ke", contributionAmount: 5000, penaltyType: "percentage", penaltyValue: 5, penaltyPerDay: true,
-      memberList: [
-        { id: 1, name: "Jane Wambua",   phone: "0712345671", joined: "Jan 2024" },
-        { id: 2, name: "Mary Achieng",  phone: "0722987654", joined: "Jan 2024" },
-        { id: 3, name: "Grace Muthoni", phone: "0733112233", joined: "Feb 2024" },
-        { id: 4, name: "Esther Kamau",  phone: "0711223344", joined: "Feb 2024" },
-      ]
-    },
-    { id: 2, name: "Eastlands Investment Club", members: 15, pool: 89500, cycle: "Weekly", nextMeeting: "Apr 26", createdBy: "demo@mpamoja.co.ke", contributionAmount: 2000, penaltyType: "fixed", penaltyValue: 200, penaltyPerDay: false,
-      memberList: [
-        { id: 1, name: "Peter Odhiambo", phone: "0722112233", joined: "Mar 2024" },
-        { id: 2, name: "James Kariuki",  phone: "0733445566", joined: "Mar 2024" },
-        { id: 3, name: "David Mutua",    phone: "0712998877", joined: "Apr 2024" },
-      ]
-    }
-  ],
-  events: [
-    { id: 1, name: "Annual Harambee Dinner 2026", date: "15", month: "May", location: "Serena Hotel, Nairobi", attendees: 120, target: 200, createdBy: "demo@mpamoja.co.ke", status: "active", description: "Annual fundraising dinner for community development projects." },
-    { id: 2, name: "Youth Empowerment Workshop",  date: "03", month: "Jun", location: "KICC, Nairobi",         attendees: 54,  target: 100, createdBy: "demo@mpamoja.co.ke", status: "active", description: "Skills and entrepreneurship training for the youth." }
-  ],
-  transactions: [
-    // ── Mama Sarah's Hospital Bill (id:1, 8 contributors) ──
-    { ref: "TRX001", name: "Jane Wambua",     phone: "0712345671", kitty: "Mama Sarah's Hospital Bill",      gross: 250000, fee: 0, net: 250000, type: "Contribution", status: "sent", time: "10 Jan",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX002", name: "Peter Odhiambo",  phone: "0722987654", kitty: "Mama Sarah's Hospital Bill",      gross: 300000, fee: 0, net: 300000, type: "Contribution", status: "sent", time: "11 Jan",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX003", name: "Grace Muthoni",   phone: "0733112233", kitty: "Mama Sarah's Hospital Bill",      gross: 200000, fee: 0, net: 200000, type: "Contribution", status: "sent", time: "12 Jan",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX004", name: "Esther Kamau",    phone: "0711223344", kitty: "Mama Sarah's Hospital Bill",      gross: 150000, fee: 0, net: 150000, type: "Contribution", status: "sent", time: "13 Jan",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX005", name: "James Kariuki",   phone: "0733445566", kitty: "Mama Sarah's Hospital Bill",      gross: 224000, fee: 0, net: 224000, type: "Contribution", status: "sent", time: "14 Jan",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX006", name: "David Mutua",     phone: "0712998877", kitty: "Mama Sarah's Hospital Bill",      gross: 280000, fee: 0, net: 280000, type: "Contribution", status: "sent", time: "15 Jan",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX007", name: "Ann Njeri",       phone: "0700112233", kitty: "Mama Sarah's Hospital Bill",      gross: 180000, fee: 0, net: 180000, type: "Contribution", status: "sent", time: "16 Jan",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX008", name: "Samuel Otieno",   phone: "0722334455", kitty: "Mama Sarah's Hospital Bill",      gross: 290000, fee: 0, net: 290000, type: "Contribution", status: "sent", time: "17 Jan",  ownerEmail: "demo@mpamoja.co.ke" },
-    // ── Kamau Family House Fire Relief (id:2, 10 contributors) ──
-    { ref: "TRX009", name: "Lucy Akinyi",     phone: "0733556677", kitty: "Kamau Family House Fire Relief",  gross: 100000, fee: 0, net: 100000, type: "Contribution", status: "sent", time: "12 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX010", name: "Moses Waweru",    phone: "0722667788", kitty: "Kamau Family House Fire Relief",  gross: 85000,  fee: 0, net: 8500,  type: "Contribution", status: "sent", time: "12 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX011", name: "Faith Chebet",    phone: "0711778899", kitty: "Kamau Family House Fire Relief",  gross: 120000, fee: 0, net: 120000, type: "Contribution", status: "sent", time: "13 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX012", name: "Kevin Mwangi",    phone: "0700889900", kitty: "Kamau Family House Fire Relief",  gross: 75000,  fee: 0, net: 7500,  type: "Contribution", status: "sent", time: "13 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX013", name: "Patricia Otieno", phone: "0733990011", kitty: "Kamau Family House Fire Relief",  gross: 90000,  fee: 0, net: 9000,  type: "Contribution", status: "sent", time: "14 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX014", name: "Brian Korir",     phone: "0722001122", kitty: "Kamau Family House Fire Relief",  gross: 110000, fee: 0, net: 110000, type: "Contribution", status: "sent", time: "14 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX015", name: "Carolyne Nyambura", phone: "0711223300", kitty: "Kamau Family House Fire Relief", gross: 80000, fee: 0, net: 80000, type: "Contribution", status: "sent", time: "15 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX016", name: "Eric Oloo",       phone: "0700334411", kitty: "Kamau Family House Fire Relief",  gross: 95000,  fee: 0, net: 9500,  type: "Contribution", status: "sent", time: "15 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX017", name: "Miriam Wanjiku",  phone: "0733445522", kitty: "Kamau Family House Fire Relief",  gross: 100000, fee: 0, net: 100000, type: "Contribution", status: "sent", time: "16 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX018", name: "Tony Mwenda",     phone: "0722556633", kitty: "Kamau Family House Fire Relief",  gross: 80000,  fee: 0, net: 8000,  type: "Contribution", status: "sent", time: "16 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-    // ── Brian's University Fees 2026 (id:3, 7 contributors) ──
-    { ref: "TRX019", name: "Rose Wanjiku",    phone: "0711667788", kitty: "Brian's University Fees 2026",    gross: 80000,  fee: 0, net: 80000,  type: "Contribution", status: "sent", time: "06 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX020", name: "Joseph Kamau",    phone: "0700778899", kitty: "Brian's University Fees 2026",    gross: 75000,  fee: 0, net: 75000,  type: "Contribution", status: "sent", time: "07 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX021", name: "Lilian Adhiambo", phone: "0733889900", kitty: "Brian's University Fees 2026",    gross: 100000, fee: 0, net: 100000, type: "Contribution", status: "sent", time: "07 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX022", name: "Daniel Kipchoge", phone: "0722990011", kitty: "Brian's University Fees 2026",    gross: 72000,  fee: 0, net: 72000,  type: "Contribution", status: "sent", time: "08 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX023", name: "Susan Mwangi",    phone: "0711001122", kitty: "Brian's University Fees 2026",    gross: 85000,  fee: 0, net: 85000,  type: "Contribution", status: "sent", time: "08 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX024", name: "Alex Ochieng",    phone: "0700112244", kitty: "Brian's University Fees 2026",    gross: 65000,  fee: 0, net: 65000,  type: "Contribution", status: "sent", time: "09 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX025", name: "Hellen Cherop",   phone: "0733223355", kitty: "Brian's University Fees 2026",    gross: 65000,  fee: 0, net: 65000,  type: "Contribution", status: "sent", time: "09 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
-    // ── Chama Monthly – April (id:4, 9 contributors) ──
-    { ref: "TRX026", name: "Jane Wambua",     phone: "0712345671", kitty: "Chama Monthly – April",           gross: 150000, fee: 0, net: 150000, type: "Contribution", status: "sent", time: "01 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX027", name: "Mary Achieng",    phone: "0722987654", kitty: "Chama Monthly – April",           gross: 150000, fee: 0, net: 150000, type: "Contribution", status: "sent", time: "01 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX028", name: "Grace Muthoni",   phone: "0733112233", kitty: "Chama Monthly – April",           gross: 150000, fee: 0, net: 150000, type: "Contribution", status: "sent", time: "02 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX029", name: "Esther Kamau",    phone: "0711223344", kitty: "Chama Monthly – April",           gross: 150000, fee: 0, net: 150000, type: "Contribution", status: "sent", time: "02 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX030", name: "Peter Odhiambo",  phone: "0722112233", kitty: "Chama Monthly – April",           gross: 150000, fee: 0, net: 150000, type: "Contribution", status: "sent", time: "03 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX031", name: "James Kariuki",   phone: "0733445566", kitty: "Chama Monthly – April",           gross: 146000, fee: 0, net: 146000, type: "Contribution", status: "sent", time: "03 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX032", name: "David Mutua",     phone: "0712998877", kitty: "Chama Monthly – April",           gross: 150000, fee: 0, net: 150000, type: "Contribution", status: "sent", time: "04 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX033", name: "Ann Njeri",       phone: "0700112233", kitty: "Chama Monthly – April",           gross: 150000, fee: 0, net: 150000, type: "Contribution", status: "sent", time: "04 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX034", name: "Samuel Otieno",   phone: "0722334455", kitty: "Chama Monthly – April",           gross: 150000, fee: 0, net: 150000, type: "Contribution", status: "sent", time: "05 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
-    // ── Umoja Sacco – Q1 Savings (id:5, 6 contributors) ──
-    { ref: "TRX035", name: "Lucy Akinyi",     phone: "0733556677", kitty: "Umoja Sacco – Q1 Savings",        gross: 130000, fee: 0, net: 130000, type: "Contribution", status: "sent", time: "05 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX036", name: "Moses Waweru",    phone: "0722667788", kitty: "Umoja Sacco – Q1 Savings",        gross: 130000, fee: 0, net: 130000, type: "Contribution", status: "sent", time: "05 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX037", name: "Faith Chebet",    phone: "0711778899", kitty: "Umoja Sacco – Q1 Savings",        gross: 130000, fee: 0, net: 130000, type: "Contribution", status: "sent", time: "06 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX038", name: "Kevin Mwangi",    phone: "0700889900", kitty: "Umoja Sacco – Q1 Savings",        gross: 130000, fee: 0, net: 130000, type: "Contribution", status: "sent", time: "06 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX039", name: "Patricia Otieno", phone: "0733990011", kitty: "Umoja Sacco – Q1 Savings",        gross: 130000, fee: 0, net: 130000, type: "Contribution", status: "sent", time: "07 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX040", name: "Brian Korir",     phone: "0722001122", kitty: "Umoja Sacco – Q1 Savings",        gross: 130000, fee: 0, net: 130000, type: "Contribution", status: "sent", time: "07 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-    // ── Eastlands Investment Pool (id:6, 10 contributors) ──
-    { ref: "TRX041", name: "Carolyne Nyambura", phone: "0711223300", kitty: "Eastlands Investment Pool",     gross: 220000, fee: 0, net: 220000, type: "Contribution", status: "sent", time: "03 Dec",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX042", name: "Eric Oloo",       phone: "0700334411", kitty: "Eastlands Investment Pool",       gross: 200000, fee: 0, net: 200000, type: "Contribution", status: "sent", time: "03 Dec",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX043", name: "Miriam Wanjiku",  phone: "0733445522", kitty: "Eastlands Investment Pool",       gross: 220000, fee: 0, net: 220000, type: "Contribution", status: "sent", time: "04 Dec",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX044", name: "Tony Mwenda",     phone: "0722556633", kitty: "Eastlands Investment Pool",       gross: 210000, fee: 0, net: 210000, type: "Contribution", status: "sent", time: "04 Dec",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX045", name: "Rose Wanjiku",    phone: "0711667788", kitty: "Eastlands Investment Pool",       gross: 200000, fee: 0, net: 200000, type: "Contribution", status: "sent", time: "05 Dec",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX046", name: "Joseph Kamau",    phone: "0700778899", kitty: "Eastlands Investment Pool",       gross: 220000, fee: 0, net: 220000, type: "Contribution", status: "sent", time: "05 Dec",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX047", name: "Lilian Adhiambo", phone: "0733889900", kitty: "Eastlands Investment Pool",       gross: 210000, fee: 0, net: 210000, type: "Contribution", status: "sent", time: "06 Dec",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX048", name: "Daniel Kipchoge", phone: "0722990011", kitty: "Eastlands Investment Pool",       gross: 215000, fee: 0, net: 215000, type: "Contribution", status: "sent", time: "06 Dec",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX049", name: "Susan Mwangi",    phone: "0711001122", kitty: "Eastlands Investment Pool",       gross: 215000, fee: 0, net: 215000, type: "Contribution", status: "sent", time: "07 Dec",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX050", name: "Alex Ochieng",    phone: "0700112244", kitty: "Eastlands Investment Pool",       gross: 205000, fee: 0, net: 205000, type: "Contribution", status: "sent", time: "07 Dec",  ownerEmail: "demo@mpamoja.co.ke" },
-    // ── Annual Harambee Dinner 2026 (id:7, 8 contributors) ──
-    { ref: "TRX051", name: "Hellen Cherop",   phone: "0733223355", kitty: "Annual Harambee Dinner 2026",     gross: 200000, fee: 0, net: 200000, type: "Contribution", status: "sent", time: "05 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX052", name: "Jane Wambua",     phone: "0712345671", kitty: "Annual Harambee Dinner 2026",     gross: 250000, fee: 0, net: 250000, type: "Contribution", status: "sent", time: "06 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX053", name: "Peter Odhiambo",  phone: "0722112233", kitty: "Annual Harambee Dinner 2026",     gross: 180000, fee: 0, net: 180000, type: "Contribution", status: "sent", time: "06 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX054", name: "Grace Muthoni",   phone: "0733112233", kitty: "Annual Harambee Dinner 2026",     gross: 220000, fee: 0, net: 220000, type: "Contribution", status: "sent", time: "07 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX055", name: "Moses Waweru",    phone: "0722667788", kitty: "Annual Harambee Dinner 2026",     gross: 150000, fee: 0, net: 150000, type: "Contribution", status: "sent", time: "07 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX056", name: "Faith Chebet",    phone: "0711778899", kitty: "Annual Harambee Dinner 2026",     gross: 200000, fee: 0, net: 200000, type: "Contribution", status: "sent", time: "08 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX057", name: "Kevin Mwangi",    phone: "0700889900", kitty: "Annual Harambee Dinner 2026",     gross: 230000, fee: 0, net: 230000, type: "Contribution", status: "sent", time: "08 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX058", name: "Patricia Otieno", phone: "0733990011", kitty: "Annual Harambee Dinner 2026",     gross: 200000, fee: 0, net: 200000, type: "Contribution", status: "sent", time: "09 Mar",  ownerEmail: "demo@mpamoja.co.ke" },
-    // ── Wanjiku's Wedding Fund (id:8, 9 contributors) ──
-    { ref: "TRX059", name: "Brian Korir",     phone: "0722001122", kitty: "Wanjiku's Wedding Fund",          gross: 159000, fee: 0, net: 159000, type: "Contribution", status: "sent", time: "22 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX060", name: "Carolyne Nyambura", phone: "0711223300", kitty: "Wanjiku's Wedding Fund",        gross: 160000, fee: 0, net: 160000, type: "Contribution", status: "sent", time: "22 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX061", name: "Eric Oloo",       phone: "0700334411", kitty: "Wanjiku's Wedding Fund",          gross: 158000, fee: 0, net: 158000, type: "Contribution", status: "sent", time: "23 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX062", name: "Miriam Wanjiku",  phone: "0733445522", kitty: "Wanjiku's Wedding Fund",          gross: 160000, fee: 0, net: 160000, type: "Contribution", status: "sent", time: "23 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX063", name: "Tony Mwenda",     phone: "0722556633", kitty: "Wanjiku's Wedding Fund",          gross: 160000, fee: 0, net: 160000, type: "Contribution", status: "sent", time: "24 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX064", name: "Rose Wanjiku",    phone: "0711667788", kitty: "Wanjiku's Wedding Fund",          gross: 160000, fee: 0, net: 160000, type: "Contribution", status: "sent", time: "24 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX065", name: "Joseph Kamau",    phone: "0700778899", kitty: "Wanjiku's Wedding Fund",          gross: 158000, fee: 0, net: 158000, type: "Contribution", status: "sent", time: "25 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX066", name: "Lilian Adhiambo", phone: "0733889900", kitty: "Wanjiku's Wedding Fund",          gross: 160000, fee: 0, net: 160000, type: "Contribution", status: "sent", time: "25 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX067", name: "Daniel Kipchoge", phone: "0722990011", kitty: "Wanjiku's Wedding Fund",          gross: 160000, fee: 0, net: 160000, type: "Contribution", status: "sent", time: "26 Feb",  ownerEmail: "demo@mpamoja.co.ke" },
-    // ── Youth Empowerment Summit (id:9, 7 contributors) ──
-    { ref: "TRX068", name: "Susan Mwangi",    phone: "0711001122", kitty: "Youth Empowerment Summit",        gross: 70000,  fee: 0, net: 70000,  type: "Contribution", status: "sent", time: "02 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX069", name: "Alex Ochieng",    phone: "0700112244", kitty: "Youth Empowerment Summit",        gross: 68000,  fee: 0, net: 68000,  type: "Contribution", status: "sent", time: "02 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX070", name: "Hellen Cherop",   phone: "0733223355", kitty: "Youth Empowerment Summit",        gross: 70000,  fee: 0, net: 70000,  type: "Contribution", status: "sent", time: "03 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX071", name: "Ann Njeri",       phone: "0700112233", kitty: "Youth Empowerment Summit",        gross: 65000,  fee: 0, net: 65000,  type: "Contribution", status: "sent", time: "03 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX072", name: "Samuel Otieno",   phone: "0722334455", kitty: "Youth Empowerment Summit",        gross: 70000,  fee: 0, net: 70000,  type: "Contribution", status: "sent", time: "04 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX073", name: "Lucy Akinyi",     phone: "0733556677", kitty: "Youth Empowerment Summit",        gross: 68000,  fee: 0, net: 68000,  type: "Contribution", status: "sent", time: "04 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
-    { ref: "TRX074", name: "Moses Waweru",    phone: "0722667788", kitty: "Youth Empowerment Summit",        gross: 67000,  fee: 0, net: 67000,  type: "Contribution", status: "sent", time: "05 Apr",  ownerEmail: "demo@mpamoja.co.ke" },
-    // ── Withdrawal ──
-    { ref: "WD001",  name: "Demo User",       phone: "",           kitty: "Harambee 2025",                   gross: 50000, fee: 1100, net: 48900, type: "Withdrawal", status: "sent", time: "12 Apr", ownerEmail: "demo@mpamoja.co.ke" },
-  ],
-  withdrawals: [
-    { date: "12 Apr 2025", kitty: "Harambee 2025", gross: 50000, fee: 1100, net: 48900, pct: "2.2", status: "sent", ownerEmail: "demo@mpamoja.co.ke" }
-  ],
-  users: [
-    { email: "demo@mpamoja.co.ke", phone: "0712345678", pass: "demo1234", name: "Demo User", initials: "DU", role: "Campaign Creator" }
-  ]
+  kitties: [],
+  chamas: [],
+  events: [],
+  notifications: [],
+  transactions: [],
+  withdrawals: [],
 };
-
 // ─── Company Logo SVG ───
 function MPamojaLogo({ size = 36 }) {
   return (
@@ -1098,6 +985,39 @@ function MPamojaLogo({ size = 36 }) {
       <path d="M15,20 C10,20 6,23 6,28 L6,76 C6,82 10,86 15,86 C20,86 24,82 24,76 L24,52 C30,60 36,66 40,70 L40,55 C36,50 30,42 24,33 L24,28 C24,23 20,20 15,20 Z" fill="url(#mpl-gl)"/>
       <path d="M65,20 C70,20 74,23 74,28 L74,76 C74,82 70,86 65,86 C60,86 56,82 56,76 L56,52 C50,60 44,66 40,70 L40,55 C44,50 50,42 56,33 L56,28 C56,23 60,20 65,20 Z" fill="url(#mpl-gr)"/>
     </svg>
+  );
+}
+
+// ─── Branded Loading Spinner ───
+// A distinctive M-Pamoja loading state — two counter-rotating rings around a pulsing
+// logo mark — used everywhere a plain "Loading…" string would otherwise have appeared.
+function LoadingSpinner({ label, size = 52, inline = false }) {
+  const ring = (
+    <div style={{position:"relative",width:size,height:size,flexShrink:0}}>
+      <div className="mp-loading-ring" style={{position:"absolute",inset:0,borderRadius:"50%",
+        border:"3px solid var(--surface3)",borderTopColor:"var(--brand)",borderRightColor:"var(--violet)"}} />
+      <div className="mp-loading-ring2" style={{position:"absolute",inset:6,borderRadius:"50%",
+        border:"2px solid transparent",borderBottomColor:"var(--sky)"}} />
+      <div className="mp-loading-mark" style={{position:"absolute",inset:0,display:"flex",alignItems:"center",justifyContent:"center"}}>
+        <MPamojaLogo size={Math.round(size * 0.5)} />
+      </div>
+    </div>
+  );
+
+  if (inline) {
+    return (
+      <div style={{display:"flex",alignItems:"center",gap:"0.65rem"}}>
+        {ring}
+        {label && <span style={{fontSize:"0.8rem",fontWeight:600,color:"var(--text2)"}}>{label}</span>}
+      </div>
+    );
+  }
+
+  return (
+    <div style={{display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center",gap:"0.75rem",padding:"1.75rem 0"}}>
+      {ring}
+      {label && <div style={{fontSize:"0.78rem",fontWeight:600,color:"var(--text3)"}}>{label}</div>}
+    </div>
   );
 }
 
@@ -2465,9 +2385,6 @@ function AuthScreen({ onLogin }) {
   const [showPassword, setShowPassword] = useState(false);
   const [login, setLogin] = useState({ email: "ngenoamos502@gmail.com", pass: "Amos@123" });
   const [signup, setSignup] = useState({ fn: "", ln: "", em: "", ph: "", pw: "", role: "Campaign Creator" });
-
-  // ✅ Define BASE here (or use from props/context)
-  const BASE = ''; // Empty for proxy, or 'http://localhost:5215' for direct
 
   const handleLoginChange = (e) => {
     setLogin(l => ({ ...l, [e.target.name]: e.target.value }));
@@ -4002,9 +3919,8 @@ function OverviewPage({ state, user, onNav, onToast, onRefresh, onWithdraw, onCo
             kitty={withdrawKitty}
             user={user}
             onClose={() => setWithdrawKitty(null)}
-            onConfirm={(k, net, fee, phone, partial) => {
-              onWithdraw(k.id, net, fee, phone, partial);
-              onToast("Withdrawal Sent! 💸", `KES ${fmt(net)} is on its way`);
+            onConfirm={async (k, net, fee, phone, partial, otpCode) => {
+              return await onWithdraw(k.id, net, fee, phone, partial, otpCode);
             }}
           />
         )}
@@ -4741,10 +4657,14 @@ const response = await fetch(`${BASE}/api/transactions/by-kitty?kittyId=${kitty.
     <div>
       {/* ── Sub-view Modals ── */}
       <Modal open={view === "contribute"} onClose={back}>
-        <KittyContributeModal kitty={kitty} user={user} onClose={back} onContribute={(id,amt,name,phone) => { onContribute && onContribute(id,amt,name,phone); onToast && onToast("Contributed! 🎉",`KES ${fmt(amt)} added`); back(); }} />
+        <KittyContributeModal kitty={kitty} user={user} onClose={back} onContribute={async (id,amt,name,phone) => {
+          const result = onContribute ? await onContribute(id,amt,name,phone) : null;
+          if (result?.confirmed) onToast && onToast("Contributed! 🎉",`KES ${fmt(amt)} added`);
+          return result;
+        }} />
       </Modal>
       <Modal open={view === "withdraw"} onClose={back}>
-        <KittyWithdrawModal kitty={kitty} user={user} onClose={back} onConfirm={(k,net,f,phone,partial) => { onWithdraw && onWithdraw(k.id,net,f,phone,partial); onToast && onToast("Withdrawal Sent! 💸",`KES ${fmt(net)} is on its way`); back(); }} />
+        <KittyWithdrawModal kitty={kitty} user={user} onClose={back} onConfirm={async (k,net,f,phone,partial,otpCode) => { return onWithdraw ? await onWithdraw(k.id,net,f,phone,partial,otpCode) : false; }} />
       </Modal>
       <Modal open={view === "edit"} onClose={back}>
         <EditKittyForm kitty={kitty} onClose={back} onSubmit={(updates) => { setKitty(k => ({...k,...updates})); onEditKitty && onEditKitty(kitty.id, updates); back(); onToast && onToast("Kitty Updated ✅",`"${updates.name}" saved`); }} />
@@ -5442,8 +5362,9 @@ function KittyWithdrawalsPage({ kitty, transactions, onBack }) {
 
 // ─── Kitty Withdraw Modal (partial + password auth) ───
 function KittyWithdrawModal({ kitty, user, onClose, onConfirm }) {
+  const BASE = '';
   const available = kitty.raised || 0;
-  const [step, setStep] = useState(1); // 1=amount+method, 2=auth, 3=pin, 4=done
+  const [step, setStep] = useState(1); // 1=amount+method, 2=auth, 3=OTP, 4=done
   const [withdrawAmt, setWithdrawAmt] = useState(String(available));
   const [method, setMethod] = useState("mpesa");
   // M-Pesa / Airtel
@@ -5462,13 +5383,19 @@ function KittyWithdrawModal({ kitty, user, onClose, onConfirm }) {
   const [pin, setPin] = useState("");
   const [confirmed, setConfirmed] = useState({ gross: available, fee: 0, net: available });
 
+  const [otpError, setOtpError] = useState("");
+  const [requestingOtp, setRequestingOtp] = useState(false);
+  const OTP_LENGTH = 6;
+
   const parsedAmt = Math.min(Math.max(parseFloat(withdrawAmt) || 0, 0), available);
   const liveCalc = getKittyFee(kitty, parsedAmt);
   const liveFee = liveCalc.fee;
   const liveFp  = liveCalc.pct;
   const liveNet = parsedAmt - liveFee;
 
-  const needsPin = method === "mpesa" || method === "airtel";
+  // NOTE: the backend (WithdrawalService) only supports M-Pesa disbursement targets today —
+  // Airtel/Paybill/Till/Bank aren't wired to a real gateway, so only M-Pesa proceeds for real.
+  const needsPin = method === "mpesa";
 
   const methodLabel = { mpesa:"M-Pesa", airtel:"Airtel Money", paybill:"Paybill", till:"Till Number", bank:"Bank Transfer" }[method] || method;
   const methodIcon  = { mpesa:"📱", airtel:"🔴", paybill:"🏢", till:"🏪", bank:"🏦" }[method];
@@ -5483,11 +5410,8 @@ function KittyWithdrawModal({ kitty, user, onClose, onConfirm }) {
 
   const validateStep1 = () => {
     if (parsedAmt < 1) return false;
-    if (method === "mpesa" || method === "airtel") return phone.replace(/\D/g,"").length >= 9;
-    if (method === "paybill") return paybillNo.trim() && paybillAcc.trim();
-    if (method === "till") return tillNo.trim();
-    if (method === "bank") return bankName.trim() && bankAcc.trim();
-    return true;
+    if (method === "mpesa") return phone.replace(/\D/g,"").length >= 9;
+    return false; // other methods aren't wired to a real disbursement gateway yet
   };
 
   const handleContinue = () => {
@@ -5496,27 +5420,46 @@ function KittyWithdrawModal({ kitty, user, onClose, onConfirm }) {
     setStep(2);
   };
 
-  const handleAuthSubmit = () => {
-    const matchDb   = DEFAULT_STATE.users.find(u => u.email === user.email && u.pass === password);
-    const matchUser = user.pass === password;
-    if (!matchDb && !matchUser) { setPwError("Incorrect password. Please try again."); return; }
+  const handleAuthSubmit = async () => {
+    if (user.pass !== password) { setPwError("Incorrect password. Please try again."); return; }
     setPwError("");
-    if (needsPin) { setStep(3); }
-    else {
-      onConfirm(kitty, confirmed.net, confirmed.fee, getDestination(), confirmed.gross);
-      setStep(4);
+
+    if (needsPin) {
+      setRequestingOtp(true);
+      setOtpError("");
+      try {
+        const token = localStorage.getItem('mpamoja_token');
+        const res = await fetch(`${BASE}/api/withdrawals/request-otp`, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}`, 'ngrok-skip-browser-warning': 'any' }
+        });
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          setOtpError(err.error || "Couldn't send the verification code. Please try again.");
+          setRequestingOtp(false);
+          return;
+        }
+        setRequestingOtp(false);
+        setStep(3);
+      } catch {
+        setOtpError("Network error sending the verification code.");
+        setRequestingOtp(false);
+      }
+    } else {
+      const ok = await onConfirm(kitty, confirmed.net, confirmed.fee, getDestination(), confirmed.gross, null);
+      if (ok) setStep(4); else onClose();
     }
   };
 
   const handleKey = (k) => {
     if (k === "del") { setPin(p => p.slice(0,-1)); return; }
-    if (pin.length >= 4) return;
+    if (pin.length >= OTP_LENGTH) return;
     const np = pin + k; setPin(np);
-    if (np.length === 4) {
-      setTimeout(() => {
+    if (np.length === OTP_LENGTH) {
+      setTimeout(async () => {
         setPin("");
-        onConfirm(kitty, confirmed.net, confirmed.fee, getDestination(), confirmed.gross);
-        setStep(4);
+        const ok = await onConfirm(kitty, confirmed.net, confirmed.fee, getDestination(), confirmed.gross, np);
+        if (ok) setStep(4); else onClose();
       }, 400);
     }
   };
@@ -5584,6 +5527,11 @@ function KittyWithdrawModal({ kitty, user, onClose, onConfirm }) {
               </button>
             ))}
           </div>
+          {method !== "mpesa" && (
+            <div style={{marginBottom:"0.9rem",fontSize:"0.68rem",color:"var(--text3)",fontStyle:"italic"}}>
+              Only M-Pesa withdrawals are available today — the other methods are coming soon.
+            </div>
+          )}
 
           {/* Dynamic fields per method */}
           {(method === "mpesa") && (
@@ -5637,12 +5585,12 @@ function KittyWithdrawModal({ kitty, user, onClose, onConfirm }) {
           )}
 
           <button className="confirm-btn" style={{background:"var(--grad2)",boxShadow:"0 8px 24px rgba(16,185,129,0.25)"}}
-            onClick={handleContinue}>Continue →</button>
+            onClick={handleContinue} disabled={!validateStep1()}>Continue →</button>
           <button className="back-btn" onClick={onClose}>Cancel</button>
         </>
       )}
 
-      {/* ── Step 2: Password Authorization ── */}
+      {/* ── Step 2: Password Auth ── */}
       {step === 2 && (
         <>
           <div style={{textAlign:"center",marginBottom:"1rem"}}>
@@ -5667,6 +5615,7 @@ function KittyWithdrawModal({ kitty, user, onClose, onConfirm }) {
           </div>
 
           {pwError && <div className="auth-msg" style={{marginBottom:"0.75rem"}}>{pwError}</div>}
+          {otpError && <div className="auth-msg" style={{marginBottom:"0.75rem"}}>{otpError}</div>}
           <div className="field">
             <label>Your Account Password</label>
             <input type="password" placeholder="Enter your login password" value={password}
@@ -5677,22 +5626,21 @@ function KittyWithdrawModal({ kitty, user, onClose, onConfirm }) {
             🔒 Only the kitty creator can authorize withdrawals.
           </div>
           <button className="confirm-btn" style={{background:"var(--grad2)",boxShadow:"0 8px 24px rgba(16,185,129,0.25)"}}
-            onClick={handleAuthSubmit}>{needsPin ? "Authorize →" : "Confirm Withdrawal →"}</button>
+            onClick={handleAuthSubmit} disabled={requestingOtp}>{requestingOtp ? "Sending code…" : needsPin ? "Authorize →" : "Confirm Withdrawal →"}</button>
           <button className="back-btn" onClick={() => { setStep(1); setPassword(""); setPwError(""); }}>← Back</button>
         </>
       )}
 
-      {/* ── Step 3: PIN (M-Pesa / Airtel only) ── */}
-      {/* {step === 3 && (
+      {/* ── Step 3: OTP ── */}
+      {step === 3 && (
         <div style={{textAlign:"center"}}>
-          <div style={{fontSize:"2rem",marginBottom:"0.5rem"}}>{methodIcon}</div>
+          <div style={{fontSize:"2rem",marginBottom:"0.5rem"}}>🔐</div>
           <div style={{fontSize:"0.85rem",color:"var(--text2)",marginBottom:"1rem",lineHeight:1.5}}>
-            Enter {methodLabel} PIN to send <strong>KES {fmt(confirmed.net)}</strong> to {maskPhone(phone)}
+            Enter the 6-digit code sent to your phone to send <strong>KES {fmt(confirmed.net)}</strong> to {maskPhone(phone)}
           </div>
           <div className="mpesa-pin-row">
-            {[0,1,2,3].map(i => (
-              <div key={i} className={`pin-box${pin.length > i ? " filled" : ""}`}
-                style={method==="airtel"&&pin.length>i?{borderColor:"#e4000f",background:"#fff5f5",color:"#e4000f"}:{}}>
+            {Array.from({ length: OTP_LENGTH }).map((_, i) => (
+              <div key={i} className={`pin-box${pin.length > i ? " filled" : ""}`}>
                 {pin.length > i ? "★" : "●"}
               </div>
             ))}
@@ -5704,7 +5652,7 @@ function KittyWithdrawModal({ kitty, user, onClose, onConfirm }) {
           </div>
           <button className="back-btn" style={{marginTop:"0.75rem"}} onClick={() => { setStep(2); setPin(""); }}>← Back</button>
         </div>
-      )} */}
+      )}
 
       {/* ── Step 4: Done ── */}
       {step === 4 && (
@@ -6006,16 +5954,19 @@ const handleContribute = async () => {
               <div className={`pay-method${method === "mpesa" ? " active" : ""}`} onClick={() => { setMethod("mpesa"); setPhone(""); setErrorMessage(""); }}>
                 <div className="pay-method-icon">📱</div><div className="pay-method-name">M-Pesa</div>
               </div>
-              <div className={`pay-method${method === "airtel" ? " active-airtel" : ""}`} onClick={() => { setMethod("airtel"); setPhone(""); setErrorMessage(""); }}>
-                <div className="pay-method-icon">🔴</div><div className="pay-method-name" style={method==="airtel"?{color:"#e4000f"}:{}}>Airtel</div>
+              <div className="pay-method" style={{opacity:0.45,cursor:"not-allowed"}}>
+                <div className="pay-method-icon">🔴</div><div className="pay-method-name">Airtel</div>
               </div>
-              <div className={`pay-method${method === "bank" ? " active" : ""}`} onClick={() => { setMethod("bank"); setPhone(""); setErrorMessage(""); }}>
+              <div className="pay-method" style={{opacity:0.45,cursor:"not-allowed"}}>
                 <div className="pay-method-icon">🏦</div><div className="pay-method-name">Bank</div>
               </div>
             </div>
+            <div style={{marginTop:"0.5rem",fontSize:"0.68rem",color:"var(--text3)",fontStyle:"italic"}}>
+              Only M-Pesa contributions are available today — the other methods are coming soon.
+            </div>
           </div>
 
-          {(method === "mpesa" || method === "airtel") && (
+          {(method === "mpesa") && (
             <div className="field">
               <label>{method === "mpesa" ? "M-Pesa" : "Airtel Money"} Number <span style={{color:"var(--rose)"}}>*</span></label>
               <input 
@@ -6229,20 +6180,73 @@ const handleContribute = async () => {
 }
 
 // ─── Chama Detail Modal ───
-function ChamaDetailModal({ chama, onClose, onContribute, onWithdraw }) {
+function ChamaDetailModal({ chama, onClose, onContribute, onWithdraw, onToast }) {
   const [lateDays, setLateDays] = useState("");
   const [baseContrib, setBaseContrib] = useState("");
-  const realMembers = (chama.memberList || []);
-  // Fallback display if no real memberList — show estimated rows
-  const members = realMembers.length > 0 ? realMembers.map(m => ({
+  const [pendingWithdrawals, setPendingWithdrawals] = useState([]);
+  const [approvingId, setApprovingId] = useState(null);
+  // memberList isn't included on the "my chamas" list endpoint (only on GET /api/chamas/{id}),
+  // so this card fetches the real roster itself rather than showing whatever was cached.
+  const [memberList, setMemberList] = useState(chama.memberList || null);
+
+  useEffect(() => {
+    if (chama.memberList) { setMemberList(chama.memberList); return; }
+    const token = localStorage.getItem('mpamoja_token');
+    if (!token) return;
+    (async () => {
+      try {
+        const res = await fetch(`${BASE}/api/chamas/${chama.id}`, {
+          headers: { 'Authorization': `Bearer ${token}`, 'ngrok-skip-browser-warning': 'any' }
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        setMemberList(data.memberList || []);
+      } catch { /* leave as null — modal shows an empty state below */ }
+    })();
+  }, [chama.id]);
+
+  // FR-CHM-06: chama withdrawals always route through maker-checker — surface what's waiting.
+  const loadPending = useCallback(async () => {
+    if (!chama.kittyId) return;
+    const token = localStorage.getItem('mpamoja_token');
+    if (!token) return;
+    try {
+      const res = await fetch(`${BASE}/api/withdrawals/kitty/${chama.kittyId}`, {
+        headers: { 'Authorization': `Bearer ${token}`, 'ngrok-skip-browser-warning': 'any' }
+      });
+      if (!res.ok) return;
+      const data = await res.json();
+      setPendingWithdrawals(data.filter(w => w.status === "PendingApproval"));
+    } catch { /* leave list empty — modal still works without it */ }
+  }, [chama.kittyId]);
+
+  useEffect(() => { loadPending(); }, [loadPending]);
+
+  const respondToWithdrawal = async (withdrawalId, approve) => {
+    setApprovingId(withdrawalId);
+    try {
+      const token = localStorage.getItem('mpamoja_token');
+      const res = await fetch(`${BASE}/api/withdrawals/${withdrawalId}/approve`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`, 'ngrok-skip-browser-warning': 'any' },
+        body: JSON.stringify({ approve })
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) { onToast && onToast("Error", data.error || "Failed to respond to withdrawal."); return; }
+      onToast && onToast(approve ? "Approved ✅" : "Rejected", approve
+        ? "Your approval has been recorded."
+        : "The withdrawal has been rejected.");
+      loadPending();
+    } catch (error) {
+      onToast && onToast("Error", error.message || "Failed to respond to withdrawal.");
+    } finally {
+      setApprovingId(null);
+    }
+  };
+  const members = (memberList || []).map(m => ({
     name: m.name, initials: (m.name||"?").slice(0,2).toUpperCase(),
-    paid: chama.contributionAmount || Math.round(chama.pool / (chama.members||1))
-  })) : [
-    { name: "Jane Wambua", initials: "JW", paid: chama.pool > 0 ? Math.round(chama.pool / (chama.members||1) * 1.2) : 0 },
-    { name: "Peter Odhiambo", initials: "PO", paid: chama.pool > 0 ? Math.round(chama.pool / (chama.members||1) * 0.9) : 0 },
-    { name: "Amina Mohamed", initials: "AM", paid: chama.pool > 0 ? Math.round(chama.pool / (chama.members||1) * 1.1) : 0 },
-    { name: "David Kamau", initials: "DK", paid: chama.pool > 0 ? Math.round(chama.pool / (chama.members||1) * 0.8) : 0 },
-  ];
+    paid: chama.contributionAmount || Math.round((chama.pool || 0) / (chama.members || 1)),
+  }));
 
   const calcPenalty = () => {
     const days = parseInt(lateDays) || 0;
@@ -6321,9 +6325,44 @@ function ChamaDetailModal({ chama, onClose, onContribute, onWithdraw }) {
         </div>
       )}
 
-      <div style={{fontSize:"0.72rem",fontWeight:700,color:"var(--text3)",textTransform:"uppercase",letterSpacing:"0.04em",marginBottom:"0.5rem"}}>Recent Contributors</div>
+      {pendingWithdrawals.length > 0 && (
+        <div style={{background:"var(--brand-light)",border:"1.5px solid rgba(79,70,229,0.2)",borderRadius:12,padding:"0.85rem",marginBottom:"1rem"}}>
+          <div style={{fontSize:"0.7rem",fontWeight:700,color:"var(--brand)",textTransform:"uppercase",letterSpacing:"0.04em",marginBottom:"0.6rem"}}>
+            ⏳ Pending Approval ({pendingWithdrawals.length})
+          </div>
+          {pendingWithdrawals.map(w => (
+            <div key={w.id} style={{background:"var(--surface)",borderRadius:10,padding:"0.65rem 0.75rem",marginBottom:"0.5rem",border:"1px solid var(--border)"}}>
+              <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.78rem",marginBottom:"0.5rem"}}>
+                <span style={{color:"var(--text2)"}}>Withdrawal request</span>
+                <strong>KES {fmt(w.net)}</strong>
+              </div>
+              <div style={{display:"flex",gap:"0.5rem"}}>
+                <button type="button" disabled={approvingId === w.id}
+                  onClick={() => respondToWithdrawal(w.id, true)}
+                  style={{flex:1,background:"var(--emerald)",color:"#fff",border:"none",borderRadius:8,padding:"0.4rem 0",fontSize:"0.72rem",fontWeight:700,cursor:"pointer",fontFamily:"var(--font)"}}>
+                  {approvingId === w.id ? "…" : "Approve"}
+                </button>
+                <button type="button" disabled={approvingId === w.id}
+                  onClick={() => respondToWithdrawal(w.id, false)}
+                  style={{flex:1,background:"var(--rose)",color:"#fff",border:"none",borderRadius:8,padding:"0.4rem 0",fontSize:"0.72rem",fontWeight:700,cursor:"pointer",fontFamily:"var(--font)"}}>
+                  {approvingId === w.id ? "…" : "Reject"}
+                </button>
+              </div>
+            </div>
+          ))}
+          <div style={{fontSize:"0.65rem",color:"var(--text3)",lineHeight:1.4}}>
+            Only chama officials can approve. The person who requested a withdrawal cannot approve their own request.
+          </div>
+        </div>
+      )}
+
+      <div style={{fontSize:"0.72rem",fontWeight:700,color:"var(--text3)",textTransform:"uppercase",letterSpacing:"0.04em",marginBottom:"0.5rem"}}>Members</div>
       <div style={{background:"var(--surface2)",borderRadius:14,padding:"0.5rem 0.75rem",border:"1.5px solid var(--border)",marginBottom:"1rem"}}>
-        {members.slice(0,4).map((m,i) => (
+        {members.length === 0 ? (
+          <div style={{padding:"0.75rem",textAlign:"center",fontSize:"0.75rem",color:"var(--text3)"}}>
+            {memberList === null ? "Loading members…" : "No members yet."}
+          </div>
+        ) : members.slice(0,4).map((m,i) => (
           <div key={i} className="chd-member-row">
             <div className="chd-member-av">{m.initials}</div>
             <div className="chd-member-name">{m.name}</div>
@@ -6355,20 +6394,31 @@ function ChamaContributeModal({ chama, onClose, onConfirm }) {
   const [lateDays, setLateDays] = useState("");
   const [baseAmount, setBaseAmount] = useState("");
 
+  // step: 1=details, 2=check phone (real STK sent, polling), 3=success, 4=error
   const [step, setStep] = useState(1);
   const [phone, setPhone] = useState("0712345678");
-  const [pin, setPin] = useState("");
-  const [done, setDone] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [elapsedTime, setElapsedTime] = useState(0);
+  const MAX_WAIT_TIME = 60;
+
+  useEffect(() => {
+    if (step !== 2) return;
+    const timer = setInterval(() => setElapsedTime(prev => prev + 1), 1000);
+    return () => clearInterval(timer);
+  }, [step]);
 
   // ── Penalty calculation ──
   const parsedBase = parseFloat(baseAmount) || 0;
   const parsedDays = parseInt(lateDays) || 0;
 
+  const penaltyFreq = chama.penaltyFrequency || (chama.penaltyPerDay ? "daily" : "monthly");
+  const penaltyMultiplies = penaltyFreq === "daily" || penaltyFreq === "weekly";
+  const lateUnitLabel = penaltyFreq === "weekly" ? "week" : "day";
+
   const calcPenalty = () => {
     if (!hasPenalty || !isLate || parsedBase <= 0) return 0;
-    const freq = chama.penaltyFrequency || (chama.penaltyPerDay ? "daily" : "monthly");
-    const multiplies = freq === "daily" || freq === "weekly";
-    const units = multiplies ? Math.max(1, parsedDays) : 1;
+    const units = penaltyMultiplies ? Math.max(1, parsedDays) : 1;
     if (chama.penaltyType === "fixed") {
       return chama.penaltyValue * units;
     } else {
@@ -6379,8 +6429,35 @@ function ChamaContributeModal({ chama, onClose, onConfirm }) {
   const penaltyAmt = calcPenalty();
   const totalAmount = parsedBase + penaltyAmt;
 
+  const handleContribute = async () => {
+    if (isProcessing) return;
+    if (phone.replace(/\D/g, "").length < 9) {
+      setErrorMessage("Please enter a valid M-Pesa number");
+      setTimeout(() => setErrorMessage(""), 3000);
+      return;
+    }
+    setIsProcessing(true);
+    setErrorMessage("");
+    setElapsedTime(0);
+    setStep(2);
+    try {
+      const result = await onConfirm(chama.id, totalAmount, phone);
+      if (result && result.confirmed) {
+        setStep(3);
+      } else {
+        setErrorMessage(result?.error || "Payment failed. Please try again.");
+        setStep(4);
+      }
+    } catch (error) {
+      setErrorMessage(error?.error || error?.message || "Payment failed. Please try again.");
+      setStep(4);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
   // ── Success screen ──
-  if (done) return (
+  if (step === 3) return (
     <div style={{textAlign:"center",padding:"1rem 0"}}>
       <div style={{fontSize:"3rem",marginBottom:"0.75rem"}}>🏠</div>
       <div style={{fontSize:"1.1rem",fontWeight:800,marginBottom:"0.4rem",letterSpacing:"-0.02em"}}>Contribution Sent!</div>
@@ -6389,7 +6466,7 @@ function ChamaContributeModal({ chama, onClose, onConfirm }) {
       </div>
       {penaltyAmt > 0 && (
         <div style={{background:"var(--amber-light)",border:"1.5px solid rgba(245,158,11,0.2)",borderRadius:10,padding:"0.6rem 0.85rem",marginBottom:"0.75rem",fontSize:"0.78rem",color:"var(--amber)",fontWeight:600}}>
-          ⚠️ Includes KES {fmt(penaltyAmt)} late penalty ({chama.penaltyPerDay ? `${parsedDays} day${parsedDays!==1?"s":""} × ` : ""}{chama.penaltyType==="fixed"?`KES ${fmt(chama.penaltyValue)}`:`${chama.penaltyValue}%`})
+          ⚠️ Includes KES {fmt(penaltyAmt)} late penalty ({penaltyMultiplies ? `${parsedDays} ${lateUnitLabel}${parsedDays!==1?"s":""} × ` : ""}{chama.penaltyType==="fixed"?`KES ${fmt(chama.penaltyValue)}`:`${chama.penaltyValue}%`})
         </div>
       )}
       <div style={{background:"var(--emerald-light)",border:"1.5px solid rgba(16,185,129,0.15)",borderRadius:10,padding:"0.6rem 0.85rem",marginBottom:"1.25rem",fontSize:"0.78rem",color:"#065F46"}}>
@@ -6435,16 +6512,16 @@ function ChamaContributeModal({ chama, onClose, onConfirm }) {
                   <div style={{fontSize:"0.8rem",fontWeight:700,color:isLate?"var(--amber)":"var(--text)"}}>I'm paying late</div>
                   <div style={{fontSize:"0.67rem",color:"var(--text3)",marginTop:2,lineHeight:1.4}}>
                     Penalty: {chama.penaltyType==="fixed"
-                      ? `KES ${fmt(chama.penaltyValue)}${chama.penaltyPerDay?" per day late":" flat fee"}`
-                      : `${chama.penaltyValue}% of contribution${chama.penaltyPerDay?" per day late":" (one-time)"}`}
+                      ? `KES ${fmt(chama.penaltyValue)}${penaltyMultiplies?` per ${lateUnitLabel} late`:" flat fee"}`
+                      : `${chama.penaltyValue}% of contribution${penaltyMultiplies?` per ${lateUnitLabel} late`:" (one-time)"}`}
                   </div>
                 </div>
               </div>
 
-              {/* Days late input (shown when late & per-day penalty) */}
-              {isLate && chama.penaltyPerDay && (
+              {/* Days/weeks late input (shown when late & a multiplying penalty frequency) */}
+              {isLate && penaltyMultiplies && (
                 <div className="field" style={{marginBottom:"0.6rem"}}>
-                  <label style={{color:"var(--amber)"}}>Number of days late</label>
+                  <label style={{color:"var(--amber)"}}>Number of {lateUnitLabel}s late</label>
                   <input type="number" min="1" placeholder="e.g. 3"
                     value={lateDays} onChange={e => setLateDays(e.target.value)}
                     style={{borderColor:"rgba(245,158,11,0.5)"}} />
@@ -6452,7 +6529,7 @@ function ChamaContributeModal({ chama, onClose, onConfirm }) {
               )}
 
               {/* Live penalty breakdown */}
-              {isLate && parsedBase > 0 && (penaltyAmt > 0 || !chama.penaltyPerDay || parsedDays > 0) && (
+              {isLate && parsedBase > 0 && (penaltyAmt > 0 || !penaltyMultiplies || parsedDays > 0) && (
                 <div style={{background:"#FFF7ED",border:"1.5px solid rgba(245,158,11,0.25)",borderRadius:12,padding:"0.75rem 0.9rem"}}>
                   <div style={{fontSize:"0.68rem",fontWeight:700,color:"var(--amber)",textTransform:"uppercase",letterSpacing:"0.04em",marginBottom:"0.5rem"}}>⚠️ Penalty Breakdown</div>
                   <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.78rem",color:"var(--text2)",padding:"0.25rem 0"}}>
@@ -6461,7 +6538,7 @@ function ChamaContributeModal({ chama, onClose, onConfirm }) {
                   <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.78rem",color:"var(--amber)",padding:"0.25rem 0",borderTop:"1px solid rgba(245,158,11,0.15)"}}>
                     <span>
                       Late penalty
-                      {chama.penaltyPerDay && parsedDays > 0 ? ` (${parsedDays} day${parsedDays!==1?"s":""} × ${chama.penaltyType==="fixed"?`KES ${fmt(chama.penaltyValue)}`:`${chama.penaltyValue}%`})` : ""}
+                      {penaltyMultiplies && parsedDays > 0 ? ` (${parsedDays} ${lateUnitLabel}${parsedDays!==1?"s":""} × ${chama.penaltyType==="fixed"?`KES ${fmt(chama.penaltyValue)}`:`${chama.penaltyValue}%`})` : ""}
                     </span>
                     <span style={{fontWeight:700}}>+ KES {fmt(penaltyAmt)}</span>
                   </div>
@@ -6492,71 +6569,58 @@ function ChamaContributeModal({ chama, onClose, onConfirm }) {
           )}
 
           <div className="field"><label>M-Pesa Number</label>
-            <input value={phone} onChange={e => setPhone(e.target.value)} />
+            <input value={phone} onChange={e => { setPhone(e.target.value); setErrorMessage(""); }} disabled={isProcessing} />
           </div>
 
+          {errorMessage && (
+            <div style={{background:"var(--rose-light)",border:"1px solid rgba(244,63,94,0.2)",borderRadius:8,padding:"0.5rem 0.75rem",marginBottom:"0.75rem",fontSize:"0.78rem",color:"var(--rose)"}}>
+              ⚠️ {errorMessage}
+            </div>
+          )}
+
           <button className="confirm-btn" style={{background:"var(--grad-chama)",boxShadow:"0 8px 24px rgba(124,58,237,0.28)"}}
+            disabled={isProcessing}
             onClick={() => {
               if (parsedBase < 10) return;
-              if (isLate && chama.penaltyPerDay && parsedDays < 1) return;
-              setStep(2);
-            }}>Review →</button>
+              if (isLate && penaltyMultiplies && parsedDays < 1) return;
+              handleContribute();
+            }}>{isProcessing ? "Processing..." : "Contribute →"}</button>
           <button className="back-btn" onClick={onClose}>Cancel</button>
         </>
       )}
 
       {step === 2 && (
-        <>
-          <div className="wd-confirm-box">
-            {[
-              ["Chama", chama.name],
-              ["Contribution", `KES ${fmt(parsedBase)}`],
-              ...(penaltyAmt > 0 ? [["Late Penalty", `+ KES ${fmt(penaltyAmt)}`]] : []),
-              ["M-Pesa", phone]
-            ].map(([l,v]) => (
-              <div key={l} className="wd-confirm-row">
-                <span style={{color: l==="Late Penalty" ? "var(--amber)" : "var(--text3)"}}>{l}</span>
-                <span style={{color: l==="Late Penalty" ? "var(--amber)" : undefined, fontWeight: l==="Late Penalty" ? 700 : undefined}}>{v}</span>
-              </div>
-            ))}
-            <div className="wd-confirm-row net" style={{color:"var(--violet)"}}>
-              <span>Total</span><span>KES {fmt(totalAmount)}</span>
-            </div>
+        <div style={{textAlign:"center", padding:"1rem 0"}}>
+          <div style={{fontSize:"3rem", marginBottom:"0.75rem"}}>📲</div>
+          <div style={{fontSize:"1.1rem", fontWeight:800, marginBottom:"0.4rem", color:"var(--text)"}}>Check Your Phone!</div>
+          <div style={{fontSize:"0.82rem", color:"var(--text2)", marginBottom:"0.5rem", lineHeight:1.6}}>
+            M-Pesa prompt sent to <strong style={{color:"var(--violet)"}}>{phone}</strong>
           </div>
-
-          {penaltyAmt > 0 && (
-            <div style={{background:"#FFF7ED",border:"1.5px solid rgba(245,158,11,0.2)",borderRadius:10,padding:"0.6rem 0.85rem",marginBottom:"0.75rem",fontSize:"0.72rem",color:"var(--amber)",lineHeight:1.5}}>
-              ⚠️ This includes a <strong>KES {fmt(penaltyAmt)}</strong> late penalty
-              {chama.penaltyPerDay && parsedDays > 0 ? ` for ${parsedDays} day${parsedDays!==1?"s":""} overdue` : ""}.
-            </div>
-          )}
-
-          <div style={{textAlign:"center",marginBottom:"0.5rem"}}>
-            <div style={{fontSize:"2rem",marginBottom:"0.4rem"}}>📲</div>
-            <div style={{fontSize:"0.82rem",color:"var(--text2)",marginBottom:"0.75rem"}}>Enter M-Pesa PIN to confirm</div>
-            <div className="mpesa-pin-row">
-              {[0,1,2,3].map(i => <div key={i} className={`pin-box${pin.length>i?" filled":""}`}
-                style={pin.length>i?{borderColor:"var(--violet)",background:"var(--violet-light)",color:"var(--violet)"}:{}}>
-                {pin.length>i?"★":"●"}
-              </div>)}
-            </div>
-            <div className="keypad-grid">
-              {["1","2","3","4","5","6","7","8","9","*","0","del"].map(k => (
-                <button key={k} className="key-btn" onClick={() => {
-                  if (k === "del") { setPin(p => p.slice(0,-1)); return; }
-                  if (pin.length < 4) {
-                    const np = pin + k;
-                    setPin(np);
-                    if (np.length === 4) {
-                      setTimeout(() => { setPin(""); setDone(true); onConfirm(chama.id, parsedBase); }, 500);
-                    }
-                  }
-                }}>{k === "del" ? "⌫" : k}</button>
-              ))}
-            </div>
+          <div style={{fontSize:"0.7rem", color:"var(--text3)", marginBottom:"1rem"}}>
+            Enter your M-Pesa PIN on your phone to complete the payment.
           </div>
-          <button className="back-btn" onClick={() => { setStep(1); setPin(""); }}>← Back</button>
-        </>
+          <div style={{display:"flex", justifyContent:"center", marginBottom:"1rem"}}>
+            <div style={{width:40, height:40, border:"3px solid var(--surface3)", borderTop:"3px solid var(--violet)", borderRadius:"50%", animation:"spin 1s linear infinite"}} />
+          </div>
+          <p style={{fontSize:"0.7rem", color:"var(--text3)"}}>Waiting for confirmation… ({Math.min(elapsedTime, MAX_WAIT_TIME)}s)</p>
+          <button className="back-btn" style={{marginTop:"0.75rem"}} onClick={() => { setStep(1); setIsProcessing(false); }}>Cancel</button>
+          <style>{`@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}`}</style>
+        </div>
+      )}
+
+      {step === 4 && (
+        <div style={{textAlign:"center", padding:"1rem 0"}}>
+          <div style={{fontSize:"3rem", marginBottom:"0.75rem"}}>❌</div>
+          <div style={{fontSize:"1.1rem", fontWeight:800, marginBottom:"0.4rem", color:"var(--rose)"}}>Payment Failed</div>
+          <div style={{fontSize:"0.82rem", color:"var(--text2)", marginBottom:"0.75rem", lineHeight:1.6}}>
+            {errorMessage || "There was an issue processing your payment. Please try again."}
+          </div>
+          <div style={{background:"var(--rose-light)", border:"1px solid rgba(244,63,94,0.2)", borderRadius:8, padding:"0.5rem 0.75rem", marginBottom:"1rem", fontSize:"0.72rem", color:"var(--rose)"}}>
+            ⚠️ No money has been deducted from your account
+          </div>
+          <button className="confirm-btn" style={{background:"var(--grad-chama)"}} onClick={() => { setStep(1); setErrorMessage(""); }}>Try Again</button>
+          <button className="back-btn" onClick={onClose}>Cancel</button>
+        </div>
       )}
     </div>
   );
@@ -6586,7 +6650,13 @@ function ChamaWithdrawModal({ chama, user, onClose, onConfirm }) {
   const liveNet   = parsedAmt - liveFee;
   const flatRate  = liveCalc.flatRate;
 
-  const needsPin = method === "mpesa" || method === "airtel";
+  const [otpError, setOtpError] = useState("");
+  const [requestingOtp, setRequestingOtp] = useState(false);
+  const OTP_LENGTH = 6;
+
+  // NOTE: the backend (WithdrawalService) only supports M-Pesa disbursement targets today —
+  // Airtel/Paybill/Till/Bank aren't wired to a real gateway, so only M-Pesa proceeds for real.
+  const needsPin = method === "mpesa";
   const methodLabel = { mpesa:"M-Pesa", airtel:"Airtel Money", paybill:"Paybill", till:"Till Number", bank:"Bank Transfer" }[method] || method;
   const methodIcon  = { mpesa:"📱", airtel:"🔴", paybill:"🏢", till:"🏪", bank:"🏦" }[method];
 
@@ -6600,11 +6670,8 @@ function ChamaWithdrawModal({ chama, user, onClose, onConfirm }) {
 
   const validateStep1 = () => {
     if (parsedAmt < 1) return false;
-    if (method === "mpesa" || method === "airtel") return phone.replace(/\D/g,"").length >= 9;
-    if (method === "paybill") return paybillNo.trim() && paybillAcc.trim();
-    if (method === "till") return tillNo.trim();
-    if (method === "bank") return bankName.trim() && bankAcc.trim();
-    return true;
+    if (method === "mpesa") return phone.replace(/\D/g,"").length >= 9;
+    return false; // other methods aren't wired to a real disbursement gateway yet
   };
 
   const handleContinue = () => {
@@ -6613,24 +6680,46 @@ function ChamaWithdrawModal({ chama, user, onClose, onConfirm }) {
     setStep(2);
   };
 
-  const handleAuthSubmit = () => {
-    const matchDb   = DEFAULT_STATE.users.find(u => u.email === user.email && u.pass === password);
-    const matchUser = user.pass === password;
-    if (!matchDb && !matchUser) { setPwError("Incorrect password. Please try again."); return; }
+  const handleAuthSubmit = async () => {
+    if (user.pass !== password) { setPwError("Incorrect password. Please try again."); return; }
     setPwError("");
-    if (needsPin) { setStep(3); }
-    else { onConfirm(chama, confirmed.net, confirmed.fee, getDestination(), confirmed.gross); setStep(4); }
+
+    if (needsPin) {
+      setRequestingOtp(true);
+      setOtpError("");
+      try {
+        const token = localStorage.getItem('mpamoja_token');
+        const res = await fetch(`${BASE}/api/withdrawals/request-otp`, {
+          method: 'POST',
+          headers: { 'Authorization': `Bearer ${token}`, 'ngrok-skip-browser-warning': 'any' }
+        });
+        if (!res.ok) {
+          const err = await res.json().catch(() => ({}));
+          setOtpError(err.error || "Couldn't send the verification code. Please try again.");
+          setRequestingOtp(false);
+          return;
+        }
+        setRequestingOtp(false);
+        setStep(3);
+      } catch {
+        setOtpError("Network error sending the verification code.");
+        setRequestingOtp(false);
+      }
+    } else {
+      const ok = await onConfirm(chama, confirmed.net, confirmed.fee, getDestination(), confirmed.gross, null);
+      if (ok) setStep(4); else onClose();
+    }
   };
 
   const handleKey = (k) => {
     if (k === "del") { setPin(p => p.slice(0,-1)); return; }
-    if (pin.length >= 4) return;
+    if (pin.length >= OTP_LENGTH) return;
     const np = pin + k; setPin(np);
-    if (np.length === 4) {
-      setTimeout(() => {
+    if (np.length === OTP_LENGTH) {
+      setTimeout(async () => {
         setPin("");
-        onConfirm(chama, confirmed.net, confirmed.fee, getDestination(), confirmed.gross);
-        setStep(4);
+        const ok = await onConfirm(chama, confirmed.net, confirmed.fee, getDestination(), confirmed.gross, np);
+        if (ok) setStep(4); else onClose();
       }, 400);
     }
   };
@@ -6704,6 +6793,11 @@ function ChamaWithdrawModal({ chama, user, onClose, onConfirm }) {
               </button>
             ))}
           </div>
+          {method !== "mpesa" && (
+            <div style={{marginBottom:"0.9rem",fontSize:"0.68rem",color:"var(--text3)",fontStyle:"italic"}}>
+              Only M-Pesa withdrawals are available today — the other methods are coming soon.
+            </div>
+          )}
 
           {(method === "mpesa") && (
             <div className="field">
@@ -6741,7 +6835,7 @@ function ChamaWithdrawModal({ chama, user, onClose, onConfirm }) {
           )}
 
           <button className="confirm-btn" style={{background:"linear-gradient(135deg,#10B981,#059669)",boxShadow:"0 8px 24px rgba(16,185,129,0.25)"}}
-            onClick={handleContinue} disabled={parsedAmt < 1}>Continue →</button>
+            onClick={handleContinue} disabled={!validateStep1()}>Continue →</button>
           <button className="back-btn" onClick={onClose}>Cancel</button>
         </>
       )}
@@ -6762,6 +6856,7 @@ function ChamaWithdrawModal({ chama, user, onClose, onConfirm }) {
             <div style={{display:"flex",justifyContent:"space-between",borderTop:"1px solid var(--border)",paddingTop:6,marginTop:2}}><span style={{color:"var(--text3)"}}>You receive</span><span style={{fontWeight:800,color:"var(--emerald)"}}>KES {fmt(confirmed.net)}</span></div>
           </div>
           {pwError && <div className="auth-msg" style={{marginBottom:"0.75rem"}}>{pwError}</div>}
+          {otpError && <div className="auth-msg" style={{marginBottom:"0.75rem"}}>{otpError}</div>}
           <div className="field">
             <label>Your Account Password</label>
             <input type="password" placeholder="Enter your login password" value={password}
@@ -6772,22 +6867,21 @@ function ChamaWithdrawModal({ chama, user, onClose, onConfirm }) {
             🔒 Only the chama admin can authorize withdrawals.
           </div>
           <button className="confirm-btn" style={{background:"linear-gradient(135deg,#10B981,#059669)",boxShadow:"0 8px 24px rgba(16,185,129,0.25)"}}
-            onClick={handleAuthSubmit}>{needsPin ? "Authorize →" : "Confirm Withdrawal →"}</button>
+            onClick={handleAuthSubmit} disabled={requestingOtp}>{requestingOtp ? "Sending code…" : needsPin ? "Authorize →" : "Confirm Withdrawal →"}</button>
           <button className="back-btn" onClick={() => { setStep(1); setPassword(""); setPwError(""); }}>← Back</button>
         </>
       )}
 
-      {/* ── Step 3: PIN ── */}
+      {/* ── Step 3: OTP ── */}
       {step === 3 && (
         <div style={{textAlign:"center"}}>
-          <div style={{fontSize:"2rem",marginBottom:"0.5rem"}}>{methodIcon}</div>
+          <div style={{fontSize:"2rem",marginBottom:"0.5rem"}}>🔐</div>
           <div style={{fontSize:"0.85rem",color:"var(--text2)",marginBottom:"1rem",lineHeight:1.5}}>
-            Enter {methodLabel} PIN to send <strong>KES {fmt(confirmed.net)}</strong> to {maskPhone(phone)}
+            Enter the 6-digit code sent to your phone to send <strong>KES {fmt(confirmed.net)}</strong> to {maskPhone(phone)}
           </div>
           <div className="mpesa-pin-row">
-            {[0,1,2,3].map(i => (
-              <div key={i} className={`pin-box${pin.length > i ? " filled" : ""}`}
-                style={method==="airtel"&&pin.length>i?{borderColor:"#e4000f",background:"#fff5f5",color:"#e4000f"}:{}}>
+            {Array.from({ length: OTP_LENGTH }).map((_, i) => (
+              <div key={i} className={`pin-box${pin.length > i ? " filled" : ""}`}>
                 {pin.length > i ? "★" : "●"}
               </div>
             ))}
@@ -6925,11 +7019,11 @@ function EditChamaForm({ chama, onSubmit, onClose }) {
   const [form, setForm] = useState({
     name: chama.name,
     cycle: chama.cycle || "Monthly",
-    members: chama.members || "",
+    members: chama.maxMembers || "",
     contributionAmount: chama.contributionAmount || "",
     penaltyType: chama.penaltyType || "fixed",
     penaltyValue: chama.penaltyValue || "",
-    penaltyPerDay: chama.penaltyPerDay || false
+    penaltyFrequency: chama.penaltyFrequency || "daily"
   });
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
   const [mediaImage,  setMediaImage]  = useState(chama.mediaImage  || null);
@@ -7011,24 +7105,22 @@ function EditChamaForm({ chama, onSubmit, onClose }) {
             style={{borderColor: form.penaltyValue ? "var(--violet)" : undefined}} />
         </div>
 
-        <div onClick={() => set("penaltyPerDay", !form.penaltyPerDay)} style={{display:"flex",alignItems:"flex-start",gap:"0.65rem",background:"var(--surface)",border:`1.5px solid ${form.penaltyPerDay?"var(--violet)":"var(--border)"}`,borderRadius:10,padding:"0.65rem 0.75rem",cursor:"pointer",transition:"all 0.18s"}}>
-          <div style={{width:20,height:20,borderRadius:6,border:`2px solid ${form.penaltyPerDay?"var(--violet)":"var(--border)"}`,background:form.penaltyPerDay?"var(--violet)":"var(--surface)",display:"flex",alignItems:"center",justifyContent:"center",flexShrink:0,marginTop:1,transition:"all 0.18s"}}>
-            {form.penaltyPerDay && <span style={{color:"#fff",fontSize:"0.7rem",fontWeight:800}}>✓</span>}
-          </div>
-          <div>
-            <div style={{fontSize:"0.78rem",fontWeight:700,color:"var(--text)"}}>Charge per day late</div>
-            <div style={{fontSize:"0.67rem",color:"var(--text3)",marginTop:2,lineHeight:1.4}}>
-              {form.penaltyPerDay ? "Penalty × number of days overdue" : "One-time flat penalty regardless of delay length"}
-            </div>
-          </div>
+        <div className="field" style={{marginBottom:"0.65rem"}}>
+          <label style={{fontSize:"0.7rem",color:"var(--violet)"}}>Penalty Frequency</label>
+          <select value={form.penaltyFrequency} onChange={e => set("penaltyFrequency", e.target.value)}
+            style={{borderColor:"rgba(124,58,237,0.35)",color:"var(--violet)",fontWeight:600}}>
+            <option value="daily">Daily — charged per day overdue</option>
+            <option value="weekly">Weekly — charged per week overdue</option>
+            <option value="monthly">Monthly — charged once per month late</option>
+          </select>
         </div>
 
         {Number(form.penaltyValue) > 0 && (
           <div style={{marginTop:"0.6rem",background:"var(--surface)",borderRadius:10,padding:"0.55rem 0.75rem",border:"1px solid rgba(124,58,237,0.12)",fontSize:"0.7rem",color:"var(--text2)",lineHeight:1.5}}>
-            📌 <strong style={{color:"var(--violet)"}}>Example:</strong> Member is 5 days late →{" "}
-            {form.penaltyPerDay
-              ? (form.penaltyType==="fixed" ? `KES ${fmt((Number(form.penaltyValue)||0)*5)} penalty` : `${(Number(form.penaltyValue)||0)*5}% of contribution`)
-              : (form.penaltyType==="fixed" ? `KES ${fmt(Number(form.penaltyValue)||0)} flat penalty` : `${Number(form.penaltyValue)||0}% of contribution (one-time)`)}
+            📌 <strong style={{color:"var(--violet)"}}>Example:</strong>{" "}
+            {form.penaltyFrequency === "daily" && `3 days late → ${form.penaltyType==="fixed" ? `KES ${fmt((Number(form.penaltyValue)||0)*3)} penalty` : `${(Number(form.penaltyValue)||0)*3}% of contribution`}`}
+            {form.penaltyFrequency === "weekly" && `2 weeks late → ${form.penaltyType==="fixed" ? `KES ${fmt((Number(form.penaltyValue)||0)*2)} penalty` : `${(Number(form.penaltyValue)||0)*2}% of contribution`}`}
+            {form.penaltyFrequency === "monthly" && `1 month late → ${form.penaltyType==="fixed" ? `KES ${fmt(Number(form.penaltyValue)||0)} penalty` : `${Number(form.penaltyValue)||0}% of contribution`}`}
           </div>
         )}
       </div>
@@ -7047,11 +7139,11 @@ function EditChamaForm({ chama, onSubmit, onClose }) {
         onSubmit({
           name: form.name.trim(),
           cycle: form.cycle,
-          members: Number(form.members) || chama.members,
+          members: Number(form.members) || chama.maxMembers,
           contributionAmount: Number(form.contributionAmount) || chama.contributionAmount || 0,
           penaltyType: form.penaltyType,
           penaltyValue: Number(form.penaltyValue) || 0,
-          penaltyPerDay: form.penaltyPerDay,
+          penaltyFrequency: form.penaltyFrequency,
           mediaImage, mediaDoc, mediaBanner
         });
       }}>Save Changes →</button>
@@ -7181,10 +7273,38 @@ function PublicContributePopup({ kitty, onClose, onContribute, loading }) {
   const [amount, setAmount] = useState("");
   const [method, setMethod] = useState("mpesa");
   const [phone, setPhone]   = useState("");
-  const [pin, setPin]       = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [elapsedTime, setElapsedTime] = useState(0);
   const [done, setDone]     = useState(false);
   const parsedAmt = parseFloat(amount) || 0;
   const displayName = anon ? "Anonymous" : (name.trim() || "Contributor");
+  const MAX_WAIT_TIME = 60;
+
+  useEffect(() => {
+    if (step !== 3) return;
+    const timer = setInterval(() => setElapsedTime(t => t + 1), 1000);
+    return () => clearInterval(timer);
+  }, [step]);
+
+  const handleSubmitContribution = async () => {
+    if (isProcessing) return;
+    if (phone.replace(/\D/g,"").length < 9) { setErrorMessage("Please enter a valid M-Pesa number"); return; }
+    setIsProcessing(true);
+    setErrorMessage("");
+    setElapsedTime(0);
+    setStep(3);
+    try {
+      const result = await onContribute(kitty.id, parsedAmt, displayName, phone);
+      if (result?.confirmed) setDone(true);
+      else { setErrorMessage(result?.error || "Payment failed. Please try again."); setStep(2); }
+    } catch (error) {
+      setErrorMessage(error?.error || error?.message || "Payment failed. Please try again.");
+      setStep(2);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
 
   // If kitty is not loaded yet, show loading state
   if (!kitty) {
@@ -7198,18 +7318,6 @@ function PublicContributePopup({ kitty, onClose, onContribute, loading }) {
       </div>
     );
   }
-
-  const handleKey = (k) => {
-    if (k === "del") { setPin(p => p.slice(0,-1)); return; }
-    if (pin.length >= 4) return;
-    const np = pin + k; setPin(np);
-    if (np.length === 4) {
-      setTimeout(() => {
-        onContribute(kitty.id, parsedAmt, displayName, phone);
-        setDone(true);
-      }, 450);
-    }
-  };
 
   return (
     <div className="modal-overlay" onClick={e => e.target === e.currentTarget && !done && onClose()}>
@@ -7298,49 +7406,45 @@ function PublicContributePopup({ kitty, onClose, onContribute, loading }) {
           <>
             <div className="modal-title">Payment Method</div>
             <div className="pay-methods">
-              <div className={`pay-method${method==="mpesa"?" active":""}`} onClick={() => { setMethod("mpesa"); setPhone(""); }}>
+              <div className={`pay-method${method==="mpesa"?" active":""}`} onClick={() => setMethod("mpesa")}>
                 <div className="pay-method-icon">📱</div><div className="pay-method-name">M-Pesa</div>
               </div>
-              <div className={`pay-method${method==="airtel"?" active-airtel":""}`} onClick={() => { setMethod("airtel"); setPhone(""); }}>
-                <div className="pay-method-icon">🔴</div><div className="pay-method-name" style={method==="airtel"?{color:"#e4000f"}:{}}>Airtel</div>
+              <div className="pay-method" style={{opacity:0.45,cursor:"not-allowed"}}>
+                <div className="pay-method-icon">🔴</div><div className="pay-method-name">Airtel</div>
               </div>
-              <div className={`pay-method${method==="bank"?" active":""}`} onClick={() => { setMethod("bank"); setPhone(""); }}>
+              <div className="pay-method" style={{opacity:0.45,cursor:"not-allowed"}}>
                 <div className="pay-method-icon">🏦</div><div className="pay-method-name">Bank</div>
               </div>
             </div>
-            {(method==="mpesa"||method==="airtel") && (
-              <div className="field"><label>{method==="mpesa"?"M-Pesa":"Airtel Money"} Number</label>
-                <input type="tel" placeholder="0712345678" value={phone} onChange={e => setPhone(e.target.value)} />
+            <div style={{marginBottom:"0.75rem",fontSize:"0.68rem",color:"var(--text3)",fontStyle:"italic"}}>
+              Only M-Pesa is available today — the other methods are coming soon.
+            </div>
+            <div className="field"><label>M-Pesa Number</label>
+              <input type="tel" placeholder="0712345678" value={phone} onChange={e => { setPhone(e.target.value); setErrorMessage(""); }} disabled={isProcessing} />
+            </div>
+            {errorMessage && (
+              <div style={{background:"var(--rose-light)",border:"1px solid rgba(244,63,94,0.2)",borderRadius:8,padding:"0.5rem 0.75rem",marginBottom:"0.75rem",fontSize:"0.78rem",color:"var(--rose)"}}>
+                ⚠️ {errorMessage}
               </div>
             )}
-            {method==="bank" && (
-              <div style={{background:"var(--surface2)",borderRadius:12,padding:"0.85rem",border:"1.5px solid var(--border)",fontSize:"0.8rem",color:"var(--text2)",lineHeight:1.5,marginBottom:"1rem"}}>
-                🏦 Bank transfer instructions will be sent after confirming.
-              </div>
-            )}
-            <button className="confirm-btn" style={{marginTop:"0.75rem"}} onClick={() => {
-              if ((method==="mpesa"||method==="airtel") && phone.replace(/\D/g,"").length < 9) return;
-              if (method==="bank") { onContribute(kitty.id, parsedAmt, displayName, ""); setDone(true); return; }
-              setStep(3);
-            }}>Confirm →</button>
+            <button className="confirm-btn" style={{marginTop:"0.75rem"}} disabled={isProcessing} onClick={handleSubmitContribution}>
+              {isProcessing ? "Processing..." : "Confirm →"}
+            </button>
             <button className="back-btn" onClick={() => setStep(1)}>← Back</button>
           </>
 
         ) : (
           <div style={{textAlign:"center"}}>
             <div style={{fontSize:"2rem",marginBottom:"0.5rem"}}>📲</div>
+            <div style={{fontSize:"0.9rem",fontWeight:700,marginBottom:"0.4rem"}}>Check Your Phone!</div>
             <div style={{fontSize:"0.85rem",color:"var(--text2)",marginBottom:"1rem",lineHeight:1.5}}>
-              Enter {method==="airtel"?"Airtel Money":"M-Pesa"} PIN to send <strong>KES {fmt(parsedAmt)}</strong>
+              M-Pesa prompt sent to <strong>{phone}</strong> for <strong>KES {fmt(parsedAmt)}</strong>. Enter your PIN on your phone to complete the payment.
             </div>
-            <div className="mpesa-pin-row">
-              {[0,1,2,3].map(i => <div key={i} className={`pin-box${pin.length>i?" filled":""}`}>{pin.length>i?"★":"●"}</div>)}
+            <div style={{display:"flex",justifyContent:"center",marginBottom:"1rem"}}>
+              <div style={{width:36,height:36,border:"3px solid var(--surface3)",borderTop:"3px solid var(--brand)",borderRadius:"50%",animation:"spin 1s linear infinite"}} />
             </div>
-            <div className="keypad-grid">
-              {["1","2","3","4","5","6","7","8","9","*","0","del"].map(k => (
-                <button key={k} className="key-btn" onClick={() => handleKey(k)}>{k==="del"?"⌫":k}</button>
-              ))}
-            </div>
-            <button className="back-btn" style={{marginTop:"0.75rem"}} onClick={() => { setStep(2); setPin(""); }}>← Back</button>
+            <p style={{fontSize:"0.7rem",color:"var(--text3)"}}>Waiting for confirmation… ({Math.min(elapsedTime, MAX_WAIT_TIME)}s)</p>
+            <style>{`@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}`}</style>
           </div>
         )}
       </div>
@@ -7787,10 +7891,14 @@ function KittiesPage({ state, user, onToast, onNewKitty, onEditKitty, onWithdraw
         {viewKitty && <KittyDetailModal kitty={viewKitty} user={user} transactions={state.transactions} onClose={() => setViewKitty(null)} onWithdraw={onWithdraw} onContribute={onContribute} onEditKitty={onEditKitty} onToast={onToast} />}
       </Modal>
       <Modal open={!!contributeKitty} onClose={() => setContributeKitty(null)}>
-        {contributeKitty && <KittyContributeModal kitty={contributeKitty} user={user} onClose={() => setContributeKitty(null)} onContribute={(id, amt, name, phone) => { onContribute(id, amt, name, phone); onToast("Contributed! 🎉", `KES ${fmt(amt)} added to ${contributeKitty.name}`); }} />}
+        {contributeKitty && <KittyContributeModal kitty={contributeKitty} user={user} onClose={() => setContributeKitty(null)} onContribute={async (id, amt, name, phone) => {
+          const result = await onContribute(id, amt, name, phone);
+          if (result?.confirmed) onToast("Contributed! 🎉", `KES ${fmt(amt)} added to ${contributeKitty.name}`);
+          return result;
+        }} />}
       </Modal>
       <Modal open={!!withdrawKitty} onClose={() => setWithdrawKitty(null)}>
-        {withdrawKitty && <KittyWithdrawModal kitty={withdrawKitty} user={user} onClose={() => setWithdrawKitty(null)} onConfirm={(k, net, fee, phone, partial) => { onWithdraw(k.id, net, fee, phone, partial); onToast("Withdrawal Sent! 💸", `KES ${fmt(net)} is on its way`); }} />}
+        {withdrawKitty && <KittyWithdrawModal kitty={withdrawKitty} user={user} onClose={() => setWithdrawKitty(null)} onConfirm={async (k, net, fee, phone, partial, otpCode) => { return await onWithdraw(k.id, net, fee, phone, partial, otpCode); }} />}
       </Modal>
       <Modal open={!!shareKitty} onClose={() => setShareKitty(null)}>
         {shareKitty && <ShareKittyModal kitty={shareKitty} onClose={() => setShareKitty(null)} onOpenContribute={(k) => { setShareKitty(null); setContributeKitty(k); }} />}
@@ -7937,7 +8045,7 @@ function NotificationsPanel({ notifications, onClose, onMarkAllRead, onClearAll 
 }
 
 // ─── Manage Chama Members Modal ───
-function ManageMembersModal({ chama, onClose, onAddMember, onRemoveMember }) {
+function ManageMembersModal({ chama, onClose, onAddMember, onRemoveMember, onSetOfficial }) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [confirmId, setConfirmId] = useState(null);
@@ -7945,7 +8053,7 @@ function ManageMembersModal({ chama, onClose, onAddMember, onRemoveMember }) {
 
   const handleAdd = () => {
     if (!name.trim()) return;
-    onAddMember(chama.id, { id: Date.now(), name: name.trim(), phone: phone.trim(), joined: new Date().toLocaleDateString("en-KE",{month:"short",year:"numeric"}) });
+    onAddMember(chama.id, { name: name.trim(), phone: phone.trim() });
     setName(""); setPhone("");
   };
 
@@ -7956,7 +8064,7 @@ function ManageMembersModal({ chama, onClose, onAddMember, onRemoveMember }) {
         <span style={{fontSize:"1.2rem"}}>👥</span>
         <div>
           <div style={{fontSize:"0.78rem",fontWeight:700,color:"var(--violet)"}}>{members.length} {members.length===1?"member":"members"}</div>
-          <div style={{fontSize:"0.65rem",color:"var(--text2)",marginTop:1}}>Max capacity: {chama.members}</div>
+          <div style={{fontSize:"0.65rem",color:"var(--text2)",marginTop:1}}>Max capacity: {chama.maxMembers || "Unlimited"}</div>
         </div>
       </div>
 
@@ -7988,9 +8096,18 @@ function ManageMembersModal({ chama, onClose, onAddMember, onRemoveMember }) {
           <div style={{display:"flex",alignItems:"center",gap:"0.65rem"}}>
             <div className="member-av">{(m.name||"?").slice(0,2).toUpperCase()}</div>
             <div style={{flex:1,minWidth:0}}>
-              <div className="member-name">{m.name}</div>
-              <div className="member-phone">{m.phone || "—"} · Joined {m.joined}</div>
+              <div className="member-name">{m.name}{m.isOfficial && <span style={{marginLeft:6,fontSize:"0.65rem",fontWeight:700,color:"var(--amber)"}}>⭐ Official</span>}</div>
+              <div className="member-phone">{m.phone || "—"} · Joined {m.joined}{!m.registered && " · Not yet on M-Pamoja"}</div>
             </div>
+            {onSetOfficial && (
+              <button type="button" className="member-remove"
+                title={m.registered ? undefined : "Member must be a registered M-Pamoja user to become an official"}
+                disabled={!m.registered && !m.isOfficial}
+                style={{opacity: (!m.registered && !m.isOfficial) ? 0.5 : 1}}
+                onClick={() => onSetOfficial(chama.id, m.id, !m.isOfficial)}>
+                {m.isOfficial ? "Revoke" : "Make Official"}
+              </button>
+            )}
             <button type="button" className="member-remove" onClick={() => setConfirmId(confirmId === m.id ? null : m.id)}>Remove</button>
           </div>
           {confirmId === m.id && (
@@ -8238,7 +8355,7 @@ function ManageEventModal({ event, onClose, onSave, onToggleStatus }) {
 // ─── Share Event Modal ───
 function ShareEventModal({ event, onClose }) {
   const [copied, setCopied] = useState(false);
-  const link = (() => {
+  const link = event.shareUrl || (() => {
     try {
       const u = new URL(window.location.href);
       u.hash = `event=${event.id}`;
@@ -8315,7 +8432,7 @@ function ShareEventModal({ event, onClose }) {
 }
 
 // ─── Chama Page ───
-function ChamaPage({ state, user, onToast, onNewChama, onEditChama, onChamaContribute, onChamaWithdraw, onAddMember, onRemoveMember, onEditKitty, onWithdraw, onContribute, autoOpen, onBack }) {
+function ChamaPage({ state, user, onToast, onNewChama, onEditChama, onChamaContribute, onChamaWithdraw, onAddMember, onRemoveMember, onSetOfficial, onOpenMembers, onEditKitty, onWithdraw, onContribute, autoOpen, onBack }) {
   const [modalOpen, setModalOpen] = useState(false);
   useEffect(() => { if (autoOpen) { setModalOpen(true); } }, []);
   const [viewChama, setViewChama] = useState(null);
@@ -8333,12 +8450,16 @@ function ChamaPage({ state, user, onToast, onNewChama, onEditChama, onChamaContr
   const [contributeKittyC, setContributeKittyC] = useState(null);
   const [membersKittyC, setMembersKittyC] = useState(null);
   const chamas = state.chamas.filter(c => c.createdBy === user.email);
-  const chamaKitties = state.kitties.filter(k => k.createdBy === user.email && k.feeCategory === "chama");
+  // NOTE: real API-sourced kitties carry `category` ("Chama"/"Events"), not `feeCategory`
+  // (that field only exists client-side, before a NewKittyForm submission is refetched) —
+  // checking feeCategory alone meant this list never matched a real kitty from the backend.
+  const chamaKitties = state.kitties.filter(k => k.createdBy === user.email && (k.feeCategory === "chama" || k.category === "Chama"));
 
   const calcPenaltyLabel = (c) => {
     if (!c.penaltyValue) return null;
     const base = c.penaltyType === "fixed" ? `KES ${fmt(c.penaltyValue)}` : `${c.penaltyValue}%`;
-    return `${base}${c.penaltyPerDay ? "/day late" : " flat penalty"}`;
+    const freq = c.penaltyFrequency || (c.penaltyPerDay ? "daily" : "monthly");
+    return `${base}${freq === "monthly" ? " flat penalty" : `/${freq === "weekly" ? "week" : "day"} late`}`;
   };
 
   return (
@@ -8390,7 +8511,7 @@ function ChamaPage({ state, user, onToast, onNewChama, onEditChama, onChamaContr
               <div style={{display:"flex",gap:"0.5rem",flexWrap:"wrap",justifyContent:"flex-end"}} onClick={e=>e.stopPropagation()}>
                 <button className="btn btn-violet btn-sm" onClick={() => setContributeChama(c)}>Contribute</button>
                 <button className="btn btn-green btn-sm" onClick={() => setWithdrawChama(c)}>💸 Withdraw</button>
-                <button className="btn btn-sky btn-sm" onClick={() => setMembersChama(state.chamas.find(x=>x.id===c.id))}>👥 Members</button>
+                <button className="btn btn-sky btn-sm" onClick={() => { if (onOpenMembers) onOpenMembers(c.id); setMembersChama(state.chamas.find(x=>x.id===c.id)); }}>👥 Members</button>
                 <button className="btn btn-amber btn-sm" onClick={() => setEditChama(c)}>Edit</button>
               </div>
             </div>
@@ -8441,13 +8562,13 @@ function ChamaPage({ state, user, onToast, onNewChama, onEditChama, onChamaContr
         {editChama && <EditChamaForm chama={editChama} onSubmit={(updates) => { onEditChama(editChama.id, updates); setEditChama(null); onToast("Chama Updated ✅", `"${updates.name}" saved`); }} onClose={() => setEditChama(null)} />}
       </Modal>
       <Modal open={!!viewChama} onClose={() => setViewChama(null)}>
-        {viewChama && <ChamaDetailModal chama={viewChama} onClose={() => setViewChama(null)} onContribute={(c) => { setViewChama(null); setContributeChama(c); }} onWithdraw={(c) => { setViewChama(null); setWithdrawChama(c); }} />}
+        {viewChama && <ChamaDetailModal chama={viewChama} onClose={() => setViewChama(null)} onContribute={(c) => { setViewChama(null); setContributeChama(c); }} onWithdraw={(c) => { setViewChama(null); setWithdrawChama(c); }} onToast={onToast} />}
       </Modal>
       <Modal open={!!contributeChama} onClose={() => setContributeChama(null)}>
-        {contributeChama && <ChamaContributeModal chama={contributeChama} onClose={() => setContributeChama(null)} onConfirm={(chamaId, amount) => { onChamaContribute(chamaId, amount); onToast("Contribution Sent! 🏠", `KES ${fmt(amount)} added to chama`); }} />}
+        {contributeChama && <ChamaContributeModal chama={contributeChama} onClose={() => setContributeChama(null)} onConfirm={(chamaId, amount, phone) => onChamaContribute(chamaId, amount, phone)} />}
       </Modal>
       <Modal open={!!withdrawChama} onClose={() => setWithdrawChama(null)}>
-        {withdrawChama && <ChamaWithdrawModal chama={withdrawChama} user={user} onClose={() => setWithdrawChama(null)} onConfirm={(chama, net, fee, dest, gross) => { onChamaWithdraw(chama.id, net, fee, dest, gross); setWithdrawChama(null); onToast("Withdrawal Sent! 💸", `KES ${fmt(net)} is on its way`); }} />}
+        {withdrawChama && <ChamaWithdrawModal chama={withdrawChama} user={user} onClose={() => setWithdrawChama(null)} onConfirm={async (chama, net, fee, dest, gross, otpCode) => { return await onChamaWithdraw(chama, net, fee, dest, gross, otpCode); }} />}
       </Modal>
       <Modal open={!!membersChama} onClose={() => setMembersChama(null)}>
         {membersChama && (() => {
@@ -8463,6 +8584,12 @@ function ChamaPage({ state, user, onToast, onNewChama, onEditChama, onChamaContr
               onRemoveMember(chamaId, memberId);
               onToast("Member Removed", "Member has been removed from the chama");
             }}
+            onSetOfficial={(chamaId, memberId, isOfficial) => {
+              onSetOfficial && onSetOfficial(chamaId, memberId, isOfficial);
+              onToast(isOfficial ? "Made Official ⭐" : "Official Revoked", isOfficial
+                ? "This member can now approve withdrawals."
+                : "This member can no longer approve withdrawals.");
+            }}
           />;
         })()}
       </Modal>
@@ -8474,10 +8601,14 @@ function ChamaPage({ state, user, onToast, onNewChama, onEditChama, onChamaContr
         {editKittyC && <EditKittyForm kitty={editKittyC} onSubmit={(updates) => { if(onEditKitty) onEditKitty(editKittyC.id, updates); setEditKittyC(null); onToast("Kitty Updated ✅", `"${updates.name}" saved`); }} onClose={() => setEditKittyC(null)} />}
       </Modal>
       <Modal open={!!contributeKittyC} onClose={() => setContributeKittyC(null)}>
-        {contributeKittyC && <KittyContributeModal kitty={contributeKittyC} user={user} onClose={() => setContributeKittyC(null)} onConfirm={(id,amt,name,phone) => { if(onContribute) onContribute(id,amt,name,phone); setContributeKittyC(null); onToast("Contributed! 🎉", `KES ${fmt(amt)} sent`); }} />}
+        {contributeKittyC && <KittyContributeModal kitty={contributeKittyC} user={user} onClose={() => setContributeKittyC(null)} onContribute={async (id,amt,name,phone) => {
+          const result = onContribute ? await onContribute(id,amt,name,phone) : null;
+          if (result?.confirmed) onToast("Contributed! 🎉", `KES ${fmt(amt)} sent`);
+          return result;
+        }} />}
       </Modal>
       <Modal open={!!withdrawKittyC} onClose={() => setWithdrawKittyC(null)}>
-        {withdrawKittyC && (() => { const live = state.kitties.find(k=>k.id===withdrawKittyC.id)||withdrawKittyC; return <KittyWithdrawModal kitty={live} user={user} onClose={() => setWithdrawKittyC(null)} onConfirm={(id,net,fee,phone,partial) => { if(onWithdraw) onWithdraw(id,net,fee,phone,partial); setWithdrawKittyC(null); onToast("Withdrawal Sent! 💸", `KES ${fmt(net)} is on its way`); }} />; })()}
+        {withdrawKittyC && (() => { const live = state.kitties.find(k=>k.id===withdrawKittyC.id)||withdrawKittyC; return <KittyWithdrawModal kitty={live} user={user} onClose={() => setWithdrawKittyC(null)} onConfirm={async (id,net,fee,phone,partial,otpCode) => { return onWithdraw ? await onWithdraw(id,net,fee,phone,partial,otpCode) : false; }} />; })()}
       </Modal>
       <Modal open={!!membersKittyC} onClose={() => setMembersKittyC(null)}>
         {membersKittyC && (() => { const live = state.kitties.find(k=>k.id===membersKittyC.id)||membersKittyC; return <KittyContributorsReport kitty={live} transactions={state.transactions} user={user} onBack={() => setMembersKittyC(null)} onWithdraw={(k)=>{ setMembersKittyC(null); setWithdrawKittyC(k); }} onContribute={(k)=>{ setMembersKittyC(null); setContributeKittyC(k); }} onShare={()=>{}} onToast={onToast} />; })()}
@@ -8500,7 +8631,11 @@ function EventsPage({ state, user, onToast, onNewEvent, onEditEvent, onToggleEve
   const [membersKittyE,    setMembersKittyE]    = useState(null);
 
   const events      = state.events.filter(e => e.createdBy === user.email);
-  const eventKitties = state.kitties.filter(k => k.createdBy === user.email && k.feeCategory === "events");
+  // NOTE: real API-sourced kitties carry `category` ("Events"), not `feeCategory` (that field
+  // only exists client-side, before a NewKittyForm submission is refetched) — checking
+  // feeCategory alone meant an event's own backing kitty never showed up here, so there was
+  // no reachable Contribute/Withdraw for it anywhere except the public share link.
+  const eventKitties = state.kitties.filter(k => k.createdBy === user.email && (k.feeCategory === "events" || k.category === "Events"));
   const totalCount  = events.length + eventKitties.length;
 
   return (
@@ -8641,10 +8776,14 @@ function EventsPage({ state, user, onToast, onNewEvent, onEditEvent, onToggleEve
         {viewKittyE && (() => { const live = state.kitties.find(k=>k.id===viewKittyE.id)||viewKittyE; return <KittyDetailModal kitty={live} user={user} transactions={state.transactions} onClose={() => setViewKittyE(null)} onWithdraw={(id,net,fee,phone,partial) => { if(onWithdraw) onWithdraw(id,net,fee,phone,partial); }} onContribute={(id,amt,name,phone) => { if(onContribute) onContribute(id,amt,name,phone); }} onEditKitty={onEditKitty} onToast={onToast} />; })()}
       </Modal>
       <Modal open={!!contributeKittyE} onClose={() => setContributeKittyE(null)}>
-        {contributeKittyE && <KittyContributeModal kitty={contributeKittyE} user={user} onClose={() => setContributeKittyE(null)} onConfirm={(id,amt,name,phone) => { if(onContribute) onContribute(id,amt,name,phone); setContributeKittyE(null); onToast("Contributed! 🎉", `KES ${fmt(amt)} sent`); }} />}
+        {contributeKittyE && <KittyContributeModal kitty={contributeKittyE} user={user} onClose={() => setContributeKittyE(null)} onContribute={async (id,amt,name,phone) => {
+          const result = onContribute ? await onContribute(id,amt,name,phone) : null;
+          if (result?.confirmed) onToast("Contributed! 🎉", `KES ${fmt(amt)} sent`);
+          return result;
+        }} />}
       </Modal>
       <Modal open={!!withdrawKittyE} onClose={() => setWithdrawKittyE(null)}>
-        {withdrawKittyE && (() => { const live = state.kitties.find(k=>k.id===withdrawKittyE.id)||withdrawKittyE; return <KittyWithdrawModal kitty={live} user={user} onClose={() => setWithdrawKittyE(null)} onConfirm={(id,net,fee,phone,partial) => { if(onWithdraw) onWithdraw(id,net,fee,phone,partial); setWithdrawKittyE(null); onToast("Withdrawal Sent! 💸", `KES ${fmt(net)} is on its way`); }} />; })()}
+        {withdrawKittyE && (() => { const live = state.kitties.find(k=>k.id===withdrawKittyE.id)||withdrawKittyE; return <KittyWithdrawModal kitty={live} user={user} onClose={() => setWithdrawKittyE(null)} onConfirm={async (id,net,fee,phone,partial,otpCode) => { return onWithdraw ? await onWithdraw(id,net,fee,phone,partial,otpCode) : false; }} />; })()}
       </Modal>
     </div>
   );
@@ -9196,9 +9335,8 @@ function WithdrawPage({ state, user, onToast, onWithdraw }) {
             kitty={withdrawKitty}
             user={user}
             onClose={() => setWithdrawKitty(null)}
-            onConfirm={(k, net, fee, phone, partial) => {
-              onWithdraw(k.id, net, fee, phone, partial);
-              onToast("Withdrawal Sent! 💸", `KES ${fmt(net)} processing via ${phone}`);
+            onConfirm={async (k, net, fee, phone, partial, otpCode) => {
+              return await onWithdraw(k.id, net, fee, phone, partial, otpCode);
             }}
           />
         )}
@@ -9833,27 +9971,104 @@ function TransactionsPage({ state, user, onToast, apiTransactions }) {
 }
 
 // ─── Settings Page ───
-function SettingsPage({ user, onToast, onLogout, onBack }) {
-  const [form, setForm] = useState({ 
-    name: user.name || "", 
-    email: user.email || "", 
+function SettingsPage({ user, onToast, onLogout, onBack, onUpdateUser }) {
+  const [form, setForm] = useState({
+    name: user.name || "",
+    email: user.email || "",
     phone: user.phoneNumber || user.phone || ""  // ✅ Handle both naming conventions
   });
-  
+
   const [loading, setLoading] = useState(false);
 
   const handleSave = async () => {
+    const token = localStorage.getItem('mpamoja_token');
+    if (!token) { onToast("Error", "You must be logged in."); return; }
+
     setLoading(true);
     try {
-      // You can add API call here to update profile
-      // await updateProfile(form);
+      const response = await fetch(`${BASE}/api/users/me`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`, 'ngrok-skip-browser-warning': 'any' },
+        body: JSON.stringify({ fullName: form.name, email: form.email }),
+      });
+      const data = await response.json();
+      if (!response.ok) { onToast("Error", data?.error || "Failed to update profile."); return; }
+
+      onUpdateUser && onUpdateUser({ ...user, name: data.fullName, email: data.email });
       onToast("Saved!", "Profile updated successfully");
     } catch (error) {
-      onToast("Error", "Failed to update profile");
+      onToast("Error", error.message || "Failed to update profile");
     } finally {
       setLoading(false);
     }
   };
+
+  // ─── KYC (FR-AUTH-03 / FR-ADM-02) ───
+  const [kyc, setKyc] = useState(null);
+  const [kycLoading, setKycLoading] = useState(true);
+  const [nationalId, setNationalId] = useState("");
+  const [kycDoc, setKycDoc] = useState(null);
+  const [kycSubmitting, setKycSubmitting] = useState(false);
+  const [showKycAdmin, setShowKycAdmin] = useState(false);
+  const [showKittiesAdmin, setShowKittiesAdmin] = useState(false);
+  const [showUsersAdmin, setShowUsersAdmin] = useState(false);
+  const [showAuditAdmin, setShowAuditAdmin] = useState(false);
+
+  const loadKyc = useCallback(async () => {
+    const token = localStorage.getItem('mpamoja_token');
+    if (!token) { setKycLoading(false); return; }
+    try {
+      const res = await fetch(`${BASE}/api/kyc/me`, {
+        headers: { 'Authorization': `Bearer ${token}`, 'ngrok-skip-browser-warning': 'any' }
+      });
+      if (res.ok) setKyc(await res.json());
+    } catch (error) {
+      console.error('❌ Error fetching KYC status:', error);
+    } finally {
+      setKycLoading(false);
+    }
+  }, []);
+
+  useEffect(() => { loadKyc(); }, [loadKyc]);
+
+  const readFileAsDataUrl = (file) => {
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => setKycDoc({ dataUrl: e.target.result, name: file.name });
+    reader.readAsDataURL(file);
+  };
+
+  const handleSubmitKyc = async () => {
+    if (!nationalId.trim()) { onToast("Error", "Enter your national ID number."); return; }
+    const token = localStorage.getItem('mpamoja_token');
+    if (!token) { onToast("Error", "You must be logged in."); return; }
+
+    setKycSubmitting(true);
+    try {
+      const response = await fetch(`${BASE}/api/kyc`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`, 'ngrok-skip-browser-warning': 'any' },
+        body: JSON.stringify({ nationalIdNumber: nationalId.trim(), documentUrl: kycDoc?.dataUrl || null }),
+      });
+      const data = await response.json();
+      if (!response.ok) { onToast("Error", data?.error || "Failed to submit."); return; }
+      setKyc(data);
+      onToast("Submitted ✅", "Your identity verification is under review.");
+    } catch (error) {
+      onToast("Error", error.message || "Failed to submit.");
+    } finally {
+      setKycSubmitting(false);
+    }
+  };
+
+  const kycBadge = {
+    None:     { label: "Not submitted", color: "var(--text3)", bg: "var(--surface3)" },
+    Pending:  { label: "⏳ Under review", color: "var(--amber)", bg: "var(--amber-light)" },
+    Verified: { label: "✅ Verified", color: "var(--emerald)", bg: "var(--emerald-light)" },
+    Rejected: { label: "⚠️ Rejected", color: "var(--rose)", bg: "var(--rose-light)" },
+  }[kyc?.kycStatus || "None"];
+
+  const isAdmin = (user.role || "").replace(/\s/g, "") === "PlatformAdmin";
 
   return (
     <div className="settings-wrap">
@@ -9914,11 +10129,430 @@ function SettingsPage({ user, onToast, onLogout, onBack }) {
       </div>
       
       <div className="settings-card">
+        <div style={{display:"flex",alignItems:"center",justifyContent:"space-between",marginBottom:"0.75rem"}}>
+          <div className="sc-title" style={{marginBottom:0}}>Identity Verification (KYC)</div>
+          {!kycLoading && (
+            <span style={{fontSize:"0.65rem",fontWeight:700,color:kycBadge.color,background:kycBadge.bg,borderRadius:20,padding:"3px 10px"}}>
+              {kycBadge.label}
+            </span>
+          )}
+        </div>
+
+        {kycLoading ? (
+          <LoadingSpinner inline size={28} label="Checking your verification status…" />
+        ) : kyc?.kycStatus === "Verified" ? (
+          <div style={{fontSize:"0.8rem",color:"var(--text2)"}}>Your identity has been verified. Withdrawals are unlocked.</div>
+        ) : kyc?.kycStatus === "Pending" ? (
+          <div style={{fontSize:"0.8rem",color:"var(--text2)"}}>Submitted {kyc.submittedAt ? new Date(kyc.submittedAt).toLocaleDateString() : ""} — awaiting admin review.</div>
+        ) : (
+          <>
+            {kyc?.kycStatus === "Rejected" && kyc.rejectionReason && (
+              <div style={{fontSize:"0.75rem",color:"var(--rose)",background:"var(--rose-light)",borderRadius:8,padding:"0.5rem 0.7rem",marginBottom:"0.75rem"}}>
+                Rejected: {kyc.rejectionReason}. You may resubmit below.
+              </div>
+            )}
+            <div className="field">
+              <label>National ID Number</label>
+              <input value={nationalId} onChange={e => setNationalId(e.target.value)} placeholder="e.g. 12345678" />
+            </div>
+            <FileZone accept="image/*,.pdf" onFile={readFileAsDataUrl}
+              style={{display:"flex",alignItems:"center",gap:"0.5rem",border:"1.5px dashed var(--border)",borderRadius:10,padding:"0.6rem 0.8rem",marginBottom:"0.75rem",fontSize:"0.75rem",color:"var(--text2)"}}>
+              📎 {kycDoc ? kycDoc.name : "Upload ID photo (optional)"}
+            </FileZone>
+            <button className="confirm-btn" onClick={handleSubmitKyc} disabled={kycSubmitting}>
+              {kycSubmitting ? "Submitting..." : "Submit for Verification →"}
+            </button>
+          </>
+        )}
+      </div>
+
+      {isAdmin && (
+        <div className="settings-card">
+          <div className="sc-title">Admin Console</div>
+          <div style={{display:"grid",gridTemplateColumns:"1fr 1fr",gap:"0.6rem"}}>
+            <button className="btn btn-sky btn-sm" style={{padding:"0.65rem"}} onClick={() => setShowKycAdmin(true)}>🪪 KYC Review</button>
+            <button className="btn btn-amber btn-sm" style={{padding:"0.65rem"}} onClick={() => setShowKittiesAdmin(true)}>🧊 Freeze / Unfreeze</button>
+            <button className="btn btn-violet btn-sm" style={{padding:"0.65rem"}} onClick={() => setShowUsersAdmin(true)}>👤 Manage Users</button>
+            <button className="btn btn-ghost btn-sm" style={{padding:"0.65rem"}} onClick={() => setShowAuditAdmin(true)}>📜 Audit Log</button>
+          </div>
+        </div>
+      )}
+
+      <Modal open={showKycAdmin} onClose={() => setShowKycAdmin(false)}>
+        <KycAdminReviewPanel onToast={onToast} onClose={() => setShowKycAdmin(false)} />
+      </Modal>
+      <Modal open={showKittiesAdmin} onClose={() => setShowKittiesAdmin(false)}>
+        <AdminKittiesPanel onToast={onToast} onClose={() => setShowKittiesAdmin(false)} />
+      </Modal>
+      <Modal open={showUsersAdmin} onClose={() => setShowUsersAdmin(false)}>
+        <AdminUsersPanel onToast={onToast} onClose={() => setShowUsersAdmin(false)} />
+      </Modal>
+      <Modal open={showAuditAdmin} onClose={() => setShowAuditAdmin(false)}>
+        <AdminAuditLogPanel onClose={() => setShowAuditAdmin(false)} />
+      </Modal>
+
+      <div className="settings-card">
         <div className="sc-title">Account</div>
         <button className="logout-btn" onClick={onLogout}>
           <span style={{display:"flex"}}>{Icons.logout}</span>Sign out
         </button>
       </div>
+    </div>
+  );
+}
+
+// ─── Admin: KYC Review Panel (FR-ADM-02) ───
+function KycAdminReviewPanel({ onToast, onClose }) {
+  const [list, setList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [rejectingId, setRejectingId] = useState(null);
+  const [reason, setReason] = useState("");
+
+  const load = useCallback(async () => {
+    const token = localStorage.getItem('mpamoja_token');
+    if (!token) { setLoading(false); return; }
+    try {
+      const res = await fetch(`${BASE}/api/kyc/pending`, {
+        headers: { 'Authorization': `Bearer ${token}`, 'ngrok-skip-browser-warning': 'any' }
+      });
+      if (res.ok) setList(await res.json());
+    } catch (error) {
+      console.error('❌ Error fetching KYC queue:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  useEffect(() => { load(); }, [load]);
+
+  const respond = async (userId, approve, rejectReason) => {
+    const token = localStorage.getItem('mpamoja_token');
+    if (!token) return;
+    try {
+      const res = await fetch(`${BASE}/api/kyc/${userId}/${approve ? "approve" : "reject"}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`, 'ngrok-skip-browser-warning': 'any' },
+        body: approve ? undefined : JSON.stringify({ reason: rejectReason }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) { onToast("Error", data.error || "Failed to update KYC status."); return; }
+      setList(l => l.filter(u => u.id !== userId));
+      setRejectingId(null); setReason("");
+      onToast(approve ? "Approved ✅" : "Rejected", approve ? "User is now verified." : "User has been notified.");
+    } catch (error) {
+      onToast("Error", error.message || "Failed to update KYC status.");
+    }
+  };
+
+  return (
+    <div>
+      <div className="modal-title">🪪 KYC Review Queue</div>
+      {loading ? (
+        <LoadingSpinner label="Loading pending submissions…" />
+      ) : list.length === 0 ? (
+        <div style={{textAlign:"center",padding:"1.5rem",color:"var(--text3)",fontSize:"0.8rem",background:"var(--surface2)",borderRadius:12,border:"1.5px dashed var(--border)"}}>
+          No pending submissions.
+        </div>
+      ) : list.map(u => (
+        <div key={u.id} style={{background:"var(--surface2)",border:"1.5px solid var(--border)",borderRadius:12,padding:"0.8rem 0.95rem",marginBottom:"0.7rem"}}>
+          <div style={{fontSize:"0.85rem",fontWeight:700}}>{u.fullName}</div>
+          <div style={{fontSize:"0.72rem",color:"var(--text3)",marginBottom:"0.3rem"}}>{u.email} · {u.phoneNumber}</div>
+          <div style={{fontSize:"0.75rem",color:"var(--text2)",marginBottom:"0.6rem"}}>ID: {u.nationalIdNumber || "—"}</div>
+          {u.documentUrl && (
+            <a href={u.documentUrl} target="_blank" rel="noreferrer" style={{fontSize:"0.72rem",color:"var(--brand)",fontWeight:700,textDecoration:"underline"}}>View document</a>
+          )}
+          {rejectingId === u.id ? (
+            <div style={{marginTop:"0.6rem"}}>
+              <textarea value={reason} onChange={e=>setReason(e.target.value)} placeholder="Reason for rejection"
+                style={{width:"100%",background:"var(--surface)",border:"1.5px solid var(--border)",borderRadius:8,padding:"0.5rem 0.7rem",fontSize:"0.78rem",fontFamily:"var(--font)",resize:"none",minHeight:50}} />
+              <div style={{display:"flex",gap:"0.5rem",marginTop:"0.5rem"}}>
+                <button className="btn btn-ghost btn-sm" onClick={() => { setRejectingId(null); setReason(""); }}>Cancel</button>
+                <button className="btn btn-sm" style={{background:"var(--rose)",color:"#fff"}} disabled={!reason.trim()} onClick={() => respond(u.id, false, reason.trim())}>Confirm Reject</button>
+              </div>
+            </div>
+          ) : (
+            <div style={{display:"flex",gap:"0.5rem",marginTop:"0.6rem"}}>
+              <button className="btn btn-green btn-sm" onClick={() => respond(u.id, true)}>Approve</button>
+              <button className="btn btn-sm" style={{background:"var(--rose-light)",color:"var(--rose)"}} onClick={() => setRejectingId(u.id)}>Reject</button>
+            </div>
+          )}
+        </div>
+      ))}
+      <button className="back-btn" onClick={onClose}>Close</button>
+    </div>
+  );
+}
+
+// ─── Admin: Freeze / Unfreeze Kitties (FR-ADM-03/04) ───
+function AdminKittiesPanel({ onToast, onClose }) {
+  const [list, setList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+  const [freezingId, setFreezingId] = useState(null);
+  const [reason, setReason] = useState("");
+
+  const load = useCallback(async () => {
+    const token = localStorage.getItem('mpamoja_token');
+    if (!token) { setLoading(false); return; }
+    setLoading(true);
+    try {
+      const qs = search.trim() ? `?search=${encodeURIComponent(search.trim())}` : "";
+      const res = await fetch(`${BASE}/api/admin/kitties${qs}`, {
+        headers: { 'Authorization': `Bearer ${token}`, 'ngrok-skip-browser-warning': 'any' }
+      });
+      if (res.ok) setList(await res.json());
+    } catch (error) {
+      console.error('❌ Error fetching admin kitties:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [search]);
+
+  useEffect(() => { load(); }, []);
+
+  const freeze = async (kittyId, freezeReason) => {
+    const token = localStorage.getItem('mpamoja_token');
+    if (!token) return;
+    try {
+      const res = await fetch(`${BASE}/api/admin/kitties/${kittyId}/freeze`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`, 'ngrok-skip-browser-warning': 'any' },
+        body: JSON.stringify({ reason: freezeReason || null }),
+      });
+      if (!res.ok) { const d = await res.json().catch(()=>({})); onToast("Error", d.error || "Failed to freeze kitty."); return; }
+      onToast("Frozen 🧊", "The kitty is now on hold.");
+      setFreezingId(null); setReason("");
+      load();
+    } catch (error) { onToast("Error", error.message || "Failed to freeze kitty."); }
+  };
+
+  const unfreeze = async (kittyId) => {
+    const token = localStorage.getItem('mpamoja_token');
+    if (!token) return;
+    try {
+      const res = await fetch(`${BASE}/api/admin/kitties/${kittyId}/unfreeze`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}`, 'ngrok-skip-browser-warning': 'any' }
+      });
+      if (!res.ok) { const d = await res.json().catch(()=>({})); onToast("Error", d.error || "Failed to unfreeze kitty."); return; }
+      onToast("Unfrozen ✅", "The hold has been lifted.");
+      load();
+    } catch (error) { onToast("Error", error.message || "Failed to unfreeze kitty."); }
+  };
+
+  return (
+    <div>
+      <div className="modal-title">🧊 Freeze / Unfreeze Kitties</div>
+      <div className="field" style={{marginBottom:"0.75rem"}}>
+        <input value={search} onChange={e=>setSearch(e.target.value)} onKeyDown={e=>e.key==="Enter" && load()}
+          placeholder="Search by kitty name or creator email" />
+      </div>
+      {loading ? (
+        <LoadingSpinner label="Loading kitties…" />
+      ) : list.length === 0 ? (
+        <div style={{textAlign:"center",padding:"1.5rem",color:"var(--text3)",fontSize:"0.8rem",background:"var(--surface2)",borderRadius:12,border:"1.5px dashed var(--border)"}}>
+          No kitties found.
+        </div>
+      ) : list.map(k => (
+        <div key={k.id} style={{background:"var(--surface2)",border:"1.5px solid var(--border)",borderRadius:12,padding:"0.8rem 0.95rem",marginBottom:"0.7rem"}}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+            <div>
+              <div style={{fontSize:"0.85rem",fontWeight:700}}>{k.name}</div>
+              <div style={{fontSize:"0.7rem",color:"var(--text3)"}}>{k.creatorEmail} · {k.category}</div>
+            </div>
+            <span style={{fontSize:"0.62rem",fontWeight:700,borderRadius:20,padding:"2px 8px",
+              background: k.status==="Frozen" ? "var(--rose-light)" : k.status==="Closed" ? "var(--surface3)" : "var(--emerald-light)",
+              color: k.status==="Frozen" ? "var(--rose)" : k.status==="Closed" ? "var(--text3)" : "var(--emerald)"}}>
+              {k.status}
+            </span>
+          </div>
+          <div style={{fontSize:"0.72rem",color:"var(--text2)",margin:"0.4rem 0 0.6rem"}}>
+            KES {fmt(k.raised)} / {fmt(k.goal)} · {k.contributorCount} contributors
+          </div>
+          {freezingId === k.id ? (
+            <div>
+              <textarea value={reason} onChange={e=>setReason(e.target.value)} placeholder="Reason (optional)"
+                style={{width:"100%",background:"var(--surface)",border:"1.5px solid var(--border)",borderRadius:8,padding:"0.5rem 0.7rem",fontSize:"0.78rem",fontFamily:"var(--font)",resize:"none",minHeight:44}} />
+              <div style={{display:"flex",gap:"0.5rem",marginTop:"0.5rem"}}>
+                <button className="btn btn-ghost btn-sm" onClick={() => { setFreezingId(null); setReason(""); }}>Cancel</button>
+                <button className="btn btn-sm" style={{background:"var(--rose)",color:"#fff"}} onClick={() => freeze(k.id, reason)}>Confirm Freeze</button>
+              </div>
+            </div>
+          ) : k.status === "Frozen" ? (
+            <button className="btn btn-green btn-sm" onClick={() => unfreeze(k.id)}>Unfreeze</button>
+          ) : k.status === "Closed" ? (
+            <span style={{fontSize:"0.7rem",color:"var(--text3)"}}>Closed kitties can't be frozen.</span>
+          ) : (
+            <button className="btn btn-sm" style={{background:"var(--rose-light)",color:"var(--rose)"}} onClick={() => setFreezingId(k.id)}>Freeze</button>
+          )}
+        </div>
+      ))}
+      <button className="back-btn" onClick={onClose}>Close</button>
+    </div>
+  );
+}
+
+// ─── Admin: User Management (lock/unlock) ───
+function AdminUsersPanel({ onToast, onClose }) {
+  const [list, setList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState("");
+
+  const load = useCallback(async () => {
+    const token = localStorage.getItem('mpamoja_token');
+    if (!token) { setLoading(false); return; }
+    setLoading(true);
+    try {
+      const qs = search.trim() ? `?search=${encodeURIComponent(search.trim())}` : "";
+      const res = await fetch(`${BASE}/api/admin/users${qs}`, {
+        headers: { 'Authorization': `Bearer ${token}`, 'ngrok-skip-browser-warning': 'any' }
+      });
+      if (res.ok) setList(await res.json());
+    } catch (error) {
+      console.error('❌ Error fetching admin users:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [search]);
+
+  useEffect(() => { load(); }, []);
+
+  const toggleLock = async (user) => {
+    const token = localStorage.getItem('mpamoja_token');
+    if (!token) return;
+    try {
+      const res = await fetch(`${BASE}/api/admin/users/${user.id}/${user.isLocked ? "unlock" : "lock"}`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}`, 'ngrok-skip-browser-warning': 'any' }
+      });
+      if (!res.ok) { const d = await res.json().catch(()=>({})); onToast("Error", d.error || "Failed to update user."); return; }
+      onToast(user.isLocked ? "Unlocked ✅" : "Locked 🔒", user.isLocked ? "User can sign in again." : "User can no longer sign in.");
+      load();
+    } catch (error) { onToast("Error", error.message || "Failed to update user."); }
+  };
+
+  const changeRole = async (userId, role) => {
+    const token = localStorage.getItem('mpamoja_token');
+    if (!token) return;
+    try {
+      const res = await fetch(`${BASE}/api/admin/users/${userId}/role`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`, 'ngrok-skip-browser-warning': 'any' },
+        body: JSON.stringify({ role }),
+      });
+      const d = await res.json().catch(() => ({}));
+      if (!res.ok) { onToast("Error", d.error || "Failed to update role."); return; }
+      onToast("Role Updated ✅", `Now ${role}.`);
+      load();
+    } catch (error) { onToast("Error", error.message || "Failed to update role."); }
+  };
+
+  const roles = ["Contributor", "CampaignCreator", "ChamaOfficial", "Beneficiary", "PlatformAdmin"];
+
+  return (
+    <div>
+      <div className="modal-title">👤 User Management</div>
+      <div className="field" style={{marginBottom:"0.75rem"}}>
+        <input value={search} onChange={e=>setSearch(e.target.value)} onKeyDown={e=>e.key==="Enter" && load()}
+          placeholder="Search by name, email or phone" />
+      </div>
+      {loading ? (
+        <LoadingSpinner label="Loading users…" />
+      ) : list.length === 0 ? (
+        <div style={{textAlign:"center",padding:"1.5rem",color:"var(--text3)",fontSize:"0.8rem",background:"var(--surface2)",borderRadius:12,border:"1.5px dashed var(--border)"}}>
+          No users found.
+        </div>
+      ) : list.map(u => (
+        <div key={u.id} style={{background:"var(--surface2)",border:"1.5px solid var(--border)",borderRadius:12,padding:"0.8rem 0.95rem",marginBottom:"0.7rem"}}>
+          <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
+            <div>
+              <div style={{fontSize:"0.85rem",fontWeight:700}}>{u.fullName}</div>
+              <div style={{fontSize:"0.7rem",color:"var(--text3)"}}>{u.email} · {u.phoneNumber}</div>
+            </div>
+            {u.isLocked && (
+              <span style={{fontSize:"0.62rem",fontWeight:700,borderRadius:20,padding:"2px 8px",background:"var(--rose-light)",color:"var(--rose)"}}>🔒 Locked</span>
+            )}
+          </div>
+          <div style={{fontSize:"0.72rem",color:"var(--text2)",margin:"0.4rem 0 0.6rem"}}>
+            KYC {u.kycStatus} · {u.phoneVerified ? "Phone verified" : "Phone unverified"}
+          </div>
+          <div style={{display:"flex",gap:"0.5rem",alignItems:"center",flexWrap:"wrap"}}>
+            <select value={u.role} onChange={e => changeRole(u.id, e.target.value)}
+              style={{fontSize:"0.72rem",fontFamily:"var(--font)",padding:"0.4rem 0.5rem",borderRadius:8,border:"1.5px solid var(--border)",background:"var(--surface)"}}>
+              {roles.map(r => <option key={r} value={r}>{r}</option>)}
+            </select>
+            <button className={u.isLocked ? "btn btn-green btn-sm" : "btn btn-sm"}
+              style={u.isLocked ? {} : {background:"var(--rose-light)",color:"var(--rose)"}}
+              onClick={() => toggleLock(u)}>
+              {u.isLocked ? "Unlock" : "Lock"}
+            </button>
+          </div>
+        </div>
+      ))}
+      <button className="back-btn" onClick={onClose}>Close</button>
+    </div>
+  );
+}
+
+// ─── Admin: Audit Log (read-only, FR-ADM-06) ───
+function AdminAuditLogPanel({ onClose }) {
+  const [list, setList] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [entityType, setEntityType] = useState("");
+
+  const load = useCallback(async () => {
+    const token = localStorage.getItem('mpamoja_token');
+    if (!token) { setLoading(false); return; }
+    setLoading(true);
+    try {
+      const qs = entityType ? `?entityType=${encodeURIComponent(entityType)}` : "";
+      const res = await fetch(`${BASE}/api/admin/audit-log${qs}`, {
+        headers: { 'Authorization': `Bearer ${token}`, 'ngrok-skip-browser-warning': 'any' }
+      });
+      if (res.ok) setList(await res.json());
+    } catch (error) {
+      console.error('❌ Error fetching audit log:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [entityType]);
+
+  useEffect(() => { load(); }, [load]);
+
+  const entityTypes = ["", "Kitty", "User", "Chama", "Withdrawal"];
+
+  return (
+    <div>
+      <div className="modal-title">📜 Audit Log</div>
+      <div className="field" style={{marginBottom:"0.75rem"}}>
+        <label>Filter by entity type</label>
+        <select value={entityType} onChange={e=>setEntityType(e.target.value)}>
+          {entityTypes.map(t => <option key={t} value={t}>{t || "All"}</option>)}
+        </select>
+      </div>
+      {loading ? (
+        <LoadingSpinner label="Loading audit log…" />
+      ) : list.length === 0 ? (
+        <div style={{textAlign:"center",padding:"1.5rem",color:"var(--text3)",fontSize:"0.8rem",background:"var(--surface2)",borderRadius:12,border:"1.5px dashed var(--border)"}}>
+          No entries found.
+        </div>
+      ) : (
+        <div style={{maxHeight:420,overflowY:"auto"}}>
+          {list.map(a => (
+            <div key={a.id} style={{borderBottom:"1px solid var(--border2)",padding:"0.55rem 0"}}>
+              <div style={{display:"flex",justifyContent:"space-between",fontSize:"0.75rem"}}>
+                <span style={{fontWeight:700}}>{a.action}</span>
+                <span style={{color:"var(--text3)"}}>{new Date(a.at).toLocaleString()}</span>
+              </div>
+              <div style={{fontSize:"0.68rem",color:"var(--text3)",marginTop:2}}>
+                {a.actorEmail || "system"} {a.entityType && `· ${a.entityType}${a.entityId ? ` #${String(a.entityId).slice(0,8)}` : ""}`}
+              </div>
+              {a.detailJson && <div style={{fontSize:"0.65rem",color:"var(--text2)",marginTop:2,fontFamily:"var(--mono)"}}>{a.detailJson}</div>}
+            </div>
+          ))}
+        </div>
+      )}
+      <button className="back-btn" style={{marginTop:"0.75rem"}} onClick={onClose}>Close</button>
     </div>
   );
 }
@@ -10113,9 +10747,7 @@ export default function MPamojaApp() {
   const [signalRConnected, setSignalRConnected] = useState(false);
   const [showNotifs, setShowNotifs] = useState(false);
   const [apiTransactions, setApiTransactions] = useState([]);
-  const [notifsRead, setNotifsRead] = useState(false);
-  const [clearedNotifIds, setClearedNotifIds] = useState(new Set());
-  
+
   // ── Detect public share link via hash (#kitty=ID) or localStorage handoff ──
   const [publicKittyId, setPublicKittyId] = useState(() => {
     try {
@@ -10129,6 +10761,69 @@ export default function MPamojaApp() {
     } catch {}
     return null;
   });
+
+  // ── Real public share link: /k/{shareToken} — the actual "click the shared link"
+  // flow from the spec. Must work for a genuinely anonymous, unauthenticated visitor,
+  // so it fetches the real public transparency endpoint directly rather than relying
+  // on state.kitties (which requires a login to ever populate).
+  const [publicShareToken] = useState(() => {
+    try {
+      const m = window.location.pathname.match(/\/k\/([^/?#]+)/);
+      if (m) return decodeURIComponent(m[1]);
+    } catch {}
+    return null;
+  });
+  const [publicShareKitty, setPublicShareKitty] = useState(null);
+  const [publicShareLoading, setPublicShareLoading] = useState(!!publicShareToken);
+  const [publicShareDismissed, setPublicShareDismissed] = useState(false);
+
+  useEffect(() => {
+    if (!publicShareToken) return;
+    (async () => {
+      try {
+        const res = await fetch(`${BASE}/api/public/kitties/${publicShareToken}`);
+        if (res.ok) {
+          const data = await res.json();
+          setPublicShareKitty({
+            id: publicShareToken, shareToken: publicShareToken,
+            name: data.name, description: data.description,
+            goal: data.goal, raised: data.raised, contributors: data.contributorCount,
+            status: data.status,
+          });
+        }
+      } catch { /* leave null — shows "kitty not found" */ }
+      setPublicShareLoading(false);
+    })();
+  }, [publicShareToken]);
+
+  // Real, anonymous-safe contribution call for a public share link — no auth header,
+  // hits the same public endpoints the backend already exposes. shareToken is passed
+  // explicitly so this works for both the path-based /k/{token} link and the legacy
+  // #kitty={id} shortcut (which resolves its own shareToken from an already-loaded kitty).
+  const handlePublicContribute = async (shareToken, amount, displayName, phone, onRaised) => {
+    try {
+      const response = await fetch(`${BASE}/api/public/kitties/${shareToken}/contribute`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: displayName, phone, amountKes: amount, anonymous: displayName === "Anonymous" })
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) return { confirmed: false, error: data.error || "Failed to contribute." };
+
+      if (data.status === 'Confirmed') {
+        onRaised && onRaised();
+        return { confirmed: true, receipt: data.receipt };
+      }
+      if (data.status === 'StkSent' || data.status === 'Pending') {
+        const result = await pollPaymentStatus(data.intentId, shareToken);
+        if (result.confirmed) onRaised && onRaised();
+        return result;
+      }
+      return { confirmed: false, error: data.error || "Failed to initiate payment." };
+    } catch (error) {
+      return { confirmed: false, error: error.message || "Network error." };
+    }
+  };
 
   // ⭐ Register global functions for the interceptor
   useEffect(() => {
@@ -10208,10 +10903,14 @@ const fetchKittiesFromApi = async () => {
     if (response.ok) {
       const data = await response.json();
       console.log('✅ Kitties from API:', data);
-      
+
+      // GET /api/kitties is already scoped server-side to the caller's own kitties, but the
+      // response has no createdBy field — several pages filter client-side on k.createdBy
+      // anyway (mirroring the same injection fetchChamasFromApi already does), so without
+      // this every one of those filters silently matched nothing, for every real kitty.
       setState(prev => ({
         ...prev,
-        kitties: data
+        kitties: data.map(k => ({ ...k, createdBy: user?.email }))
       }));
 
       if (hubConnection && signalRConnected) {
@@ -10236,6 +10935,111 @@ const fetchKittiesFromApi = async () => {
     }
   } catch (error) {
     console.error('❌ Error fetching kitties:', error);
+  }
+};
+
+// ─── FETCH CHAMAS ───
+const fetchChamasFromApi = async () => {
+  try {
+    const token = localStorage.getItem('mpamoja_token');
+    if (!token) return;
+
+    const response = await fetch(`${BASE}/api/chamas`, {
+      headers: { 'Authorization': `Bearer ${token}`, 'ngrok-skip-browser-warning': 'any' }
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      setState(prev => ({
+        ...prev,
+        chamas: data.map(c => ({ ...c, createdBy: user?.email, memberList: prev.chamas.find(x => x.id === c.id)?.memberList || [] }))
+      }));
+    } else {
+      console.error('❌ Chamas API responded with error:', response.status);
+    }
+  } catch (error) {
+    console.error('❌ Error fetching chamas:', error);
+  }
+};
+
+// ─── FETCH SINGLE CHAMA (hydrates the real member list on demand) ───
+const fetchChamaDetail = async (chamaId) => {
+  try {
+    const token = localStorage.getItem('mpamoja_token');
+    if (!token) return;
+
+    const response = await fetch(`${BASE}/api/chamas/${chamaId}`, {
+      headers: { 'Authorization': `Bearer ${token}`, 'ngrok-skip-browser-warning': 'any' }
+    });
+    if (!response.ok) return;
+
+    const data = await response.json();
+    setState(prev => ({
+      ...prev,
+      chamas: prev.chamas.map(c => c.id === chamaId ? { ...c, ...data, createdBy: user?.email } : c)
+    }));
+  } catch (error) {
+    console.error('❌ Error fetching chama detail:', error);
+  }
+};
+
+// ─── FETCH EVENTS ───
+const fetchEventsFromApi = async () => {
+  try {
+    const token = localStorage.getItem('mpamoja_token');
+    if (!token) return;
+
+    const response = await fetch(`${BASE}/api/events`, {
+      headers: { 'Authorization': `Bearer ${token}`, 'ngrok-skip-browser-warning': 'any' }
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      setState(prev => ({
+        ...prev,
+        events: data.map(e => {
+          const existing = prev.events.find(x => x.id === e.id);
+          return {
+            ...e, createdBy: user?.email,
+            mediaImage: existing?.mediaImage || null,
+            mediaBanner: existing?.mediaBanner || null,
+            mediaDoc: existing?.mediaDoc || null,
+          };
+        })
+      }));
+    } else {
+      console.error('❌ Events API responded with error:', response.status);
+    }
+  } catch (error) {
+    console.error('❌ Error fetching events:', error);
+  }
+};
+
+// ─── FETCH NOTIFICATIONS ───
+const fetchNotificationsFromApi = async () => {
+  try {
+    const token = localStorage.getItem('mpamoja_token');
+    if (!token) return;
+
+    const response = await fetch(`${BASE}/api/notifications`, {
+      headers: { 'Authorization': `Bearer ${token}`, 'ngrok-skip-browser-warning': 'any' }
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      setState(prev => ({
+        ...prev,
+        notifications: data.map(n => ({
+          id: n.id, icon: n.title?.includes("🎉") ? "🎯" : "🔔",
+          bg: n.title?.includes("🎉") ? "var(--brand-light)" : "var(--sky-light)",
+          title: n.title, body: n.body, time: n.time, read: n.read,
+        }))
+      }));
+    } else {
+      console.error('❌ Notifications API responded with error:', response.status);
+    }
+  } catch (error) {
+    console.error('❌ Error fetching notifications:', error);
   }
 };
 
@@ -10266,9 +11070,9 @@ const fetchTransactionsFromApi = async () => {
     if (response.ok) {
       const data = await response.json();
       console.log('✅ Transactions from API:', data);
-      
-      // ⭐ FIX: Extract the array from the "value" property
-      const transactions = data.value || [];
+
+      // GET /api/transactions/recent returns a plain JSON array, not { value: [...] }.
+      const transactions = Array.isArray(data) ? data : [];
       console.log('📊 Number of transactions:', transactions.length);
       
       // Get the current user from localStorage
@@ -10296,6 +11100,13 @@ const fetchTransactionsFromApi = async () => {
       
       console.log('📊 Mapped transactions:', mappedTransactions);
       setApiTransactions(mappedTransactions);
+      // Also seed state.transactions with real history so per-kitty views (KittyDetailModal,
+      // KittyContributorsReport, kitty card previews) see real data instead of only whatever
+      // was optimistically appended this session.
+      setState(prev => {
+        const existingRefs = new Set(mappedTransactions.map(t => t.ref));
+        return { ...prev, transactions: [...mappedTransactions, ...prev.transactions.filter(t => !existingRefs.has(t.ref))] };
+      });
     } else if (response.status === 401) {
       console.warn('⚠️ Unauthorized - token may be expired');
       setApiTransactions([]);
@@ -10310,8 +11121,8 @@ const fetchTransactionsFromApi = async () => {
 };
 
   // ─── POLLING FUNCTION ───
-  const pollPaymentStatus = async (intentId, token, onAttempt) => {
-    const maxAttempts = 30; // 30 seconds max
+  const pollPaymentStatus = async (intentId, shareToken, onAttempt) => {
+    const maxAttempts = 60; // 60 seconds max — matches the "check your phone" UI's countdown
     const pollInterval = 1000; // 1 second between polls
     
     return new Promise((resolve) => {
@@ -10327,11 +11138,8 @@ const fetchTransactionsFromApi = async () => {
         try {
           console.log(`📡 Polling attempt ${attempts}/${maxAttempts} for intent: ${intentId}`);
           
-          const response = await fetch(`${BASE}/api/public/kitties/status/${intentId}`, {
-            headers: { 
-              'Authorization': `Bearer ${token}`,
-              'ngrok-skip-browser-warning': 'any'
-            }
+          const response = await fetch(`${BASE}/api/public/kitties/${shareToken}/contribute/${intentId}`, {
+            headers: { 'ngrok-skip-browser-warning': 'any' }
           });
           
           if (!response.ok) {
@@ -10444,6 +11252,9 @@ const fetchTransactionsFromApi = async () => {
     if (user) {
       console.log('📡 Fetching kitties for user:', user.email);
       fetchKittiesFromApi();
+      fetchChamasFromApi();
+      fetchEventsFromApi();
+      fetchNotificationsFromApi();
       fetchTransactionsFromApi();
     }
   }, [user]);
@@ -10631,6 +11442,11 @@ const fetchTransactionsFromApi = async () => {
     localStorage.setItem('mpamoja_user', JSON.stringify(user));
     localStorage.setItem('mpamoja_token', user.token);
     setPage("overview");
+  };
+
+  const handleUpdateUser = (updatedUser) => {
+    setUser(updatedUser);
+    localStorage.setItem('mpamoja_user', JSON.stringify(updatedUser));
   };
 
    const handleLogout = useCallback(() => {
@@ -11015,7 +11831,7 @@ const fetchTransactionsFromApi = async () => {
         const intentId = data.intentId || data.checkoutRequestID;
         
         // Wait for polling to complete
-        const result = await pollPaymentStatus(intentId, token);
+        const result = await pollPaymentStatus(intentId, shareToken);
         
         if (result.confirmed) {
           console.log('✅ Payment confirmed!');
@@ -11071,18 +11887,20 @@ const fetchTransactionsFromApi = async () => {
     }));
   };
 
-  const handleWithdraw = async (kittyId, net, fee, phone, partial) => {
+  // NOTE: WithdrawalService only supports CreatorMpesa/BeneficiaryMpesa targets today,
+  // and requires an OTP verified via /api/withdrawals/request-otp — matches handleChamaWithdraw.
+  const handleWithdraw = async (kittyId, net, fee, phone, partial, otpCode) => {
     try {
       const token = localStorage.getItem('mpamoja_token');
       if (!token) {
         showToast("Error", "You must be logged in to withdraw");
-        return;
+        return false;
       }
 
       const kittyObj = state.kitties.find(k => k.id === kittyId);
       const gross = partial || (kittyObj?.raised || 0);
 
-      const response = await fetch(`${BASE}/api/kitties/${kittyId}/withdraw`, {
+      const response = await fetch(`${BASE}/api/withdrawals`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -11090,19 +11908,20 @@ const fetchTransactionsFromApi = async () => {
           'ngrok-skip-browser-warning': 'any'
         },
         body: JSON.stringify({
-          amount: gross * 100,
-          phone: phone,
-          netAmount: net * 100
+          kittyId,
+          amountKes: gross,
+          target: "CreatorMpesa",
+          otpCode
         })
       });
 
+      const data = await response.json().catch(() => ({}));
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Failed to withdraw');
+        throw new Error(data.error || 'Failed to withdraw');
       }
 
-      const data = await response.json();
       const today = new Date().toLocaleDateString("en-KE", { day: "2-digit", month: "short", year: "numeric" });
+      const isPending = data.status === "PendingApproval";
 
       setState(s => ({
         ...s,
@@ -11117,12 +11936,12 @@ const fetchTransactionsFromApi = async () => {
           gross,
           fee,
           net,
-          pct: data.feePercentage || "2.2",
-          status: "sent",
+          pct: fee && gross ? ((fee / gross) * 100).toFixed(1) : "0",
+          status: isPending ? "pending" : "sent",
           ownerEmail: user.email
         }],
         transactions: [...s.transactions, {
-          ref: data.reference || `WD${Date.now().toString().slice(-6)}`,
+          ref: data.id || `WD${Date.now().toString().slice(-6)}`,
           name: user.name,
           phone,
           kitty: kittyObj?.name || "",
@@ -11130,136 +11949,391 @@ const fetchTransactionsFromApi = async () => {
           fee,
           net,
           type: "Withdrawal",
-          status: "sent",
+          status: data.status || "Processing",
           time: "Just now",
           ownerEmail: user.email
         }]
       }));
 
-      showToast("Withdrawal Sent! 💸", `KES ${net} is on its way`);
+      showToast(
+        isPending ? "Awaiting Approval" : "Withdrawal Sent! 💸",
+        isPending ? "This withdrawal needs approval before it's sent." : `KES ${net} is on its way`
+      );
+      return true;
 
     } catch (error) {
       console.error('Error withdrawing:', error);
       showToast("Error", error.message || "Failed to withdraw. Please try again.");
+      return false;
     }
   };
 
   // ─── CHAMA HANDLERS ───
-  const handleChamaContribute = (chamaId, amount) => {
-    setState(s => ({
-      ...s,
-      chamas: s.chamas.map(c => c.id === chamaId ? { ...c, pool: (c.pool || 0) + amount } : c)
-    }));
+  // Contributes to a chama's pool via the same public contribute endpoint kitties use,
+  // targeting the chama's linked Category=Chama kitty (chama.shareToken). Returns a promise
+  // so ChamaContributeModal can show a real "check your phone" step and react to the outcome,
+  // matching handleContribute's flow for regular kitties.
+  const handleChamaContribute = async (chamaId, amount, phone) => {
+    const chama = state.chamas.find(c => c.id === chamaId);
+    if (!chama?.shareToken) { return { confirmed: false, error: "This chama has no share link yet." }; }
+
+    try {
+      const response = await fetch(`${BASE}/api/public/kitties/${chama.shareToken}/contribute`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'any' },
+        body: JSON.stringify({ name: user?.name || "Member", phone: phone || "", amountKes: amount, anonymous: false })
+      });
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) return { confirmed: false, error: data.error || "Failed to contribute." };
+
+      const applyConfirmed = (receipt) => {
+        setState(s => ({
+          ...s,
+          chamas: s.chamas.map(c => c.id === chamaId ? { ...c, pool: (c.pool || 0) + amount } : c),
+          transactions: [...s.transactions, {
+            ref: data.intentId || `CON-${Date.now().toString().slice(-6)}`,
+            name: user?.name || "Member", phone: phone || "", kitty: chama.name, kittyId: chama.kittyId,
+            gross: amount, fee: 0, net: amount, type: "Contribution", status: "Confirmed",
+            time: "Just now", ownerEmail: user.email, receipt,
+          }],
+        }));
+      };
+
+      if (data.status === 'Confirmed' || data.status === 'Success' || data.status === 'Completed') {
+        applyConfirmed(data.receipt);
+        return { confirmed: true, receipt: data.receipt };
+      }
+
+      if (data.status === 'StkSent' || data.status === 'Pending') {
+        const result = await pollPaymentStatus(data.intentId, chama.shareToken);
+        if (result.confirmed) applyConfirmed(result.receipt);
+        return result;
+      }
+
+      return { confirmed: false, error: data.error || "Failed to initiate payment." };
+    } catch (error) {
+      return { confirmed: false, error: error.message || "Network error." };
+    }
   };
 
-  const handleChamaWithdraw = (chamaId, net, fee, dest, gross) => {
-    const today = new Date().toLocaleDateString("en-KE", { day:"2-digit", month:"short", year:"numeric" });
-    setState(s => ({
-      ...s,
-      chamas: s.chamas.map(c => c.id === chamaId ? { ...c, pool: Math.max(0, (c.pool||0) - gross) } : c),
-      transactions: [...s.transactions, {
-        ref: "CWD" + Date.now().toString().slice(-6),
-        name: user.name,
-        phone: dest || "",
-        kitty: s.chamas.find(c => c.id === chamaId)?.name || "Chama",
-        gross, fee, net,
-        type: "Withdrawal",
-        status: "sent",
-        time: "Just now",
-        ownerEmail: user.email
-      }]
-    }));
+  // Withdraws from a chama's pool via the real withdrawals endpoint. Category=Chama kitties
+  // always route through maker-checker (WithdrawalService), so this typically lands in
+  // PendingApproval, not Sent — officials approve from the chama's pending withdrawals list.
+  const handleChamaWithdraw = async (chama, net, fee, dest, gross, otpCode) => {
+    if (!chama?.kittyId) { showToast("Error", "This chama has no linked kitty."); return false; }
+    const token = localStorage.getItem('mpamoja_token');
+    if (!token) { showToast("Error", "You must be logged in to withdraw."); return false; }
+
+    try {
+      const response = await fetch(`${BASE}/api/withdrawals`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`, 'ngrok-skip-browser-warning': 'any' },
+        body: JSON.stringify({ kittyId: chama.kittyId, amountKes: gross, target: "CreatorMpesa", otpCode })
+      });
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) { showToast("Withdrawal Failed", data.error || "Please try again."); return false; }
+
+      setState(s => ({
+        ...s,
+        chamas: s.chamas.map(c => c.id === chama.id ? { ...c, pool: Math.max(0, (c.pool || 0) - gross) } : c),
+        transactions: [...s.transactions, {
+          ref: "CWD" + String(data.id || Date.now()).slice(-6),
+          name: user.name, phone: dest || "", kitty: chama.name,
+          gross, fee, net, type: "Withdrawal",
+          status: data.status || "PendingApproval",
+          time: "Just now", ownerEmail: user.email
+        }]
+      }));
+
+      showToast(
+        data.status === "PendingApproval" ? "Withdrawal Requested" : "Withdrawal Sent! 💸",
+        data.message || (data.status === "PendingApproval"
+          ? "Awaiting approval from a chama official."
+          : `KES ${fmt(net)} is on its way`)
+      );
+      return true;
+    } catch (error) {
+      showToast("Withdrawal Failed", error.message || "Network error.");
+      return false;
+    }
   };
 
-  const handleNewChama = (form) => {
-    setState(s => ({
-      ...s,
-      chamas: [...s.chamas, {
-        id: Date.now(), name: form.name, members: Number(form.members)||0, pool: 0,
-        cycle: form.cycle, nextMeeting: "TBD", createdBy: user.email,
-        contributionAmount: Number(form.contribution) || 0,
-        penaltyType: form.penaltyType || "fixed",
-        penaltyValue: Number(form.penaltyValue) || 0,
-        penaltyPerDay: form.penaltyPerDay || false
-      }]
-    }));
+  const handleNewChama = async (form) => {
+    const token = localStorage.getItem('mpamoja_token');
+    if (!token) { showToast("Error", "You must be logged in to create a chama."); return; }
+
+    try {
+      const response = await fetch(`${BASE}/api/chamas`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`, 'ngrok-skip-browser-warning': 'any' },
+        body: JSON.stringify({
+          name: form.name,
+          cycle: form.cycle,
+          contributionKes: Number(form.contribution) || 0,
+          maxMembers: form.members ? Number(form.members) : null,
+          penaltyType: form.penaltyType || "fixed",
+          penaltyValue: Number(form.penaltyValue) || 0,
+          penaltyFrequency: form.penaltyFrequency || "daily",
+        })
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) { showToast("Error", data.error || "Failed to create chama."); return; }
+
+      setState(s => ({
+        ...s,
+        chamas: [...s.chamas, {
+          ...data, createdBy: user.email, memberList: [],
+          mediaImage: form.mediaImage || null, mediaDoc: form.mediaDoc || null, mediaBanner: form.mediaBanner || null,
+        }]
+      }));
+    } catch (error) {
+      showToast("Error", error.message || "Failed to create chama.");
+    }
   };
 
-  const handleEditChama = (chamaId, updates) => {
-    setState(s => ({
-      ...s,
-      chamas: s.chamas.map(c => c.id === chamaId ? { ...c, ...updates } : c)
-    }));
+  const handleEditChama = async (chamaId, updates) => {
+    const token = localStorage.getItem('mpamoja_token');
+    if (!token) { showToast("Error", "You must be logged in."); return; }
+
+    try {
+      const response = await fetch(`${BASE}/api/chamas/${chamaId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`, 'ngrok-skip-browser-warning': 'any' },
+        body: JSON.stringify({
+          name: updates.name,
+          cycle: updates.cycle,
+          contributionKes: updates.contributionAmount,
+          maxMembers: updates.members ? Number(updates.members) : null,
+          penaltyType: updates.penaltyType,
+          penaltyValue: updates.penaltyValue,
+          penaltyFrequency: updates.penaltyFrequency,
+        })
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) { showToast("Error", data.error || "Failed to update chama."); return; }
+
+      setState(s => ({
+        ...s,
+        chamas: s.chamas.map(c => c.id === chamaId ? {
+          ...c, ...data,
+          mediaImage: updates.mediaImage ?? c.mediaImage, mediaDoc: updates.mediaDoc ?? c.mediaDoc, mediaBanner: updates.mediaBanner ?? c.mediaBanner,
+        } : c)
+      }));
+    } catch (error) {
+      showToast("Error", error.message || "Failed to update chama.");
+    }
   };
 
   // ─── EVENT HANDLERS ───
-  const handleNewEvent = (form) => {
-    setState(s => ({
-      ...s,
-      events: [...s.events, {
-        id: Date.now(), name: form.name, date: form.date||"01", month: form.month,
-        location: form.location, attendees: 0, target: Number(form.target)||0,
-        createdBy: user.email, status: "active",
-        description: form.description || "",
-        mediaImage:  form.mediaImage  || null,
-        mediaBanner: form.mediaBanner || null,
-        mediaDoc:    form.mediaDoc    || null,
-      }]
-    }));
+  const handleNewEvent = async (form) => {
+    const token = localStorage.getItem('mpamoja_token');
+    if (!token) { showToast("Error", "You must be logged in."); return; }
+
+    try {
+      const response = await fetch(`${BASE}/api/events`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`, 'ngrok-skip-browser-warning': 'any' },
+        body: JSON.stringify({
+          name: form.name, day: form.date || "01", month: form.month,
+          venue: form.location, description: form.description || "",
+          attendeeTarget: Number(form.target) || 0,
+        }),
+      });
+      const data = await response.json();
+      if (!response.ok) { showToast("Error", data?.error || "Failed to create event."); return; }
+
+      setState(s => ({
+        ...s,
+        events: [...s.events, {
+          ...data, createdBy: user.email,
+          mediaImage:  form.mediaImage  || null,
+          mediaBanner: form.mediaBanner || null,
+          mediaDoc:    form.mediaDoc    || null,
+        }]
+      }));
+    } catch (error) {
+      showToast("Error", error.message || "Failed to create event.");
+    }
   };
 
-  const handleEditEvent = (eventId, updates) => {
-    setState(s => ({ ...s, events: s.events.map(e => e.id === eventId ? { ...e, ...updates } : e) }));
+  const handleEditEvent = async (eventId, updates) => {
+    const token = localStorage.getItem('mpamoja_token');
+    if (!token) { showToast("Error", "You must be logged in."); return; }
+
+    try {
+      const response = await fetch(`${BASE}/api/events/${eventId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`, 'ngrok-skip-browser-warning': 'any' },
+        body: JSON.stringify({
+          name: updates.name, day: updates.date, month: updates.month,
+          venue: updates.location, description: updates.description,
+          attendeeTarget: updates.target,
+        }),
+      });
+      const data = await response.json();
+      if (!response.ok) { showToast("Error", data?.error || "Failed to update event."); return; }
+
+      setState(s => ({
+        ...s,
+        events: s.events.map(e => e.id === eventId ? {
+          ...e, ...data,
+          mediaImage:  updates.mediaImage  ?? e.mediaImage,
+          mediaBanner: updates.mediaBanner ?? e.mediaBanner,
+          mediaDoc:    updates.mediaDoc    ?? e.mediaDoc,
+        } : e)
+      }));
+    } catch (error) {
+      showToast("Error", error.message || "Failed to update event.");
+    }
   };
 
-  const handleToggleEventStatus = (eventId) => {
-    setState(s => ({ ...s, events: s.events.map(e => e.id === eventId ? { ...e, status: e.status === "disabled" ? "active" : "disabled" } : e) }));
+  const handleToggleEventStatus = async (eventId) => {
+    const token = localStorage.getItem('mpamoja_token');
+    if (!token) { showToast("Error", "You must be logged in."); return; }
+
+    const current = state.events.find(e => e.id === eventId);
+    const nextActive = current?.status === "disabled";
+
+    try {
+      const response = await fetch(`${BASE}/api/events/${eventId}/status`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`, 'ngrok-skip-browser-warning': 'any' },
+        body: JSON.stringify({ active: nextActive }),
+      });
+      const data = await response.json();
+      if (!response.ok) { showToast("Error", data?.error || "Failed to update event status."); return; }
+
+      setState(s => ({
+        ...s,
+        events: s.events.map(e => e.id === eventId ? { ...e, ...data, mediaImage: e.mediaImage, mediaBanner: e.mediaBanner, mediaDoc: e.mediaDoc } : e)
+      }));
+    } catch (error) {
+      showToast("Error", error.message || "Failed to update event status.");
+    }
   };
 
   // ─── CHAMA MEMBER HANDLERS ───
-  const handleChamaAddMember = (chamaId, member) => {
-    setState(s => ({ ...s, chamas: s.chamas.map(c => c.id === chamaId ? { ...c, memberList: [...(c.memberList||[]), member] } : c) }));
-  };
+  const handleChamaAddMember = async (chamaId, member) => {
+    const token = localStorage.getItem('mpamoja_token');
+    if (!token) { showToast("Error", "You must be logged in."); return; }
 
-  const handleChamaRemoveMember = (chamaId, memberId) => {
-    setState(s => ({ ...s, chamas: s.chamas.map(c => c.id === chamaId ? { ...c, memberList: (c.memberList||[]).filter(m => m.id !== memberId) } : c) }));
-  };
-
-  // ─── BUILD NOTIFICATIONS ───
-  const buildNotifications = () => {
-    const notifs = [];
-    if (user) {
-      const myKitties = state.kitties.filter(k => k.createdBy === user.email);
-      const myChamas  = state.chamas.filter(c => c.createdBy === user.email);
-      const myEvents  = state.events.filter(e => e.createdBy === user.email);
-      const myTxs     = state.transactions.filter(t => t.ownerEmail === user.email && t.type === "Contribution").slice(-5).reverse();
-
-      myTxs.forEach((t,i) => notifs.push({
-        id: `tx-${i}`, icon:"💰", bg:"var(--emerald-light)",
-        title: `New Contribution`, body: `${t.name} contributed KES ${fmt(t.gross)} to ${t.kitty}`, time: t.time, read: notifsRead
-      }));
-      myKitties.filter(k => k.raised >= k.goal).forEach(k => notifs.push({
-        id:`goal-${k.id}`, icon:"🎯", bg:"var(--brand-light)",
-        title:"Goal Reached! 🎉", body:`${k.name} has reached its goal of KES ${fmt(k.goal)}`, time:"Recently", read: notifsRead
-      }));
-      myChamas.forEach(c => (c.memberList||[]).slice(-2).reverse().forEach((m,i) => notifs.push({
-        id:`mem-${c.id}-${i}`, icon:"👥", bg:"var(--violet-light)",
-        title:"New Chama Member", body:`${m.name} joined ${c.name}`, time:`Joined ${m.joined}`, read: notifsRead
-      })));
-      myEvents.filter(e=>e.status==="active").forEach(e => notifs.push({
-        id:`ev-${e.id}`, icon:"🎊", bg:"var(--sky-light)",
-        title:"Event Active", body:`${e.name} is live — ${e.attendees}/${e.target} attending`, time:`${e.date} ${e.month}`, read: notifsRead
-      }));
-      if (notifs.length === 0) notifs.push({
-        id:"welcome", icon:"🎉", bg:"var(--brand-light)",
-        title:"Welcome to M-Pamoja!", body:"Start by creating a kitty, chama, or event.", time:"Now", read: notifsRead
+    try {
+      const response = await fetch(`${BASE}/api/chamas/${chamaId}/members`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`, 'ngrok-skip-browser-warning': 'any' },
+        body: JSON.stringify({ name: member.name, phone: member.phone || "" })
       });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) { showToast("Error", data.error || "Failed to add member."); return; }
+
+      setState(s => ({
+        ...s,
+        chamas: s.chamas.map(c => c.id === chamaId
+          ? { ...c, memberList: [...(c.memberList || []), data], members: (c.memberList || []).length + 1 }
+          : c)
+      }));
+    } catch (error) {
+      showToast("Error", error.message || "Failed to add member.");
     }
-    return notifs.slice(0, 10);
   };
 
-  const notifications = buildNotifications().filter(n => !clearedNotifIds.has(n.id));
-  const unreadCount = notifsRead ? 0 : notifications.length;
+  const handleChamaRemoveMember = async (chamaId, memberId) => {
+    const token = localStorage.getItem('mpamoja_token');
+    if (!token) { showToast("Error", "You must be logged in."); return; }
+
+    try {
+      const response = await fetch(`${BASE}/api/chamas/${chamaId}/members/${memberId}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}`, 'ngrok-skip-browser-warning': 'any' }
+      });
+      if (!response.ok && response.status !== 204) {
+        const data = await response.json().catch(() => ({}));
+        showToast("Error", data.error || "Failed to remove member.");
+        return;
+      }
+
+      setState(s => ({
+        ...s,
+        chamas: s.chamas.map(c => c.id === chamaId
+          ? { ...c, memberList: (c.memberList || []).filter(m => m.id !== memberId) }
+          : c)
+      }));
+    } catch (error) {
+      showToast("Error", error.message || "Failed to remove member.");
+    }
+  };
+
+  // FR-CHM-06: designates/revokes a maker-checker approver for the chama's withdrawals.
+  const handleChamaSetOfficial = async (chamaId, memberId, isOfficial) => {
+    const token = localStorage.getItem('mpamoja_token');
+    if (!token) { showToast("Error", "You must be logged in."); return; }
+
+    try {
+      const response = await fetch(`${BASE}/api/chamas/${chamaId}/members/${memberId}/official`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}`, 'ngrok-skip-browser-warning': 'any' },
+        body: JSON.stringify({ isOfficial })
+      });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) { showToast("Error", data.error || "Failed to update official status."); return; }
+
+      setState(s => ({
+        ...s,
+        chamas: s.chamas.map(c => c.id === chamaId
+          ? { ...c, memberList: (c.memberList || []).map(m => m.id === memberId ? { ...m, isOfficial: data.isOfficial } : m) }
+          : c)
+      }));
+    } catch (error) {
+      showToast("Error", error.message || "Failed to update official status.");
+    }
+  };
+
+  // ─── NOTIFICATIONS (real API-backed inbox; FR-NOT) ───
+  const notifications = state.notifications;
+  const unreadCount = notifications.filter(n => !n.read).length;
+
+  const handleMarkAllNotifsRead = async () => {
+    setState(s => ({ ...s, notifications: s.notifications.map(n => ({ ...n, read: true })) }));
+    const token = localStorage.getItem('mpamoja_token');
+    if (!token) return;
+    try {
+      await fetch(`${BASE}/api/notifications/read-all`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}`, 'ngrok-skip-browser-warning': 'any' }
+      });
+    } catch (error) {
+      console.error('❌ Error marking notifications read:', error);
+    }
+  };
+
+  const handleClearNotifs = async (id) => {
+    const token = localStorage.getItem('mpamoja_token');
+    if (id !== null && id !== undefined) {
+      setState(s => ({ ...s, notifications: s.notifications.filter(n => n.id !== id) }));
+      if (!token) return;
+      try {
+        await fetch(`${BASE}/api/notifications/${id}`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${token}`, 'ngrok-skip-browser-warning': 'any' }
+        });
+      } catch (error) {
+        console.error('❌ Error clearing notification:', error);
+      }
+    } else {
+      setState(s => ({ ...s, notifications: [] }));
+      if (!token) return;
+      try {
+        await fetch(`${BASE}/api/notifications`, {
+          method: 'DELETE',
+          headers: { 'Authorization': `Bearer ${token}`, 'ngrok-skip-browser-warning': 'any' }
+        });
+      } catch (error) {
+        console.error('❌ Error clearing all notifications:', error);
+      }
+    }
+  };
 
   // ─── RENDER PAGE FUNCTION ───
   const renderPage = () => {
@@ -11268,7 +12342,7 @@ const fetchTransactionsFromApi = async () => {
     switch (page) {
       case "overview": return <OverviewPage state={state} user={user} onNav={navWithAutoOpen} onToast={showToast} onRefresh={fetchKittiesFromApi} onWithdraw={handleWithdraw} onContribute={handleContribute} onEditKitty={handleEditKitty} />;
       case "kitties": return <KittiesPage state={state} user={user} onToast={showToast} onNewKitty={handleNewKitty} onEditKitty={handleEditKitty} onWithdraw={handleWithdraw} onContribute={handleContribute} autoOpen={ao} onBack={() => setPage("overview")} />;
-      case "chama": return <ChamaPage state={state} user={user} onToast={showToast} onNewChama={handleNewChama} onEditChama={handleEditChama} onChamaContribute={handleChamaContribute} onChamaWithdraw={handleChamaWithdraw} onAddMember={handleChamaAddMember} onRemoveMember={handleChamaRemoveMember} onEditKitty={handleEditKitty} onWithdraw={handleWithdraw} onContribute={handleContribute} autoOpen={ao} onBack={() => setPage("overview")} />;
+      case "chama": return <ChamaPage state={state} user={user} onToast={showToast} onNewChama={handleNewChama} onEditChama={handleEditChama} onChamaContribute={handleChamaContribute} onChamaWithdraw={handleChamaWithdraw} onAddMember={handleChamaAddMember} onRemoveMember={handleChamaRemoveMember} onSetOfficial={handleChamaSetOfficial} onOpenMembers={fetchChamaDetail} onEditKitty={handleEditKitty} onWithdraw={handleWithdraw} onContribute={handleContribute} autoOpen={ao} onBack={() => setPage("overview")} />;
       case "events": return <EventsPage state={state} user={user} onToast={showToast} onNewEvent={handleNewEvent} onEditEvent={handleEditEvent} onToggleEventStatus={handleToggleEventStatus} onEditKitty={handleEditKitty} onWithdraw={handleWithdraw} onContribute={handleContribute} autoOpen={ao} onBack={() => setPage("overview")} />;
       case "contribute": return <ContributePage state={state} user={user} onToast={showToast} onContribute={handleContribute} />;
       case "withdraw": return <WithdrawPage state={state} user={user} onToast={showToast} onWithdraw={handleWithdraw} />;
@@ -11280,7 +12354,7 @@ const fetchTransactionsFromApi = async () => {
     onToast={showToast}
     transactions={apiTransactions}  // ← Pass API data
   />;
-      case "settings": return <SettingsPage user={user} onToast={showToast} onLogout={handleLogout} onBack={() => setPage("overview")} />;
+      case "settings": return <SettingsPage user={user} onToast={showToast} onLogout={handleLogout} onBack={() => setPage("overview")} onUpdateUser={handleUpdateUser} />;
       default: return null;
     }
   };
@@ -11294,8 +12368,15 @@ const fetchTransactionsFromApi = async () => {
   };
 
   // ─── SHARE LINK: skip auth, show popup directly ───
-  if (publicKittyId) {
-    const pk = state.kitties.find(k => String(k.id) === String(publicKittyId));
+  if (publicKittyId || (publicShareToken && !publicShareDismissed)) {
+    // publicShareToken (real /k/{token} link) takes priority; falls back to the legacy
+    // #kitty={id} shortcut, which only resolves if this browser already has that kitty
+    // loaded (e.g. the creator following their own notification link).
+    const pk = publicShareToken
+      ? publicShareKitty
+      : state.kitties.find(k => String(k.id) === String(publicKittyId));
+    const effectiveShareToken = publicShareToken || pk?.shareToken;
+    const stillLoading = publicShareToken ? publicShareLoading : false;
     const gradBg = {
       minHeight:"100vh", display:"flex", alignItems:"flex-end", justifyContent:"center",
       background:"linear-gradient(160deg,#F0F1FF 0%,#EEF2FF 40%,#EFF8F4 100%)",
@@ -11315,20 +12396,30 @@ const fetchTransactionsFromApi = async () => {
     return (
       <div style={gradBg}>
         {blobs}
-        {pk ? (
+        {stillLoading ? (
+          <div style={{width:"100%",maxWidth:440,padding:"1rem",paddingBottom:"2rem",position:"relative",zIndex:1}}>
+            <div style={{background:"#fff",borderRadius:24,padding:"2rem 1.5rem",boxShadow:"0 20px 60px rgba(0,0,0,0.12)",textAlign:"center"}}>
+              <LoadingSpinner label="Loading kitty…" />
+            </div>
+          </div>
+        ) : pk ? (
           <PublicContributePopup
             kitty={pk}
-            onClose={() => setPublicKittyId(null)}
-            onContribute={(kittyId, amount, displayName, phone) => {
-              setState(s => ({
-                ...s,
-                kitties: s.kitties.map(k =>
-                  k.id === kittyId
-                    ? { ...k, raised: (k.raised||0) + amount, contributors: (k.contributors||0) + 1 }
-                    : k
-                )
-              }));
-            }}
+            onClose={() => { setPublicKittyId(null); setPublicShareDismissed(true); }}
+            onContribute={(kittyId, amount, displayName, phone) => handlePublicContribute(
+              effectiveShareToken, amount, displayName, phone,
+              () => {
+                setPublicShareKitty(k => k ? { ...k, raised: (k.raised||0) + amount, contributors: (k.contributors||0) + 1 } : k);
+                setState(s => ({
+                  ...s,
+                  kitties: s.kitties.map(k =>
+                    k.id === kittyId
+                      ? { ...k, raised: (k.raised||0) + amount, contributors: (k.contributors||0) + 1 }
+                      : k
+                  )
+                }));
+              }
+            )}
           />
         ) : (
           <div style={{width:"100%",maxWidth:440,padding:"1rem",paddingBottom:"2rem",position:"relative",zIndex:1}}>
@@ -11361,16 +12452,9 @@ const fetchTransactionsFromApi = async () => {
       {showNotifs && (
         <NotificationsPanel
           notifications={notifications}
-          onClose={() => { setShowNotifs(false); setNotifsRead(true); }}
-          onMarkAllRead={() => setNotifsRead(true)}
-          onClearAll={(id) => {
-            if (id !== null && id !== undefined) {
-              setClearedNotifIds(prev => new Set([...prev, id]));
-            } else {
-              setClearedNotifIds(new Set(notifications.map(n => n.id)));
-              setNotifsRead(true);
-            }
-          }}
+          onClose={() => setShowNotifs(false)}
+          onMarkAllRead={handleMarkAllNotifsRead}
+          onClearAll={handleClearNotifs}
         />
       )}
 
@@ -11475,10 +12559,14 @@ const fetchTransactionsFromApi = async () => {
           <PublicContributePopup
             kitty={pk}
             onClose={() => setPublicKittyId(null)}
-            onContribute={(kittyId, amt, displayName, phone) => {
-              handleContribute(kittyId, amt, displayName, phone);
-              setPublicKittyId(null);
-              showToast("Contributed! 🎉", `KES ${fmt(amt)} sent to ${pk.name}`);
+            onContribute={async (kittyId, amt, displayName, phone) => {
+              try {
+                const result = await handleContribute(kittyId, amt, displayName, phone);
+                if (result?.confirmed) showToast("Contributed! 🎉", `KES ${fmt(amt)} sent to ${pk.name}`);
+                return result;
+              } catch (error) {
+                return { confirmed: false, error: error?.error || error?.message || "Payment failed." };
+              }
             }}
           />
         ) : null;
